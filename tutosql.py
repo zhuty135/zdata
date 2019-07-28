@@ -61,24 +61,6 @@ def check_and_delete_db_record(s,mdb_str,del_flag=False):
         print([doc['date']  for doc in db[s].find().sort('date')])
 
 
-def test_pymongo(client,db='admin',verbose=False):
-    db=client[db]#admin
-    serverStatusResult=db.command("serverStatus")
-    if verbose:
-        symbols = db.collection_names()
-        print(symbols)
-        assert(0)
-        for s in symbols:
-            print(s)
-            df = pd.DataFrame([doc for doc in db[s].find()])
-            print(db[s].find().count())
-            print(df[['date','settle']])
-            assert(0)
-        print(list(db.basic.find({'ts_code':'IC1505.CFX'})))
-        test = [doc['ts_code'] for doc in db.basic.find()]
-        print(test)
-        print('findcount',db.basic.find().count())
-
 index_fld = "['ts_code', 'name', 'fullname', 'market', 'publisher', 'index_type', 'category', 'base_date', 'base_point', 'list_date', 'weight_rule', 'desc',  'exp_date']"
 stock_fld = "['ts_code', 'symbol', 'name', 'area', 'industry', 'fullname', 'enname', 'market', 'exchange', 'curr_type', 'list_status', 'list_date', 'delist_date', 'is_hs']"
 def get_tu_basic(k,dk,d_type,verbose=False):
