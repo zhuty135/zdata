@@ -3,7 +3,7 @@ import sys
 import os
 import pwd
 uname = pwd.getpwuid(os.getuid()).pw_name
-sys.path.append('/work/'+ uname + '/project/finger/zlib/')
+sys.path.append('../zlib/')
 
 from zutils import get_prev_business_date 
 
@@ -11,7 +11,7 @@ import tushare as ts
 def get_token():
     import configparser
     cp = configparser.ConfigParser()
-    cp.read('/work/' + uname + '/project/factors/config/databasic.cfg')
+    cp.read('../factors/config/databasic.cfg')
     sect = 'tushare'
     token = eval(cp.get(sect,'TOKEN'))
     return token
@@ -332,6 +332,8 @@ def main():
                 for k in fs_list:
                     print('k',k)
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,fflag=fullhist_flag,oflag=output_flag)
+            else:
+                get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
         else:
             get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
             if dkey in ('stock',):
