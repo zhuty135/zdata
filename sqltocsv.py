@@ -69,6 +69,8 @@ def get_db_data(d_path,sd,ed,dk = 'opt',d_type='daily',oflag=False,lflag=False):
         #20190627 mdb_str = dk.split('_')[0] + '_' + ex + '_' + d_type
         #ex = dk.split('_')[0]
         root_dir = '/work/'+uname+'/db/'+d_type+'/'#'/work/jzhu/db/daily/' if d_type in fs_list else 
+        os.makedirs(root_dir,exist_ok=True)
+
         shortname = 'fut' + '_' + ex + '.db' if dk in ('fut_index',) else dk + '_' + ex + '.db' #h( dk + '_'+d_type+'_' + ex + '.db' if d_type in fs_list  else  dk + '_' + ex + '.db')
 
 
