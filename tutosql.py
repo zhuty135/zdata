@@ -75,7 +75,10 @@ def get_tu_basic(k,dk,d_type,verbose=False):
 
 def basic_to_db(dk,ex,d_type, df, oflag, verbose=True):
     if verbose:
-        estr = '/work/'+uname+'/db/basic/' + dk + '_' + ex + '.db'
+        epath = '/work/'+ uname + '/db/basic/'  
+        os.makedirs(epath,exist_ok=True)
+        dbname = dk + '_' + ex + '.db'
+        estr = epath + dbname
         deb = create_engine('sqlite:///' + estr)
         print(estr)
         check = deb.has_table(d_type)
@@ -191,7 +194,9 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
     estr = '/work/'+uname+'/db/basic/'  + dk + '_' + ex + '.db'
     deb = create_engine('sqlite:///' + estr)
     shortname =  dk + '_' + ex + '.db'
-    dailystr = '/work/' + uname + '/db/' + d_type + '/'+ shortname
+    dailypath = '/work/' + uname + '/db/' 
+    os.makedirs(dailypath,exist_ok=True)
+    dailystr = dailypath + shortname
     ded = create_engine('sqlite:///' + dailystr)
 
     print(estr,dailystr)
