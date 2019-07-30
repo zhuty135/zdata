@@ -333,6 +333,7 @@ def main():
     input_path = '/work/'+uname+'/db/' + dkey + '/'
 
     if dkey in ('opt','fut','fund_nav','index','stock'):
+        get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
         if fullhist_flag:
             if dkey in ('stock',):
                 for k in fs_list:
@@ -341,7 +342,6 @@ def main():
             else:
                 get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
         else:
-            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,oflag=output_flag)
