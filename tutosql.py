@@ -87,7 +87,7 @@ def basic_to_db(dk,ex,d_type, df, oflag, verbose=True):
             doc = pd.read_sql_table(table_name=d_type, con=deb)
             print('Existing table', d_type, doc['ts_code'][-5:-1])
             doclist = doc['ts_code']
-            if verbose:  df.to_csv('/tmp/udf.'+dk+'.'+ex)
+            #if verbose: df.to_csv('/tmp/udf.'+dk+'.'+ex)
             udf = df[~df['ts_code'].isin(doclist)]
         else:
             udf = df
@@ -218,7 +218,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                 s = sd if (re.match(r'^daily.*',d_type) and not fflag) else bdf.loc[bdf.index==i,sdt_str][0] 
                 s = pd.to_datetime(s).strftime("%Y%m%d") if s is not None else s
                 e = pd.to_datetime(ed).strftime('%Y%m%d') if (re.match(r'^daily.*', d_type) and not fflag) or isinstance(dedt, type(None)) else dedt 
-                bdf.to_csv('/tmp/bdf.csv')
+               # bdf.to_csv('/tmp/bdf.csv')
 
                 print('checking',i,dailystr)
                 print('bdf',bdf.loc[bdf.index==i,])
