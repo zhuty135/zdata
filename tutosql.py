@@ -137,7 +137,7 @@ def remove_duplicates(coll):
     result = coll.remove({"_id": {"$in": response}})
     return result
 
-fs_list =  ['dividend']
+fs_list =  ['dividend','fina_indicator','income','balancesheet','cashflow']
 def write_to_db(i,df, ded, fflag, oflag, cdict,keystr='date',verbose=True):
     if df is None or df.empty:
         print('skipping7',i)
@@ -335,20 +335,19 @@ def main():
     if dkey in ('opt','fut','fund_nav','index','stock'):
         get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
         if fullhist_flag:
+            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     print('k',k)
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,fflag=fullhist_flag,oflag=output_flag)
-            else:
-                get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
         else:
+            sdate = get_prev_business_date(date.today(), n)
+            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,oflag=output_flag)
                 print(dkey)
             print('Look back date is ',n)
-            sdate = get_prev_business_date(date.today(), n)
-            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',oflag=output_flag)
 
 
 if __name__ == '__main__':
