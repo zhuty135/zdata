@@ -4,7 +4,7 @@ import sys
 import os
 import pwd
 uname = pwd.getpwuid(os.getuid()).pw_name
-sys.path.append('../zlib/')
+sys.path.append('/work/'+uname+ '/project/zlib/')
 
 from zutils import get_prev_business_date 
 
@@ -12,7 +12,7 @@ import tushare as ts
 def get_token():
     import configparser
     cp = configparser.ConfigParser()
-    cp.read('../factors/config/databasic.cfg')
+    cp.read('/work/'+uname+'/project/factors/config/databasic.cfg')
     sect = 'tushare'
     token = eval(cp.get(sect,'TOKEN'))
     return token
