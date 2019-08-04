@@ -10,11 +10,8 @@ import time
 from datetime import date, datetime, timedelta
 from zipline.utils.calendars import get_calendar
 import sys
-sys.path.append('../zlib/')
 import pwd
-uname = pwd.getpwuid(os.getuid()).pw_name
 
-from zutils import get_prev_business_date 
 
 from sqlalchemy import create_engine #pymongo
 
@@ -57,7 +54,7 @@ fs_list =  ['fina_indicator','income','balancesheet','cashflow','dividend']# 'da
 #fs_list =  ['balancesheet','cashflow','dividend']#'balancesheet','cashflow')# 'daily_fina_indicator','daily_income')
 
 
-def get_db_data(d_path,sd,ed,dk = 'opt',d_type='daily',oflag=False,lflag=False):
+def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=False):
     b_path = d_path + 'backup/'
     fuidx_flds = ['date','open','high','low','close','volume','settle','oi'] 
     basic_flds = ['date', 'open', 'high', 'low', 'close', 'volume','adjusted']   
@@ -135,24 +132,24 @@ def get_db_data(d_path,sd,ed,dk = 'opt',d_type='daily',oflag=False,lflag=False):
 def main():
     import getopt, sys
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"d:hfoclv",["datakey=", "help"])
+        opts, args = getopt.getopt(sys.argv[1:],"d:u:hoclv",["datakey=", "help"])
     except getopt.GetoptError as err:
         print(str(err))
         usage()
         sys.exit(2)
     output_flag = False
-    fullhist_flag = False 
     conv_flag = False 
     link_flag = False 
     verbose = False
     dkey = 'opt'
+    uname = pwd.getpwuid(os.getuid()).pw_name
     for o, a in opts:
         if o == "-v":
             verbose = True
         elif o in ("-d","--datakey"):
             dkey = a
-        elif o == '-f':
-            fullhist_flag = True
+        elif o == '-u':
+            uname = a
         elif o == '-o':
             output_flag = True
         elif o == '-c':
@@ -161,6 +158,10 @@ def main():
             link_flag = True
         else:
             assert False, 'unhandled option'
+    sys.path.append('/work/'+uname+'/project/zlib/')
+    print('uname',uname)
+    from zutils import get_prev_business_date 
+
     print(dkey)
     edate = get_prev_business_date(date.today(), -1)#.strftime("%Y%m%d")
     sdate = get_prev_business_date(date.today() - timedelta(7), -1)#.strftime("%Y%m%d")
@@ -173,8 +174,8 @@ def main():
             for k in fs_list:
                 get_db_data(input_path,sdate,edate,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
             
-        get_db_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag,lflag=link_flag)
-        get_db_data(input_path,sdate,edate,dk=dkey, d_type='daily',oflag=output_flag,lflag=link_flag)
+        get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type='basic',oflag=output_flag,lflag=link_flag)
+        get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type='daily',oflag=output_flag,lflag=link_flag)
             
 if __name__ == '__main__':
     main()
