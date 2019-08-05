@@ -222,6 +222,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
     if verbose:
         if True:
             for i in  bdf.index:
+                time.sleep(1)
                 cdict = {}
                 dedt =  bdf.loc[bdf.index==i,'exp_date'][0] if dk in ('index',) else bdf.loc[bdf.index==i,'delist_date'][0]
                 dedt = pd.to_datetime(dedt).strftime("%Y%m%d") if dedt is not None else dedt
@@ -229,7 +230,6 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                 s = sd if (re.match(r'^daily.*',d_type) and not fflag) else bdf.loc[bdf.index==i,sdt_str][0] 
                 s = pd.to_datetime(s).strftime("%Y%m%d") if s is not None else s
                 e = pd.to_datetime(ed).strftime('%Y%m%d') if (re.match(r'^daily.*', d_type) and not fflag) or isinstance(dedt, type(None)) else dedt 
-               # bdf.to_csv('/tmp/bdf.csv')
 
                 print('checking',i,dailystr)
                 print('bdf',bdf.loc[bdf.index==i,])
@@ -277,8 +277,8 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                 elif dk == 'index' and d_type in ix_list: 
                     df = fetch_ix_data(i,d_type,s,e,dk)
                     print(df)
-                    ks = 'end_date'
-                    wf = write_to_db(i,df, ded, fflag, oflag,cdict,keystr=ks)
+                    cdict = {'trade_date':'date'} 
+                    wf = write_to_db(i,df, ded, fflag, oflag,cdict)
                 else:
                     df = fetch_daily_data(i,s,e,dk)
                     cdict = {'trade_date':'date','vol':"volume"}
@@ -352,7 +352,7 @@ def main():
     if dkey in ('opt','fut','fund_nav','index','stock'):
         get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
         if fullhist_flag:
-            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
+            #hack get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     print('k',k)
