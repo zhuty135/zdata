@@ -137,7 +137,8 @@ def remove_duplicates(coll):
     result = coll.remove({"_id": {"$in": response}})
     return result
 
-fs_list =  ['dividend','fina_indicator','income','balancesheet','cashflow']
+fs_list =  ['daily_basic','dividend','fina_indicator','income','balancesheet','cashflow']
+ix_list =  ['index_weight']#, 'index_dailybasic','index_member']
 def write_to_db(i,df, ded, fflag, oflag, cdict,keystr='date',verbose=True):
     if df is None or df.empty:
         print('skipping7',i)
@@ -167,7 +168,17 @@ def write_to_db(i,df, ded, fflag, oflag, cdict,keystr='date',verbose=True):
     return True
 
 def fetch_fs_data(i,f,s,e,dk):
+    
     fcallbasic = 'pro.' + f + "(ts_code='"+ i + "',start_date='" + s + "',end_date='" + e 
+    fcall = fcallbasic  + "')"
+    print(fcall)
+    df = eval(fcall) 
+    if df is None or df.empty:
+        return None 
+    return df
+
+def fetch_ix_data(i,f,s,e,dk):
+    fcallbasic = 'pro.' + f + "(index_code='"+ i + "',start_date='" + s + "',end_date='" + e 
     fcall = fcallbasic  + "')"
     print(fcall)
     df = eval(fcall) 
@@ -260,6 +271,12 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                 elif dk == 'stock' and d_type in fs_list: 
                     df = fetch_fs_data(i,d_type,s,e,dk)
                     print(df)
+                    cdict = {'trade_date':'date'}  if d_type == 'daily_basic' else cdict
+                    ks = 'date' if d_type == 'daily_basic' else 'end_date'
+                    wf = write_to_db(i,df, ded, fflag, oflag,cdict,keystr=ks)
+                elif dk == 'index' and d_type in ix_list: 
+                    df = fetch_ix_data(i,d_type,s,e,dk)
+                    print(df)
                     ks = 'end_date'
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict,keystr=ks)
                 else:
@@ -340,13 +357,20 @@ def main():
                 for k in fs_list:
                     print('k',k)
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,fflag=fullhist_flag,oflag=output_flag)
+            elif dkey in ('index',):
+                for k in ix_list:
+                    print('k',k)
+                    get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,fflag=fullhist_flag,oflag=output_flag)
         else:
             sdate = get_prev_business_date(date.today(), n)
             get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,oflag=output_flag)
-                print(dkey)
+            elif dkey in ('index',):
+                for k in ix_list:
+                    get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,oflag=output_flag)
+            print(dkey)
             print('Look back date is ',n)
 
 
