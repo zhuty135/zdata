@@ -76,13 +76,17 @@ def main():
         else:
             assert False, 'unhandled option'
     
-    index_code = "000" + index + ".SH"
+    index_code = index#"000" + index + ".SH"
     print(index_code)
 
     #### extract the data from Tushare
     IndexData = pro.index_weight(index_code = index_code, start_date = start_date, end_date = end_date)
+    df = pro.index_weight(index_code='000016.SH', start_date='20180901', end_date='20180930')
+    print('df',df)
+
+
     
-    IndexData.head()
+    print(index_code,start_date,end_date,IndexData.head())
     
     #### ouput the weight data
     IndexData.to_csv("./output/" + index + "weight.csv", index = False,header = True)
