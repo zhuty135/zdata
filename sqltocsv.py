@@ -50,7 +50,7 @@ def filter_opt_symb(s):
     return skip_flag
 
 
-fs_list =  ['fina_indicator','income','balancesheet','cashflow','dividend']# 'daily_fina_indicator','daily_income')
+fs_list = ['daily_basic']# ['fina_indicator','income','balancesheet','cashflow','dividend']# 'daily_fina_indicator','daily_income')
 #fs_list =  ['balancesheet','cashflow','dividend']#'balancesheet','cashflow')# 'daily_fina_indicator','daily_income')
 
 
@@ -106,7 +106,8 @@ def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=F
                 df = pd.read_sql_table(table_name=s, con=ded)
                 print(df)
                 cdf = df if d_type == 'basic' or d_type in fs_list  else df[flds]
-                sortkey = 'ts_code'  if d_type == 'basic' else 'ann_date' if d_type in fs_list  else 'date'
+                sortkey = 'ts_code' if d_type == 'basic' else 'ann_date' if (d_type in fs_list) and \
+                    (not re.match(r'^daily.*',d_type))   else 'date'
                 cdf = cdf.sort_values(by=sortkey).drop_duplicates(subset=[sortkey],keep='last')
                 print('before',cdf[sortkey] )#hack
                 if d_type == 'daily':
@@ -172,7 +173,7 @@ def main():
     if dkey in ('opt','fut','fut_index','fund_nav','index','stock'):
         if dkey in ('stock'):
             for k in fs_list:
-                get_db_data(input_path,sdate,edate,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
+                get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
             
         get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type='basic',oflag=output_flag,lflag=link_flag)
         get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type='daily',oflag=output_flag,lflag=link_flag)
