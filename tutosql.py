@@ -352,7 +352,7 @@ def main():
     if dkey in ('opt','fut','fund_nav','index','stock'):
         get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
         if fullhist_flag:
-            #hack get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
+            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     print('k',k)
