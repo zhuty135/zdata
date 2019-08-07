@@ -50,7 +50,7 @@ def filter_opt_symb(s):
     return skip_flag
 
 
-fs_list = ['daily_basic','fina_indicator','income','balancesheet','cashflow','dividend']# 'daily_fina_indicator','daily_income')
+fs_list = ['daily_basic']# ['fina_indicator','income','balancesheet','cashflow','dividend']# 'daily_fina_indicator','daily_income')
 #fs_list =  ['balancesheet','cashflow','dividend']#'balancesheet','cashflow')# 'daily_fina_indicator','daily_income')
 ix_list = ['index_weight']
 
@@ -105,8 +105,40 @@ def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=F
                 #df = pd.DataFrame([doc for doc in db[s].find()])
                 df = pd.read_sql_table(table_name=s, con=ded)
                 print(df)
-                cdf = df if d_type == 'basic' or (d_type in fs_list or d_type in ix_list) else df[flds]
-                sortkey = 'ts_code' if d_type == 'basic' else 'ann_date' if (d_type in fs_list or d_type in ix_list) and \
+
+                if d_type in ix_list:
+                    cdf = df
+ 
+                    cdf.round(7).to_csv(fout, index=True,na_rep='')
+                    print(cdf.iloc[-5:,])
+                else:
+                    cdf = df if d_type == 'basic' or d_type in fs_list  else df[flds]
+                    sortkey = 'ts_code' if d_type == 'basic' else 'ann_date' if (d_type in fs_list) and \
+                        (not re.match(r'^daily.*',d_type))   else 'date'
+                    cdf = cdf.sort_values(by=sortkey).drop_duplicates(subset=[sortkey],keep='last')
+                    print('before',cdf[sortkey] )#hack
+                    if d_type == 'daily':
+                        cdf = cdf[cdf[sortkey] <= pd.to_datetime(ed).strftime("%Y%m%d")]#hack
+                    print(ed)
+                    print('after',cdf[sortkey] )#hack
+                    cdf.set_index([sortkey],inplace=True)
+                    
+                    print('jzxy',(cdf.index))
+                    dtfmt = "%Y%m%d" if  dk in ('fut_index',) else  "%Y-%m-%d"
+                    if d_type == 'daily':
+                        cdf.index = pd.to_datetime(cdf.index).strftime(dtfmt) 
+                    cdf.index.name = sortkey
+                    cdict = {'volume':"vol"} if dk in ('fut_index',) and d_type == 'daily'  else {}
+                    cdf = cdf.rename(columns = cdict)
+
+
+                    if oflag:
+                        cdf.sort_index().round(7).to_csv(fout, index=True,na_rep='')
+                        print(cdf.iloc[-5:,])
+
+                """
+                cdf = df if d_type == 'basic' or d_type in fs_list  else df[flds]
+                sortkey = 'ts_code' if d_type == 'basic' else 'ann_date' if (d_type in fs_list) and \
                     (not re.match(r'^daily.*',d_type))   else 'date'
                 cdf = cdf.sort_values(by=sortkey).drop_duplicates(subset=[sortkey],keep='last')
                 print('before',cdf[sortkey] )#hack
@@ -128,27 +160,23 @@ def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=F
                 if oflag:
                     cdf.sort_index().round(7).to_csv(fout, index=True,na_rep='')
                     print(cdf.iloc[-5:,])
+                """
         ded.dispose()
     
 def main():
     import getopt, sys
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"d:u:hfoclv",["datakey=", "help"])
+        opts, args = getopt.getopt(sys.argv[1:],"d:u:hoclv",["datakey=", "help"])
     except getopt.GetoptError as err:
         print(str(err))
         usage()
         sys.exit(2)
     output_flag = False
-    fullhist_flag = False
     conv_flag = False 
     link_flag = False 
     verbose = False
     dkey = 'opt'
-    uname = pwd.getpwuid(os.getuid()).pw_name 
-   
-    #print(uname)
-    #assert(0)
-
+    uname = pwd.getpwuid(os.getuid()).pw_name
     for o, a in opts:
         if o == "-v":
             verbose = True
@@ -156,8 +184,6 @@ def main():
             dkey = a
         elif o == '-u':
             uname = a
-        elif o == '-f':
-            fullhist_flag == True
         elif o == '-o':
             output_flag = True
         elif o == '-c':
@@ -180,11 +206,11 @@ def main():
     if dkey in ('opt','fut','fut_index','fund_nav','index','stock'):
         if dkey in ('stock'):
             for k in fs_list:
-                get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
+                get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag) 
         elif dkey in ('index'):
             for k in ix_list:
                 get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
-    
+ 
         get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type='basic',oflag=output_flag,lflag=link_flag)
         get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type='daily',oflag=output_flag,lflag=link_flag)
             
