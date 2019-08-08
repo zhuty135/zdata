@@ -50,21 +50,18 @@ def filter_opt_symb(s):
     return skip_flag
 
 
-fs_list = ['daily_basic']# ['fina_indicator','income','balancesheet','cashflow','dividend']# 'daily_fina_indicator','daily_income')
-#fs_list =  ['balancesheet','cashflow','dividend']#'balancesheet','cashflow')# 'daily_fina_indicator','daily_income')
+fs_list = ['daily_basic','fina_indicator','income','balancesheet','cashflow','dividend']
+ix_list =  ['index_weight']
+
 
 
 def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=False):
     b_path = d_path + 'backup/'
     fuidx_flds = ['date','open','high','low','close','volume','settle','oi'] 
     basic_flds = ['date', 'open', 'high', 'low', 'close', 'volume','adjusted']   
-    #flds = fuidx_flds if dk in ('fut_index','fut','opt') else fs_flds if d_type in fs_list  else  basic_flds
     flds = fuidx_flds if dk in ('fut_index','fut','opt') else basic_flds
     zdict =fut_dict if dk in ('fut_index','fut') else eval(dk+'_dict') 
-    #zdict = opt_dict if dk == 'opt' else (fut_dict if dk in ('fut_index','fut') else (fund_dict)
     for k,ex in zdict.items():
-        #20190627 mdb_str = dk.split('_')[0] + '_' + ex + '_' + d_type
-        #ex = dk.split('_')[0]
         root_dir = '/work/'+uname+'/db/'+d_type+'/'#'/work/jzhu/db/daily/' if d_type in fs_list else 
         os.makedirs(root_dir,exist_ok=True)
 
@@ -105,12 +102,12 @@ def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=F
                 #df = pd.DataFrame([doc for doc in db[s].find()])
                 df = pd.read_sql_table(table_name=s, con=ded)
                 print(df)
-                cdf = df if d_type == 'basic' or d_type in fs_list  else df[flds]
+                cdf = df if d_type == 'basic' or d_type in fs_list or d_type in ix_list  else df[flds]
                 sortkey = 'ts_code' if d_type == 'basic' else 'ann_date' if (d_type in fs_list) and \
                     (not re.match(r'^daily.*',d_type))   else 'date'
-                cdf = cdf.sort_values(by=sortkey).drop_duplicates(subset=[sortkey],keep='last')
+                cdf =cdf.sort_values(by=sortkey) if d_type in ix_list else cdf.sort_values(by=sortkey).drop_duplicates(subset=[sortkey],keep='last')
                 print('before',cdf[sortkey] )#hack
-                if d_type == 'daily':
+                if d_type == 'daily' or d_type in ix_list:
                     cdf = cdf[cdf[sortkey] <= pd.to_datetime(ed).strftime("%Y%m%d")]#hack
                 print(ed)
                 print('after',cdf[sortkey] )#hack
@@ -118,7 +115,7 @@ def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=F
 
                 print('jzxy',(cdf.index))
                 dtfmt = "%Y%m%d" if  dk in ('fut_index',) else  "%Y-%m-%d"
-                if d_type == 'daily':
+                if d_type == 'daily' or d_type in ix_list:
                     cdf.index = pd.to_datetime(cdf.index).strftime(dtfmt) 
                 cdf.index.name = sortkey
                 cdict = {'volume':"vol"} if dk in ('fut_index',) and d_type == 'daily'  else {}
@@ -173,6 +170,9 @@ def main():
     if dkey in ('opt','fut','fut_index','fund_nav','index','stock'):
         if dkey in ('stock'):
             for k in fs_list:
+                get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
+        elif dkey in ('index'):
+            for k in ix_list:
                 get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
             
         get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type='basic',oflag=output_flag,lflag=link_flag)
