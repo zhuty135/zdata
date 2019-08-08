@@ -275,7 +275,9 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                     ks = 'date' if d_type == 'daily_basic' else 'end_date'
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict,keystr=ks)
                 elif dk == 'index' and d_type in ix_list: 
-                    df = fetch_ix_data(i,d_type,s,e,dk)
+                    df = pd.DataFrame()
+                    for loop to handle weekly 
+                        tmpdf = fetch_ix_data(i,d_type,s,e,dk)
                     print(df)
                     cdict = {'trade_date':'date'} 
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict)
