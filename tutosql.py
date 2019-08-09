@@ -299,6 +299,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
 
                     for idx2 in range(len(date_sun)-1):
                         print(idx2)
+                        time.sleep(1)
                         if idx2 == 0:
                             mstart = date_sun[idx2]
                             mend = date_sun[idx2+1]
@@ -310,8 +311,9 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                                 else:
                                     df = pd.concat([df, tmpdf], axis = 0, join = 'inner')
                         else:
-                            if idx2%499 == 0:
-                                time.sleep(60)
+
+                            #if idx2%499 == 0:
+                                #time.sleep(60)
 
                             #mstart_befor = date_sun[i]
                             mstart_next = pd.DataFrame({'SUN': pd.date_range(start = date_sun[idx2], periods =2)})
