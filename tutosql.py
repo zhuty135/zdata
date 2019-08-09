@@ -274,9 +274,62 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                     cdict = {'trade_date':'date'}  if d_type == 'daily_basic' else cdict
                     ks = 'date' if d_type == 'daily_basic' else 'end_date'
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict,keystr=ks)
-                elif dk == 'index' and d_type in ix_list: 
-                    df = fetch_ix_data(i,d_type,s,e,dk)
+                elif dk == 'index' and d_type in ix_list:
+                    ## generate the weekly date from s to e
+                    date_sun = pd.DataFrame({'SUN': pd.date_range(start = s, end =e, freq = 'W-SUN')})
+                    for idx1 in range(date_sun.shape[0]):
+                        mstr = str(date_sun.loc[idx1,'SUN'])
+                        mstr = mstr[:10]
+                        date_sun.loc[idx1, 'SUN'] = mstr.replace('-', '')
+                   
+                    date_sun = list(date_sun.SUN)
+                    #print(date_sun[0:10])
+                    #print(type(date_sun[0]))
+
+                    if int(s) < int(date_sun[0]):
+                        date_sun.insert(0,s)
+
+                    if int(e) > int(date_sun[len(date_sun)-1]):
+                        date_sun.insert(len(date_sun), e)
+                    
+                    #assert(0)
+
+                    ## extract the index weight weekly
+                    df = pd.DataFrame()
+
+                    for idx2 in range(len(date_sun)-1):
+                        print(idx2)
+                        if idx2 == 0:
+                            mstart = date_sun[idx2]
+                            mend = date_sun[idx2+1]
+ 
+                            tmpdf = fetch_ix_data(i,d_type,mstart,mend,dk)
+                            if tmpdf is not None:
+                                if df.empty:
+                                    df = tmpdf
+                                else:
+                                    df = pd.concat([df, tmpdf], axis = 0, join = 'inner')
+                        else:
+                            if idx2%499 == 0:
+                                time.sleep(60)
+
+                            #mstart_befor = date_sun[i]
+                            mstart_next = pd.DataFrame({'SUN': pd.date_range(start = date_sun[idx2], periods =2)})
+                            mstr_next = str(mstart_next.loc[1, 'SUN'])
+                            mstr_next = mstr_next[:10]
+
+                            mstart = mstr_next.replace('-','')
+                            mend = date_sun[idx2+1]
+
+                            tmpdf = fetch_ix_data(i,d_type,mstart,mend,dk)
+                            if tmpdf is not None:
+                                if df.empty:
+                                    df = tmpdf
+                                else:
+                                    df = pd.concat([df, tmpdf], axis = 0, join = 'inner')
+
                     print(df)
+                    assert(0)
                     cdict = {'trade_date':'date'} 
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict)
                 else:
@@ -350,9 +403,9 @@ def main():
     input_path = '/work/'+uname+'/db/' + dkey + '/'
 
     if dkey in ('opt','fut','fund_nav','index','stock'):
-        get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
+        #get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
         if fullhist_flag:
-            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
+            #get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     print('k',k)
