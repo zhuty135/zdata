@@ -331,7 +331,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                                     df = pd.concat([df, tmpdf], axis = 0, join = 'inner')
 
                     print(df)
-                    assert(0)
+                    #assert(0)
                     cdict = {'trade_date':'date'} 
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict)
                 else:
@@ -405,9 +405,9 @@ def main():
     input_path = '/work/'+uname+'/db/' + dkey + '/'
 
     if dkey in ('opt','fut','fund_nav','index','stock'):
-        #get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
+        get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
         if fullhist_flag:
-            #get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
+            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     print('k',k)
