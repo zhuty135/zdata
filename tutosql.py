@@ -139,6 +139,7 @@ def remove_duplicates(coll):
 
 fs_list =  ['daily_basic','dividend','fina_indicator','income','balancesheet','cashflow']
 ix_list =  ['index_weight']#, 'index_dailybasic','index_member']
+ix_symb_list = ['399300.SZ',]
 def write_to_db(i,df, ded, fflag, oflag, cdict,keystr='date',verbose=True):
     if df is None or df.empty:
         print('skipping7',i)
@@ -195,7 +196,7 @@ def fetch_daily_data(i,s,e,dk):
     df = eval(fcall) 
     if df is None or df.empty:
         return None 
-    time.sleep(1)
+    time.sleep(0.1)
     if dk in ('fut','opt'): 
         df["adjusted"] = df['settle']
     else:
@@ -222,7 +223,11 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
     if verbose:
         if True:
             for i in  bdf.index:
-                time.sleep(1)
+                if dk == 'index' and d_type in ix_list and (not i in ix_symb_list):   
+                    print('skipping index',i)
+                    continue
+
+                time.sleep(0.1)
                 cdict = {}
                 dedt =  bdf.loc[bdf.index==i,'exp_date'][0] if dk in ('index',) else bdf.loc[bdf.index==i,'delist_date'][0]
                 dedt = pd.to_datetime(dedt).strftime("%Y%m%d") if dedt is not None else dedt
@@ -250,7 +255,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                         fcallbasic = "pro." + dk + "(end_date='" + e 
                     else:
                         fcallbasic = 'pro.' + dk + "(ts_code='"+ i 
-                        time.sleep(1)
+                        time.sleep(0.1)
                     fcall = 'pro.' + dk + "(ts_code='"+ i + "')"  
                     df = eval(fcall).sort_values(by=['end_date']) 
                     if df.empty:
@@ -275,10 +280,19 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                     ks = 'date' if d_type == 'daily_basic' else 'end_date'
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict,keystr=ks)
                 elif dk == 'index' and d_type in ix_list: 
+                    date_sun = pd.date_range(start = s, end =e, freq = 'W-SUN').strftime("%Y%m%d")
+                    date_sun = np.append(date_sun,e)
                     df = pd.DataFrame()
-                    for loop to handle weekly 
-                        tmpdf = fetch_ix_data(i,d_type,s,e,dk)
-                    print(df)
+                    stmp = s 
+                    for x in date_sun:
+                        etmp = x
+                        tmpdf = fetch_ix_data(i,d_type,stmp,etmp,dk)
+                        if tmpdf is None:
+                            print('Returning None')
+                            continue
+                        df = pd.concat([df, tmpdf]).drop_duplicates()
+                        time.sleep(0.1)
+                        stmp = etmp 
                     cdict = {'trade_date':'date'} 
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict)
                 else:
@@ -354,14 +368,14 @@ def main():
     if dkey in ('opt','fut','fund_nav','index','stock'):
         get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
         if fullhist_flag:
-            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
+            #hack 20190810 get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     print('k',k)
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,fflag=fullhist_flag,oflag=output_flag)
             elif dkey in ('index',):
                 for k in ix_list:
-                    print('k',k)
+                    print('ix_list k',k)
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,fflag=fullhist_flag,oflag=output_flag)
         else:
             sdate = get_prev_business_date(date.today(), n)
