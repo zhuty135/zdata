@@ -48,18 +48,14 @@ index_dict = {'CSI':'csi','SSE':'sse','SZSE':'szse'}
 stock_dict = {'SSE':'sse','SZSE':'szse'}
 futs_all_static_fields='ts_code,symbol,exchange,name,fut_code,multiplier,trade_unit,per_unit,quote_unit,quote_unit_desc,d_mode_desc,list_date,delist_date,d_month,last_ddate,trade_time_desc'
 
-def check_and_delete_db_record(s,mdb_str,del_flag=False):
-    db=sqlite3.connect('/tmp/checkdelete.db')
-    if del_flag:
-        try:
-            db[s].remove({"date": {"$gt": "2019-05-15"}})
-        except Exception as e:
-            print(e) 
-    if mdb_str.split('_')[0] == 'fund':
-        print(mdb_str)
-        print([doc['end_date']  for doc in db[s].find().sort('end_date')])
-    else:
-        print([doc['date']  for doc in db[s].find().sort('date')])
+def check_and_delete_db_record(dk,uname,test_code):
+    d_type = 'index_weight'
+    dailypath = '/work/' + uname + '/db/' + d_type + '/'
+    shortname =  'index_szse.db'
+    dailystr = dailypath + shortname
+    db = create_engine('sqlite:///' + dailystr)
+    doc = pd.read_sql_table(table_name=test_code,con=db)
+    print(doc)
 
 
 index_fld = "['ts_code', 'name', 'fullname', 'market', 'publisher', 'index_type', 'category', 'base_date', 'base_point', 'list_date', 'weight_rule', 'desc',  'exp_date']"
@@ -139,7 +135,7 @@ def remove_duplicates(coll):
 
 fs_list =  ['daily_basic','dividend','fina_indicator','income','balancesheet','cashflow']
 ix_list =  ['index_weight']#, 'index_dailybasic','index_member']
-ix_symb_list = ['399300.SZ',]
+ix_symb_list = ['399300.SZ',]#'000300.SH']
 def write_to_db(i,df, ded, fflag, oflag, cdict,keystr='date',verbose=True):
     if df is None or df.empty:
         print('skipping7',i)
@@ -196,7 +192,7 @@ def fetch_daily_data(i,s,e,dk):
     df = eval(fcall) 
     if df is None or df.empty:
         return None 
-    time.sleep(0.1)
+    time.sleep(0.12)
     if dk in ('fut','opt'): 
         df["adjusted"] = df['settle']
     else:
@@ -227,12 +223,12 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                     print('skipping index',i)
                     continue
 
-                time.sleep(0.1)
+                time.sleep(0.12)
                 cdict = {}
                 dedt =  bdf.loc[bdf.index==i,'exp_date'][0] if dk in ('index',) else bdf.loc[bdf.index==i,'delist_date'][0]
                 dedt = pd.to_datetime(dedt).strftime("%Y%m%d") if dedt is not None else dedt
                 sdt_str = 'found_date' if dk in ('fund_nav','fund') else 'list_date'
-                s = sd if (re.match(r'^daily.*',d_type) and not fflag) else bdf.loc[bdf.index==i,sdt_str][0] 
+                s = sd if (re.match(r'^[daily|index_weight].*',d_type) and not fflag) else bdf.loc[bdf.index==i,sdt_str][0] 
                 s = pd.to_datetime(s).strftime("%Y%m%d") if s is not None else s
                 e = pd.to_datetime(ed).strftime('%Y%m%d') if (re.match(r'^daily.*', d_type) and not fflag) or isinstance(dedt, type(None)) else dedt 
 
@@ -255,7 +251,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                         fcallbasic = "pro." + dk + "(end_date='" + e 
                     else:
                         fcallbasic = 'pro.' + dk + "(ts_code='"+ i 
-                        time.sleep(0.1)
+                        time.sleep(0.12)
                     fcall = 'pro.' + dk + "(ts_code='"+ i + "')"  
                     df = eval(fcall).sort_values(by=['end_date']) 
                     if df.empty:
@@ -287,12 +283,13 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                     for x in date_sun:
                         etmp = x
                         tmpdf = fetch_ix_data(i,d_type,stmp,etmp,dk)
+                        stmp = etmp 
                         if tmpdf is None:
                             print('Returning None')
                             continue
+                        print(tmpdf)
                         df = pd.concat([df, tmpdf]).drop_duplicates()
-                        time.sleep(0.1)
-                        stmp = etmp 
+                        time.sleep(0.12)
                     cdict = {'trade_date':'date'} 
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict)
                 else:
@@ -353,10 +350,7 @@ def main():
     print(dkey)
 
     if test_code is not None:
-        mfs = test_code.split('.')
-        mdb_str = dkey + '_' + mfs[1].lower() + '_daily'
-        print(mdb_str)
-        check_and_delete_db_record(test_code,mdb_str,del_flag=remove_flag)
+        check_and_delete_db_record(dkey,uname,test_code)
         exit(0)
 
     edate = get_prev_business_date(date.today(), -1)
@@ -368,7 +362,7 @@ def main():
     if dkey in ('opt','fut','fund_nav','index','stock'):
         get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
         if fullhist_flag:
-            #hack 20190810 get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
+            get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',fflag=fullhist_flag,oflag=output_flag)
             if dkey in ('stock',):
                 for k in fs_list:
                     print('k',k)
