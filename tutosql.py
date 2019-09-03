@@ -81,7 +81,7 @@ def basic_to_db(dk,ex,d_type, df, oflag, verbose=True):
         check = deb.has_table(d_type)
         if check:
             doc = pd.read_sql_table(table_name=d_type, con=deb)
-            print('Existing table', d_type, doc['ts_code'][-5:-1])
+            print('Existing table', d_type, doc['ts_code'][-2:-1])
             doclist = doc['ts_code']
             #if verbose: df.to_csv('/tmp/udf.'+dk+'.'+ex)
             udf = df[~df['ts_code'].isin(doclist)]
@@ -141,15 +141,17 @@ def write_to_db(i,df, ded, fflag, oflag, cdict,keystr='date',verbose=True):
         print('skipping7',i)
         return False
     df = df.rename(columns = cdict)
-    print('latest data:')
-    print(df.iloc[-5:,])
+    print('firstline:')
+    print(df.sort_values(by='date').iloc[0:1,])
+    print(' lastline:')
+    print(df.sort_values(by='date').iloc[-1:,])
     if ded.has_table(i):
         existing_dates_list = pd.read_sql_table(table_name=i, con=ded)[keystr]
-        print('existing_dates_df',existing_dates_list.sort_values()[-5:])
+        print('existing_dates_df',existing_dates_list.sort_values()[-1:])
         df = df[~df[keystr].isin(existing_dates_list)]
         if df.empty:    
             return False
-    print('after filtering',df.iloc[-5:,])
+    print('after filtering',df.iloc[-1:,])
     if oflag:
         try:
             if fflag:
@@ -160,8 +162,8 @@ def write_to_db(i,df, ded, fflag, oflag, cdict,keystr='date',verbose=True):
         except Exception as e:
             print(e)
         ddf = pd.read_sql_table(table_name=i, con=ded).set_index([keystr])
-        print('ddf begins',ddf.sort_index().iloc[1:5,])
-        print('ddf ends',ddf.sort_index().iloc[-5:,])
+        print('ddf begins',ddf.sort_index().iloc[1:3,])
+        print('ddf ends',ddf.sort_index().iloc[-3:,])
     return True
 
 def fetch_fs_data(i,f,s,e,dk):
@@ -271,7 +273,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict,keystr=ks)
                 elif dk == 'stock' and d_type in fs_list: 
                     df = fetch_fs_data(i,d_type,s,e,dk)
-                    print(df)
+                    print(df.iloc[0,])
                     cdict = {'trade_date':'date'}  if d_type == 'daily_basic' else cdict
                     ks = 'date' if d_type == 'daily_basic' else 'end_date'
                     wf = write_to_db(i,df, ded, fflag, oflag,cdict,keystr=ks)
@@ -287,7 +289,6 @@ def bar_to_db(dk,ex,d_type,sd,ed,fflag,oflag,verbose=True):
                         if tmpdf is None:
                             print('Returning None')
                             continue
-                        print(tmpdf)
                         df = pd.concat([df, tmpdf]).drop_duplicates()
                         time.sleep(0.12)
                     cdict = {'trade_date':'date'} 
@@ -307,7 +308,7 @@ def get_tu_data(d_path,sd,ed,dk = 'opt',d_type='basic',fflag=False,oflag=False,v
     for k,ex in zdict.items():
         if d_type == 'basic' :
             df = get_tu_basic(k,dk,d_type,verbose=False)
-            if verbose: print(df)
+            if verbose: print(df.iloc[-1,])
             result = basic_to_db(dk,ex,d_type, df, oflag, verbose=True)
         else:
             result = bar_to_db(dk,ex,d_type,sd,ed, fflag, oflag, verbose=True)
