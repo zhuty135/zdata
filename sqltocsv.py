@@ -35,7 +35,9 @@ def filter_fut_symb(s):
 def filter_opt_symb(s):
     fs = s.split('.')
     skip_flag = False
-    if fs[1] in ('ZCE',):
+    if  not re.match(r'.*\..*$',s):
+        skip_flag = True
+    elif fs[1] in ('ZCE',):
         if not re.match(r'SR\d0[159].*$',fs[0]) and not re.match(r'CF\d0[159].*$',fs[0]):# SR711C7100.ZCE.csv
             print('skip',fs[0])
             skip_flag = True#continue
