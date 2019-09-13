@@ -69,7 +69,7 @@ def get_tu_basic(k,dk,d_type,verbose=False):
     return df
 
 
-def basic_to_db(dk,ex,d_type, df, oflag, verbose=True):
+def basic_to_db(dk,ex,d_type, df, aflag, oflag, verbose=True):
     if verbose:
         epath = '/work/'+ uname + '/db/basic/'  
         os.makedirs(epath,exist_ok=True)
@@ -135,14 +135,14 @@ def remove_duplicates(coll):
 fs_list =  ['daily_basic','dividend','fina_indicator','income','balancesheet','cashflow']
 ix_list =  ['index_weight']#, 'index_dailybasic','index_member']
 ix_symb_list = ['399300.SZ','h00906.CSI']#'000300.SH']
-def write_to_db(i,df, ded, aflag, fflag, oflag, cdict,keystr='date',verbose=True):
+def write_to_db(i,df, ded, aflag, fflag, oflag, cdict,keystr='date',verbose=False):
     if df is None or df.empty:
         print('skipping7',i)
         return False
     df = df.rename(columns = cdict)
     if ded.has_table(i):
         existing_dates_list = pd.read_sql_table(table_name=i, con=ded)[keystr]
-        print('existing_dates_df',existing_dates_list.sort_values()[-1:])
+        print('existing_dates_df',existing_dates_list.sort_values()[0:-1])
         df = df[~df[keystr].isin(existing_dates_list)]
         if df.empty:    
             return False
@@ -153,12 +153,13 @@ def write_to_db(i,df, ded, aflag, fflag, oflag, cdict,keystr='date',verbose=True
                 print('FULL HISTORY drop then insert')
                 df.to_sql(name=i, con=ded, if_exists='replace',index=False)
             else:
+                print('PART HISTORY only append')
                 df.to_sql(name=i, con=ded, if_exists='append',index=False)
         except Exception as e:
             print(e)
         ddf = pd.read_sql_table(table_name=i, con=ded).set_index([keystr])
-        print('ddf begins',ddf.sort_index().iloc[1:3,])
-        print('ddf ends',ddf.sort_index().iloc[-3:,])
+        if verbose: print('ddf begins',ddf.sort_index().iloc[1:3,])
+        if verbose: print('ddf ends',ddf.sort_index().iloc[-3:,])
     return True
 
     
@@ -183,9 +184,9 @@ def fetch_ix_data(i,f,s,e,dk):
 adict = {'stock':'E', 'index':'I','fut':'FT','fund':'FD','fund_nav':'FD','opt':'O', }
 def fetch_daily_data(i,s,e,dk):
     a =  "ts.pro_bar(ts_code='"+ i + "',asset='" + adict[dk]  
-    fcallbasic =  a + "',start_date='" + s + "',end_date='" + e 
-    fcall =  fcallbasic + "',adj='hfq')" if dk =='stock' else  fcallbasic + "')"
-    print(fcall)
+    fcallbasic =  a + "',start_date='" + s + "',end_date='" + e + "')"
+    fcall =  fcallbasic #+ "',adj='hfq')" if dk =='stock' else  fcallbasic + "')"
+    #print(fcall)
     df = eval(fcall) 
     if df is None or df.empty:
         return None 
@@ -221,10 +222,10 @@ def fetch_full_daily_data(i,sd,ed,dk,ded):
         print('bd_list',bd_list)
         for d in missing_dates:
             tmpdf = fetch_daily_data(i,d,d,dk)
-            time.sleep(0.12)
+            time.sleep(0.10)
             if tmpdf is None:
                 continue
-            print(tmpdf)
+            #print(tmpdf)
             df = pd.concat([df, tmpdf]).drop_duplicates()
         
     print('fetch_full_daily_data',i)
@@ -346,7 +347,7 @@ def get_tu_data(d_path,sd,ed,dk = 'opt',d_type='basic',aflag=False,fflag=False,o
         if d_type == 'basic' :
             df = get_tu_basic(k,dk,d_type,verbose=False)
             if verbose: print(df.iloc[-1,])
-            result = basic_to_db(dk,ex,d_type, df, oflag, verbose=True)
+            result = basic_to_db(dk,ex,d_type, df, aflag, oflag, verbose=True)
         else:
             result = bar_to_db(dk,ex,d_type,sd,ed, aflag,fflag, oflag, verbose=True)
 
@@ -407,7 +408,7 @@ def main():
     input_path = '/work/'+uname+'/db/' + dkey + '/'
 
     if dkey in ('opt','fut','fund_nav','index','stock'):
-        get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',oflag=output_flag)
+        get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',aflag=aflag,oflag=output_flag)
         if fullhist_flag:
             get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',aflag=aflag,fflag=fullhist_flag,oflag=output_flag)
             if not aflag:
@@ -420,8 +421,9 @@ def main():
                         print('ix_list k',k)
                         get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,fflag=fullhist_flag,oflag=output_flag)
         else:
-            sdate = get_prev_business_date(date.today(), n)
+            #hack sdate = get_prev_business_date(date.today(), n)
             get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',oflag=output_flag)
+            assert(0)
             if dkey in ('stock',):
                 for k in fs_list:
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,oflag=output_flag)
