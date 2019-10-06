@@ -54,8 +54,16 @@ def filter_opt_symb(s):
 
 fs_list = ['daily_basic','fina_indicator','income','balancesheet','cashflow','dividend']
 ix_list =  ['index_weight']
+ix_symb_list = ['399300.SZ','h00906.CSI']#'000300.SH']
 
-
+def fake_data(df):
+    df["open"] = df["accum_nav"]
+    df["high"] = df["adj_nav"]
+    df["low"]  = df["adj_nav"]
+    df["close"] = df["adj_nav"]
+    df["volume"] = np.sign(df["adj_nav"])*1e9
+    df["adjusted"] = df["adj_nav"]
+    return df
 
 def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=False):
     b_path = d_path + 'backup/'
@@ -83,18 +91,21 @@ def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=F
         print(hist_path,back_path,dst_path)
         if os.path.exists(hist_path) and (not os.path.exists(back_path)):
             shutil.copytree(hist_path, back_path)
-        for s in symbols:
-            print(s)    
-            if dk == 'fut' and filter_fut_symb(s):
-                print('skip above')
+        for i in symbols:
+            if i == 'not 000068.SZ':
+                print('skipping0:',i)
                 continue
 
-            stmp = s.lower() if dk in ('fut_index') else s
+            if (dk == 'fut' and filter_fut_symb(i)) or (dk == 'index' and (not i in ix_symb_list)):
+                print('skipping ', i)
+                continue
+
+            stmp = i.lower() if dk in ('fut_index') else i
             fout = hist_path + stmp + '.csv' 
             print(fout)
             if lflag:
-                if not filter_opt_symb(s):
-                    fdst = dst_path + s + '.csv'
+                if not filter_opt_symb(i):
+                    fdst = dst_path + i + '.csv'
                     print(fdst)
                     if not os.path.realpath(fdst) == fout:
                         os.symlink(fout,fdst)
@@ -102,7 +113,8 @@ def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=F
                         print('symlink file exists, then skipped')
             else: 
                 #df = pd.DataFrame([doc for doc in db[s].find()])
-                df = pd.read_sql_table(table_name=s, con=ded)
+                df = pd.read_sql_table(table_name=i, con=ded)
+                df = fake_data(df) if dk == 'fund_nav' and d_type == 'daily' else df
                 print(df)
                 cdf = df if d_type == 'basic' or d_type in fs_list or d_type in ix_list  else df[flds]
                 sortkey = 'ts_code' if d_type == 'basic' else 'ann_date' if (d_type in fs_list) and \
@@ -168,6 +180,7 @@ def main():
     print(sdate,edate)
 
     input_path = '/work/'+uname+'/input/' + dkey + '/'
+
 
     if dkey in ('opt','fut','fut_index','fund_nav','index','stock'):
         if dkey in ('stock'):
