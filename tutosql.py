@@ -146,7 +146,7 @@ def fetch_fund_data(i,s,e,dk):
         return None#continue
     return df
 
-def fetch_index_data(i,s,e,dk):
+def fetch_index_data(i,f,s,e,dk):
     date_sun = pd.date_range(start = s, end =e, freq = 'W-SUN').strftime("%Y%m%d")
     date_sun = np.append(date_sun,e)
     df = pd.DataFrame()
@@ -189,8 +189,8 @@ def amend_daily_data(i,sd,ed,dk,ded):
     if dt_series is None or dt_series.empty:
         if dk == 'fund_nav':
             df = fetch_fund_data(i,sd,ed,dk) 
-        elif dk == 'index':
-            df = fetch_index_data(i,sd,ed,dk)
+        #elif dk == 'index':
+        #    df = fetch_index_data(i,sd,ed,dk)
         else:
             df = fetch_daily_data(i,sd,ed,dk) 
     else:
@@ -205,15 +205,27 @@ def amend_daily_data(i,sd,ed,dk,ded):
         df = pd.DataFrame()
         if missing_dates is None:
             return None 
-        print('missing_dates',missing_dates)
+        print('missing_dates',(missing_dates))
         print('dt_series',dt_series)
         print('bd_list',bd_list)
-        for d in missing_dates:
-            tmpdf = fetch_daily_data(i,d,d,dk)
+        
+        dt_begin = missing_dates[0]
+        for dt in missing_dates[1:] :
+            pd_dt = pd.to_datetime(dt)
+            dt_diff = pd_dt - pd.to_datetime(dt_begin)
+            if dt_diff < timedelta(7):
+                print('date diff is too short:', dt_diff) 
+                continue
+            dt_end = (pd_dt - timedelta(1)).strftime('%Y%m%d')
+            if dt_diff > timedelta(31):
+                dt_end = dt_begin
+            tmpdf = fetch_daily_data(i, dt_begin, dt_end, dk)
+            print('amending date:',dt_begin,dt_end)
+            dt_begin = dt 
             time.sleep(0.10)
             if tmpdf is None:
                 continue
-            print('amending date:',d)
+            print(tmpdf)
             df = pd.concat([df, tmpdf]).drop_duplicates()
     print('amend_daily_data',i)
     print(df)
@@ -287,7 +299,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
                     df = fetch_fs_data(i,d_type,s,e,dk) 
                 elif dk == 'index' and d_type in ix_list: 
                     cdict = {'trade_date':'date'} 
-                    df = fetch_index_data(i,s,e,dk) 
+                    df = fetch_index_data(i,d_type,s,e,dk) 
                 else:
                     df = amend_daily_data(i,s,e,dk,ded) if aflag else fetch_daily_data(i,s,e,dk)
                     cdict = {'trade_date':'date','vol':"volume"}
