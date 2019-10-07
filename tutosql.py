@@ -47,18 +47,9 @@ index_dict = {'CSI':'csi','SSE':'sse','SZSE':'szse'}
 stock_dict = {'SSE':'sse','SZSE':'szse'}
 futs_all_static_fields='ts_code,symbol,exchange,name,fut_code,multiplier,trade_unit,per_unit,quote_unit,quote_unit_desc,d_mode_desc,list_date,delist_date,d_month,last_ddate,trade_time_desc'
 
-def check_and_delete_db_record(dk,uname,test_code):
-    d_type = 'index_weight'
-    dailypath = '/work/' + uname + '/db/' + d_type + '/'
-    shortname =  'index_szse.db'
-    dailystr = dailypath + shortname
-    db = create_engine('sqlite:///' + dailystr)
-    doc = pd.read_sql_table(table_name=test_code,con=db)
-    print(doc)
-
-
 index_fld = "['ts_code', 'name', 'fullname', 'market', 'publisher', 'index_type', 'category', 'base_date', 'base_point', 'list_date', 'weight_rule', 'desc',  'exp_date']"
 stock_fld = "['ts_code', 'symbol', 'name', 'area', 'industry', 'fullname', 'enname', 'market', 'exchange', 'curr_type', 'list_status', 'list_date', 'delist_date', 'is_hs']"
+
 def get_tu_basic(k,dk,d_type,verbose=False):
     p = 'pro.fund' if dk in ('fund','fund_nav') else 'pro.'+ dk
     m = 'market' if dk in ('fund','fund_nav','index',) else 'exchange'
@@ -67,7 +58,6 @@ def get_tu_basic(k,dk,d_type,verbose=False):
     print('funcstr', funcstr)
     df=eval(funcstr)
     return df
-
 
 def basic_to_db(dk,ex,d_type, df, aflag, oflag, verbose=True):
     if verbose:
@@ -93,34 +83,10 @@ def basic_to_db(dk,ex,d_type, df, aflag, oflag, verbose=True):
             try:
                 print("==========Updating for ", estr,d_type)
                 udf.to_sql(name=d_type, con=deb, if_exists='append')
-            except Exception as e:
-                print(e)
+            except Exception as err:
+                print(err)
         deb.dispose()    
         return True 
-
-def toggle_start_date(i,s,symbols,mcod):
-    if i in symbols:
-        if not mcod.find().count() == 0:
-            dtlist = [doc['date'] for doc in mcod.find().sort('date')]
-            print('old s',s,dtlist[-1])
-            s = (pd.to_datetime(dtlist[-1])+timedelta(1)).strftime("%Y%m%d")  if s > dtlist[-1] else s
-    return s
-
-def remove_duplicates(coll):
-    p = [
-        {"$group": {"_id": "$date", "unique_ids": {"$addToSet": "$_id"}, "count": {"$sum": 1}}},
-        {"$match": {"count": { "$gte": 2 }}}
-    ]
-    cursor = coll.aggregate(p)
-    response = []
-    print('cursor',cursor)
-    for doc in cursor:
-        del doc["unique_ids"][0]
-        for id in doc["unique_ids"]:
-            response.append(id)
-
-    result = coll.remove({"_id": {"$in": response}})
-    return result
 
 fs_list =  ['daily_basic','dividend','fina_indicator','income','balancesheet','cashflow']
 ix_list =  ['index_weight']#, 'index_dailybasic','index_member']
@@ -163,15 +129,6 @@ def fetch_fs_data(i,f,s,e,dk):
         return None 
     return df
 
-def fetch_ix_data(i,f,s,e,dk):
-    fcallbasic = 'pro.' + f + "(index_code='"+ i + "',start_date='" + s + "',end_date='" + e 
-    fcall = fcallbasic  + "')"
-    print(fcall)
-    df = eval(fcall) 
-    if df is None or df.empty:
-        return None 
-    return df
-
 def fetch_fund_data(i,s,e,dk):
     fcall = 'pro.' + dk + "(ts_code='"+ i + "')"  
     df = None
@@ -187,6 +144,24 @@ def fetch_fund_data(i,s,e,dk):
     if isinstance(df['adj_nav'],type(None)):
         print('skipping5',i)
         return None#continue
+    return df
+
+def fetch_index_data(i,s,e,dk):
+    date_sun = pd.date_range(start = s, end =e, freq = 'W-SUN').strftime("%Y%m%d")
+    date_sun = np.append(date_sun,e)
+    df = pd.DataFrame()
+    stmp = s 
+    for x in date_sun:
+        etmp = x
+        fcallbasic = 'pro.' + f + "(index_code='"+ i + "',start_date='" + s + "',end_date='" + e 
+        fcall = fcallbasic  + "')"
+        tmpdf = eval(fcall) 
+        stmp = etmp 
+        if tmpdf is None or tmpdf.empty :
+            print('Returning None')
+            continue
+        df = pd.concat([df, tmpdf]).drop_duplicates()
+        time.sleep(0.12)
     return df
 
 adict = {'stock':'E', 'index':'I','fut':'FT','fund':'FD','fund_nav':'FD','opt':'O', }
@@ -210,8 +185,14 @@ def amend_daily_data(i,sd,ed,dk,ded):
         dt_series = (pd.read_sql_table(table_name=i, con=ded)['date'].sort_values())
     except Exception as e:
         print(e)
+    df = None
     if dt_series is None or dt_series.empty:
-        df = fetch_fund_data(i,s,e,dk) if dk == 'fund_nav' else fetch_daily_data(i,sd,ed,dk) 
+        if dk == 'fund_nav':
+            df = fetch_fund_data(i,sd,ed,dk) 
+        elif dk == 'index':
+            df = fetch_index_data(i,sd,ed,dk)
+        else:
+            df = fetch_daily_data(i,sd,ed,dk) 
     else:
         dt_set = set(dt_series)
         bd_list = get_business_date_list(fmt='%Y%m%d')
@@ -232,7 +213,7 @@ def amend_daily_data(i,sd,ed,dk,ded):
             time.sleep(0.10)
             if tmpdf is None:
                 continue
-            #print(tmpdf)
+            print('amending date:',d)
             df = pd.concat([df, tmpdf]).drop_duplicates()
     print('amend_daily_data',i)
     print(df)
@@ -305,20 +286,8 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
                     ks = ks if d_type == 'daily_basic' else 'end_date'
                     df = fetch_fs_data(i,d_type,s,e,dk) 
                 elif dk == 'index' and d_type in ix_list: 
-                    date_sun = pd.date_range(start = s, end =e, freq = 'W-SUN').strftime("%Y%m%d")
-                    date_sun = np.append(date_sun,e)
-                    df = pd.DataFrame()
-                    stmp = s 
-                    for x in date_sun:
-                        etmp = x
-                        tmpdf = fetch_ix_data(i,d_type,stmp,etmp,dk)
-                        stmp = etmp 
-                        if tmpdf is None:
-                            print('Returning None')
-                            continue
-                        df = pd.concat([df, tmpdf]).drop_duplicates()
-                        time.sleep(0.12)
                     cdict = {'trade_date':'date'} 
+                    df = fetch_index_data(i,s,e,dk) 
                 else:
                     df = amend_daily_data(i,s,e,dk,ded) if aflag else fetch_daily_data(i,s,e,dk)
                     cdict = {'trade_date':'date','vol':"volume"}
@@ -385,10 +354,6 @@ def main():
         else:
             assert False, 'unhandled option'
     print(dkey)
-
-    if test_code is not None:
-        check_and_delete_db_record(dkey,uname,test_code)
-        exit(0)
 
     edate = get_prev_business_date(date.today(), -1) if edate is None else edate
     sdate = get_prev_business_date(date.today(),  n) if sdate is None else sdate
