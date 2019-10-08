@@ -229,8 +229,6 @@ def amend_daily_data(i,sd,ed,dk,ded):
             df = pd.concat([df, tmpdf]).drop_duplicates()
     print('amend_daily_data',i)
     print(df)
-    if df.empty:
-        df = None 
     return df
 
 def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
@@ -303,7 +301,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
                 else:
                     df = amend_daily_data(i,s,e,dk,ded) if aflag else fetch_daily_data(i,s,e,dk)
                     cdict = {'trade_date':'date','vol':"volume"}
-                if df is None:
+                if df is None or df.empty:
                     continue
                 wf = write_to_db(i,df, ded, aflag, fflag, oflag,cdict,keystr=ks)
                 if wf:
