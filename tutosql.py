@@ -214,7 +214,6 @@ def amend_daily_data(i,sd,ed,dk,ded):
             pd_dt = pd.to_datetime(dt)
             dt_diff = pd_dt - pd.to_datetime(dt_begin)
             if dt_diff < timedelta(7):
-                print('date diff is too short:', dt_diff) 
                 continue
             dt_end = (pd_dt - timedelta(1)).strftime('%Y%m%d')
             if dt_diff > timedelta(31):
