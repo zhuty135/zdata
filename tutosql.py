@@ -219,7 +219,7 @@ def amend_daily_data(i,sd,ed,dk,ded):
             if dt_diff > timedelta(31):
                 dt_end = dt_begin
             tmpdf = fetch_daily_data(i, dt_begin, dt_end, dk)
-            print('amending date:',dt_begin,dt_end)
+            print('amending date:',dt_begin,dt_end,dt_diff)
             dt_begin = dt 
             time.sleep(0.10)
             if tmpdf is None:

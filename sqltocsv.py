@@ -65,7 +65,7 @@ def fake_data(df):
     df["adjusted"] = df["adj_nav"]
     return df
 
-def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=False):
+def get_db_data(d_path,sd,ed,uname,bdt_list=None,dk = 'opt',d_type='daily',oflag=False,lflag=False):
     b_path = d_path + 'backup/'
     fuidx_flds = ['date','open','high','low','close','volume','settle','oi'] 
     basic_flds = ['date', 'open', 'high', 'low', 'close', 'volume','adjusted']   
@@ -128,11 +128,12 @@ def get_db_data(d_path,sd,ed,uname,dk = 'opt',d_type='daily',oflag=False,lflag=F
                 cdf.set_index([sortkey],inplace=True)
 
                 print('jzxy',(cdf.index))
-                dtfmt = "%Y%m%d" if  dk in ('fut_index',) else  "%Y-%m-%d"
+                dtfmt = "%Y%m%d" #hack 20191017 if  dk in ('fut_index',) else  "%Y-%m-%d"
                 if d_type == 'daily' or d_type in ix_list:
                     cdf.index = pd.to_datetime(cdf.index).strftime(dtfmt) 
+                    cdf = cdf[cdf.index.isin(bdt_list)]
                 cdf.index.name = sortkey
-                cdict = {'volume':"vol"} if dk in ('fut_index',) and d_type == 'daily'  else {}
+                cdict = {}#hack 20191017 {'volume':"vol"} if dk in ('fut_index',) and d_type == 'daily'  else {}
                 cdf = cdf.rename(columns = cdict)
 
 
@@ -149,12 +150,15 @@ def main():
         print(str(err))
         usage()
         sys.exit(2)
+    uname = pwd.getpwuid(os.getuid()).pw_name
+    sys.path.append('/work/'+uname+'/project/zlib/')
+    from zutils import get_prev_business_date, get_business_date_list
+    bdl = get_business_date_list(fmt='%Y%m%d')
     output_flag = False
     conv_flag = False 
     link_flag = False 
     verbose = False
     dkey = 'opt'
-    uname = pwd.getpwuid(os.getuid()).pw_name
     for o, a in opts:
         if o == "-v":
             verbose = True
@@ -170,9 +174,9 @@ def main():
             link_flag = True
         else:
             assert False, 'unhandled option'
-    sys.path.append('/work/'+uname+'/project/zlib/')
-    print('uname',uname)
-    from zutils import get_prev_business_date 
+
+
+
 
     print(dkey)
     edate = get_prev_business_date(date.today(), -1)#.strftime("%Y%m%d")
@@ -185,13 +189,13 @@ def main():
     if dkey in ('opt','fut','fut_index','fund_nav','index','stock'):
         if dkey in ('stock'):
             for k in fs_list:
-                get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
+                get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
         elif dkey in ('index'):
             for k in ix_list:
-                get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
+                get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
             
-        get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type='basic',oflag=output_flag,lflag=link_flag)
-        get_db_data(input_path,sdate,edate,uname,dk=dkey, d_type='daily',oflag=output_flag,lflag=link_flag)
+        get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type='basic',oflag=output_flag,lflag=link_flag)
+        get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type='daily',oflag=output_flag,lflag=link_flag)
             
 if __name__ == '__main__':
     main()
