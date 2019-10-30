@@ -196,8 +196,7 @@ def amend_daily_data(i,sd,ed,dk,ded):
     else:
         dt_set = set(dt_series)
         bd_list = get_business_date_list(fmt='%Y%m%d')
-        print('bd_list0',bd_list)
-        print('sd/ed',sd,ed)
+        print('sd/ed',sd,ed )
         bd_list = (bd_list[(bd_list > sd) & (bd_list < ed)])
         bd_set = set(bd_list)
         missing_dates = dt_set.union(bd_set)  - dt_set.intersection(bd_set)
@@ -210,10 +209,13 @@ def amend_daily_data(i,sd,ed,dk,ded):
         print('bd_list',bd_list)
         
         dt_begin = missing_dates[0]
+        fast_mode = False 
         for dt in missing_dates[1:] :
+            if dt > :
+                continue
             pd_dt = pd.to_datetime(dt)
             dt_diff = pd_dt - pd.to_datetime(dt_begin)
-            if dt_diff < timedelta(7):
+            if fast_mode and dt_diff < timedelta(7):
                 continue
             dt_end = (pd_dt - timedelta(1)).strftime('%Y%m%d')
             if dt_diff > timedelta(31):
