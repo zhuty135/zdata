@@ -28,7 +28,7 @@ def fake_data(df,origin_fld='close'):
     df["adjusted"] = df[origin_fld]
     return df
 
-def fill_missing_data(fin,fout,index_col):
+def fill_missing_data(fin,fout,index_col,zfix):
     df = None
     try:
         df = pd.read_csv(fin,index_col=index_col,parse_dates=True)
@@ -46,13 +46,25 @@ def fill_missing_data(fin,fout,index_col):
     ed = df.index[-1].strftime(dt_fmt)
     bd_list = get_business_date_list(fmt=dt_fmt)
     print(sd,ed,type(bd_list))
-    bd_list = pd.to_datetime(bd_list[(bd_list >= sd) & (bd_list <= ed)])
-    df = df.reindex(bd_list,method='ffill') 
+    short_bd_list = pd.to_datetime(bd_list[(bd_list >= sd) & (bd_list <= ed)])
+    df = df.reindex(short_bd_list,method='ffill')
+    print(df)
+    df = df.fillna(method='ffill') 
+    print('d2',df)
 
     if df.shape[1] < 2:
         df = fake_data(df)
 
-    df.sort_index().round(7).to_csv(fout, index=True,na_rep='')
+    if zfix:
+        zfix_dt = pd.to_datetime(bd_list[ bd_list > ed ][0])
+        zseries  = df.iloc[-1,]
+        zdf = pd.DataFrame(data=zseries,index=[zfix_dt])
+        zseries.name = zfix_dt
+        df = df.append(zseries)
+        print('zfix: appended extra row',zfix_dt)
+
+    assert(0)
+    df.sort_index().round(7).to_csv(fout, index=True,date_format=dt_fmt,na_rep='')
     return True
 
 def filter_link_symb(i):
@@ -88,7 +100,7 @@ def create_symb_link(d_type,i_type,ix_weight_file):
             else:
                 print('symlink file exists, then skipped')
 
-def start_polish(input_dir,output_dir,index_col):
+def start_polish(input_dir,output_dir,index_col,zfix):
     from os.path import isfile,join 
     files = [f for f in os.listdir(input_dir) if isfile(join(input_dir, f))]
     print(input_dir,output_dir)
@@ -99,14 +111,14 @@ def start_polish(input_dir,output_dir,index_col):
         fin = input_dir + f
         fout = output_dir + f
         print('fin',fin)
-        fill_missing_data(fin,fout,index_col)
+        fill_missing_data(fin,fout,index_col,zfix)
         print('fout',fout)
 
 
 def main():
     import getopt, sys
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"i:k:o:v",["index_col=","help"])
+        opts, args = getopt.getopt(sys.argv[1:],"i:k:o:zv",["index_col=","help"])
     except getopt.GetoptError as err:
         print(str(err))
         usage()
@@ -117,6 +129,7 @@ def main():
     input_dir  = None
     output_dir = None 
     index_col =  'date' 
+    zfix = False
     for o, a in opts:
         if o == "-v":
             verbose = True
@@ -126,6 +139,8 @@ def main():
             key_str= a
         elif o == ('-o'):
             output_dir = a 
+        elif o == ('-z'):
+            zfix = True 
         elif o == ('--index_col'):
             index_col =  a 
     if input_dir is not None:
@@ -143,7 +158,7 @@ def main():
     output_dir = root_dir + '/data/pol/'  + key_str + '/' 
     print('output_dir',output_dir) 
     
-    start_polish(input_dir,output_dir,index_col)
+    start_polish(input_dir,output_dir,index_col,zfix)
     assert(0)
 
     d_type='stock'
