@@ -35,7 +35,6 @@ def fill_missing_data(fin,fout,index_col,zfix):
     except Exception as err:
         print(str(err))
     dt_fmt='%Y%m%d'
-    df.index.names = ['date']
 
     if df.shape[1] < 2:
         df.columns = ['close']
@@ -48,9 +47,7 @@ def fill_missing_data(fin,fout,index_col,zfix):
     print(sd,ed,type(bd_list))
     short_bd_list = pd.to_datetime(bd_list[(bd_list >= sd) & (bd_list <= ed)])
     df = df.reindex(short_bd_list,method='ffill')
-    print(df)
     df = df.fillna(method='ffill') 
-    print('d2',df)
 
     if df.shape[1] < 2:
         df = fake_data(df)
@@ -62,8 +59,7 @@ def fill_missing_data(fin,fout,index_col,zfix):
         zseries.name = zfix_dt
         df = df.append(zseries)
         print('zfix: appended extra row',zfix_dt)
-
-    assert(0)
+    df.index.names = ['date']
     df.sort_index().round(7).to_csv(fout, index=True,date_format=dt_fmt,na_rep='')
     return True
 
