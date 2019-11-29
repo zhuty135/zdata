@@ -19,13 +19,13 @@ def get_univ(iwf):
     print('coutn',udf.count())
     return udf.sort_values().tolist()
 
-def fake_data(df,origin_fld='close'):
-    df["open"] = df[origin_fld]
-    df["high"] = df[origin_fld]
-    df["low"]  = df[origin_fld]
-    df["close"] = df[origin_fld]
-    df["volume"] = np.sign(df[origin_fld])*1e9
-    df["adjusted"] = df[origin_fld]
+def fake_data(df):
+    df["high"] = df.iloc[:,0]
+    df["low"]  = df.iloc[:,0]
+    df["close"] = df.iloc[:,0]
+    df["volume"] = np.sign(df.iloc[:,0])*1e9
+    df["adjusted"] = df.iloc[:,0]
+    
     return df
 
 def fill_missing_data(fin,fout,index_col,zfix):
@@ -34,10 +34,10 @@ def fill_missing_data(fin,fout,index_col,zfix):
         df = pd.read_csv(fin,index_col=index_col,parse_dates=True)
     except Exception as err:
         print(str(err))
-    dt_fmt='%Y%m%d'
+    dt_fmt='%Y-%m-%d'
 
     if df.shape[1] < 2:
-        df.columns = ['close']
+        df.columns = ['open']
     
     if df.empty:
         return False
@@ -106,6 +106,11 @@ def start_polish(input_dir,output_dir,index_col,zfix):
     for f in files:
         fin = input_dir + f
         fout = output_dir + f
+        if re.match(r'^.*\..*\.csv',f):
+            fout = output_dir + f
+        else:
+            f_split = f.split('.')
+            fout = output_dir + f_split[0]  + '.PO.' + f_split[-1] 
         print('fin',fin)
         fill_missing_data(fin,fout,index_col,zfix)
         print('fout',fout)
@@ -121,7 +126,6 @@ def main():
         sys.exit(2)
     verbose = False
     root_dir = '/work/'+uname+'/'#os.getcwd()
-    key_str = None 
     input_dir  = None
     output_dir = None 
     index_col =  'date' 
@@ -131,8 +135,6 @@ def main():
             verbose = True
         elif o in ("-i"):
             input_dir  = a
-        elif o in ("-k"):
-            key_str= a
         elif o == ('-o'):
             output_dir = a 
         elif o == ('-z'):
@@ -140,18 +142,19 @@ def main():
         elif o == ('--index_col'):
             index_col =  a 
     if input_dir is not None:
-        id_split = input_dir.split('/')
-        print('id_split', id_split[-1] )
-        
-        key_str = id_split[-3]+'/'+id_split[-2] if id_split[-1] == '' else id_split[-2]+'/'+id_split[-1] 
-        print(key_str)
-    elif key_str is not None:
-        input_dir  = root_dir + '/input/' + key_str + '/' 
+        if input_dir.find('/')!= -1 :
+            id_split = input_dir.split('/')
+            print('id_split', id_split[-1] )
+            key_str = '/'.join(id_split[-5:-1]) if id_split[-1] == '' else '/'.join(id_split[-2:])
+            output_dir = root_dir + '/data/pol/'  + key_str + '/' 
+        else:
+            output_dir = root_dir + '/data/pol/'  + input_dir + '/' 
+            input_dir  = root_dir + '/input/' + input_dir + '/' 
     else:
-        print('input_dir or key_str is missing')
+        print('input_dir is missing')
 
+    print(input_dir)
     input_dir = input_dir + '/' 
-    output_dir = root_dir + '/data/pol/'  + key_str + '/' 
     print('output_dir',output_dir) 
     
     start_polish(input_dir,output_dir,index_col,zfix)
