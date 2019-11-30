@@ -211,7 +211,7 @@ def amend_daily_data(i,sd,ed,dk,ded):
         dt_begin = missing_dates[0]
         fast_mode = False 
         for dt in missing_dates[1:] :
-            if dt > :
+            if dt >= ed:
                 continue
             pd_dt = pd.to_datetime(dt)
             dt_diff = pd_dt - pd.to_datetime(dt_begin)
