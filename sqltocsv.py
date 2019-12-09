@@ -69,13 +69,13 @@ def get_db_data(d_path,sd,ed,uname,bdt_list=None,dk = 'opt',d_type='daily',oflag
     b_path = d_path + 'backup/'
     fuidx_flds = ['date','open','high','low','close','volume','settle','oi'] 
     basic_flds = ['date', 'open', 'high', 'low', 'close', 'volume','adjusted']   
-    flds = fuidx_flds if dk in ('fut_index','fut','opt') else basic_flds
-    zdict =fut_dict if dk in ('fut_index','fut') else eval(dk+'_dict') 
+    flds = fuidx_flds if dk in ('fut','opt') else basic_flds
+    zdict =fut_dict if dk in ('fut') else eval(dk+'_dict') 
     for k,ex in zdict.items():
         root_dir = '/work/'+uname+'/db/'+d_type+'/'#'/work/jzhu/db/daily/' if d_type in fs_list else 
         os.makedirs(root_dir,exist_ok=True)
 
-        shortname = 'fut' + '_' + ex + '.db' if dk in ('fut_index',) else dk + '_' + ex + '.db' #h( dk + '_'+d_type+'_' + ex + '.db' if d_type in fs_list  else  dk + '_' + ex + '.db')
+        shortname = dk + '_' + ex + '.db' #h( dk + '_'+d_type+'_' + ex + '.db' if d_type in fs_list  else  dk + '_' + ex + '.db')
 
 
         dirstr = root_dir + shortname#'fut' + '_' + ex + '.db' if dk in ('fut_index',) else root_dir + dk + '_' + ex + '.db'
