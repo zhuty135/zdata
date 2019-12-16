@@ -12,17 +12,21 @@ from zipline.utils.calendars import get_calendar
 import sys
 import pwd
 
+uname = pwd.getpwuid(os.getuid()).pw_name
+sys.path.append('/work/'+uname+ '/project/zlib/')
+from zutils import get_config
+ix_symb_list = get_config(cfg = 'ix_symb')#'dfb6e9f4f9a3db86c59a3a0f680a9bdc46ed1b5adbf1e354c7faa761'
 
 from sqlalchemy import create_engine #pymongo
 
 from pprint import pprint
-#mongo_client = pymongo.MongoClient("60.205.230.96", 27018)
 
 
 #fut_dict = {'SHFE':'shf'}
 fut_dict = {'CFFEX':'cfx','DCE':'dce','CZCE':'zce','SHFE':'shf','INE':'ine'}
 opt_dict = {'SSE':'sse','DCE':'dce','CZCE':'zce','SHFE':'shf'}
 fund_nav_dict = {'E':'e','O':'o'}
+fund_dict = fund_nav_dict 
 index_dict = {'CSI':'csi','SSE':'sse','SZSE':'szse'}
 stock_dict = {'SSE':'sse','SZSE':'szse'}
 def filter_fut_symb(s):
@@ -54,7 +58,6 @@ def filter_opt_symb(s):
 
 fs_list = ['daily_basic','fina_indicator','income','balancesheet','cashflow','dividend']
 ix_list =  ['index_weight']
-ix_symb_list = ['399300.SZ','h00906.CSI']#'000300.SH']
 
 def fake_data(df):
     df["open"] = df["accum_nav"]
@@ -114,7 +117,7 @@ def get_db_data(d_path,sd,ed,uname,bdt_list=None,dk = 'opt',d_type='daily',oflag
             else: 
                 #df = pd.DataFrame([doc for doc in db[s].find()])
                 df = pd.read_sql_table(table_name=i, con=ded)
-                df = fake_data(df) if dk == 'fund_nav' and d_type == 'daily' else df
+                df = fake_data(df) if dk in ('fund_nav',) and d_type == 'daily' else df
                 print(df)
                 cdf = df if d_type == 'basic' or d_type in fs_list or d_type in ix_list  else df[flds]
                 sortkey = 'ts_code' if d_type == 'basic' else 'ann_date' if (d_type in fs_list) and \
@@ -186,7 +189,7 @@ def main():
     input_path = '/work/'+uname+'/input/' + dkey + '/'
 
 
-    if dkey in ('opt','fut','fut_index','fund_nav','index','stock'):
+    if dkey in ('opt','fut','fund','fund_nav','index','stock'):
         if dkey in ('stock'):
             for k in fs_list:
                 get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)

@@ -6,21 +6,17 @@ import pwd
 uname = pwd.getpwuid(os.getuid()).pw_name
 sys.path.append('/work/'+uname+ '/project/zlib/')
 
-from zutils import get_prev_business_date,get_business_date_list
+from zutils import get_prev_business_date,get_business_date_list,get_config
 
 import tushare as ts
-def get_token():
-    import configparser
-    cp = configparser.ConfigParser()
-    cp.read('/work/'+uname+'/project/factors/config/databasic.cfg')
-    sect = 'tushare'
-    token = eval(cp.get(sect,'TOKEN'))
-    return token
+import configparser
 
-mytoken = get_token()#'dfb6e9f4f9a3db86c59a3a0f680a9bdc46ed1b5adbf1e354c7faa761'
-
+mytoken = get_config(cfg = 'token')#'dfb6e9f4f9a3db86c59a3a0f680a9bdc46ed1b5adbf1e354c7faa761'
 ts.set_token(mytoken)
 pro = ts.pro_api(mytoken)
+
+ix_symb_list = get_config(cfg = 'ix_symb')#'dfb6e9f4f9a3db86c59a3a0f680a9bdc46ed1b5adbf1e354c7faa761'
+
 
 import pandas as pd 
 import numpy as np 
@@ -90,7 +86,6 @@ def basic_to_db(dk,ex,d_type, df, aflag, oflag, verbose=True):
 
 fs_list =  ['daily_basic','dividend','fina_indicator','income','balancesheet','cashflow']
 ix_list =  ['index_weight']#, 'index_dailybasic','index_member']
-ix_symb_list = ['399300.SZ','h00906.CSI']#'000300.SH']
 
 def write_to_db(i,df, ded, aflag, fflag, oflag, cdict,keystr='date',verbose=False):
     if df is None or df.empty:
@@ -130,18 +125,29 @@ def fetch_fs_data(i,f,s,e,dk):
     return df
 
 def fetch_fund_data(i,s,e,dk):
-    fcall = 'pro.' + dk + "(ts_code='"+ i + "')"  
+    assert(0)
     df = None
+    sort_key_str = 'trade_date'
+    fld_str = 'close'
+    fcall = 'pro.' + dk + "_daily(ts_code='"+ i + "',start_date='" + s + "',end_date='" + e + "')"  
+    if dk == 'fund_nav':
+        fcall = 'pro.' + dk + "(ts_code='"+ i + "')"  
+        sort_key_str = 'end_date'
+        fld_str = 'adj_nav'
+    fcall = 'pro.' + dk + "_daily(ts_code='"+ i + "',start_date='" + s + "',end_date='" + e + "')"  
     try:
-        df = eval(fcall).sort_values(by=['end_date']) 
+        #df = pro.fund_daily(ts_code='150018.SZ', start_date='20180101', end_date='20181029')
+        df = eval(fcall).sort_values(by=[sort_key_str]) 
     except Exception as e:
         print(e)
+    print(fcall)
+    print(df)
     if df is None or df.empty:
         print('skipping4',i)
         return None#continue
-    df = df[df['end_date'] >= s]
+    df = df[df[sort_key_str] >= s]
     print('jxxx',df.iloc[-3:,])
-    if isinstance(df['adj_nav'],type(None)):
+    if isinstance(df[fld_str],type(None)):
         print('skipping5',i)
         return None#continue
     return df
@@ -187,7 +193,7 @@ def amend_daily_data(i,sd,ed,dk,ded):
         print(e)
     df = None
     if dt_series is None or dt_series.empty:
-        if dk == 'fund_nav':
+        if dk in ('fund_nav',):
             df = fetch_fund_data(i,sd,ed,dk) 
         #elif dk == 'index':
         #    df = fetch_index_data(i,sd,ed,dk)
@@ -289,7 +295,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
                     print('skipping3',i)
                     continue
                 ks = 'date'
-                if dk in ('fund_nav','fund') and not aflag: 
+                if dk in ('fund_nav',) and not aflag: 
                     cdict = {'end_date':ks}
                     df = fetch_fund_data(i,s,e,dk) 
                 elif dk == 'stock' and d_type in fs_list: 
@@ -304,6 +310,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
                     cdict = {'trade_date':'date','vol':"volume"}
                 if df is None or df.empty:
                     continue
+            
                 wf = write_to_db(i,df, ded, aflag, fflag, oflag,cdict,keystr=ks)
                 if wf:
                     print('writing ',i,' to', dailystr)
@@ -372,7 +379,7 @@ def main():
 
     input_path = '/work/'+uname+'/db/' + dkey + '/'
 
-    if dkey in ('opt','fut','fund_nav','index','stock'):
+    if dkey in ('opt','fut','fund_nav','fund','index','stock'):
         get_tu_data(input_path,sdate,edate,dk=dkey, d_type='basic',aflag=amend_flag,oflag=output_flag)
         if fullhist_flag:
             get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',aflag=amend_flag,dlflag=delist_flag, fflag=fullhist_flag,oflag=output_flag)
