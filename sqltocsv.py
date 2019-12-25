@@ -15,7 +15,7 @@ import pwd
 uname = pwd.getpwuid(os.getuid()).pw_name
 sys.path.append('/work/'+uname+ '/project/zlib/')
 from zutils import get_config
-ix_symb_list = get_config(cfg = 'ix_symb')#'dfb6e9f4f9a3db86c59a3a0f680a9bdc46ed1b5adbf1e354c7faa761'
+ix_symb_list = get_config(cfg = 'ix_symb')
 
 from sqlalchemy import create_engine #pymongo
 
