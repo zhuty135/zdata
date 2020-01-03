@@ -394,7 +394,6 @@ def main():
                         get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,fflag=fullhist_flag,oflag=output_flag)
         else:
             get_tu_data(input_path,sdate,edate,dk=dkey, d_type='daily',oflag=output_flag)
-            assert(0)
             if dkey in ('stock',):
                 for k in fs_list:
                     get_tu_data(input_path,sdate,edate,dk=dkey, d_type=k,oflag=output_flag)
