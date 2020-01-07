@@ -32,8 +32,11 @@ stock_dict = {'SSE':'sse','SZSE':'szse'}
 def filter_fut_symb(s):
     skip_flag = False
     #if not re.match(r'^\w{2}[1-8]\d{1}.*\.SHF$',s):#ZN/RU
-    if not re.match(r'^\w{2}[1-8]\d{1}.*\.\w{3}$',s):#ZN/RU
+    if not re.match(r'^\w{2}[1-8]\d{1}.*\.\w{3}$',s): 
         skip_flag = True#continue
+    if re.match(r'^basic$',s):#ZN/RU
+        skip_flag = False#continue
+    print(skip_flag,s)
     return skip_flag
 
 def filter_opt_symb(s):
@@ -100,10 +103,10 @@ def get_db_data(d_path,sd,ed,uname,bdt_list=None,dk = 'opt',d_type='daily',oflag
                 continue
 
             if (dk == 'fut' and filter_fut_symb(i)) or (dk == 'index' and (not i in ix_symb_list)):
-                print('skipping ', i)
+                print('skipping ', i,dk)
                 continue
 
-            stmp = i.lower() if dk in ('fut_index') else i
+            stmp = i# hack 20200107 i.lower() if dk in ('fut_index') else i
             fout = hist_path + stmp + '.csv' 
             print(fout)
             if lflag:
@@ -198,6 +201,7 @@ def main():
                 get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
             
         get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type='basic',oflag=output_flag,lflag=link_flag)
+        assert(0)
         get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type='daily',oflag=output_flag,lflag=link_flag)
             
 if __name__ == '__main__':
