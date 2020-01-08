@@ -279,7 +279,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
                 e = pd.to_datetime(ed).strftime('%Y%m%d') if (re.match(r'^daily.*', d_type) and not fflag) or isinstance(dedt, type(None)) else dedt 
 
                 print('checking',i,dailystr)
-                if dk in ('fut','opt') and (isinstance(dedt, type(None)) or dedt < e ) : 
+                if dk in ('fut','opt') and (isinstance(dedt, type(None)) or (not aflag and dedt < e) ) : 
                     print('skipping1',i,dedt,e)
                     continue
                 elif dk in ('fund_nav','fund','index'):
