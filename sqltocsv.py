@@ -106,7 +106,7 @@ def get_db_data(d_path,sd,ed,uname,bdt_list=None,dk = 'opt',d_type='daily',oflag
                 print('skipping ', i,dk)
                 continue
 
-            stmp = i# hack 20200107 i.lower() if dk in ('fut_index') else i
+            stmp =  i.lower() if dk in ('fut',) else i
             fout = hist_path + stmp + '.csv' 
             print(fout)
             if lflag:
