@@ -8,6 +8,7 @@ fut_flag=false
 idx_flag=false
 nav_flag=false
 d_type=''
+edate=`date +"%Y-%m-%d"`
 while true;
 do
     case "$1" in
@@ -30,10 +31,11 @@ do
     esac
 done
 
-echo "working on $d_type"
+echo "working on $d_type, $edate"
+exit 0
 
 if [ $d_type == 'fut' ]; then
-    /work/jzhu/project/zdata/tutosql.py -d fut -n -5 -a -o > /tmp/tu_fut.log 2>&1
+    /work/jzhu/project/zdata/tutosql.py -d fut -n -50 -a -o -e $edate > /tmp/tu_fut.log 2>&1
     /work/jzhu/project/zdata/sqltocsv.py  -d fut -o> /tmp/cbcsv_fut.log 2>&1
 
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/fut/sql/dce/daily/ > /tmp/fdp.log 2>&1
@@ -43,7 +45,7 @@ if [ $d_type == 'fut' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/fut/sql/cfx/daily/ > /tmp/fcp.log 2>&1
 
 elif [ $d_type == 'opt' ]; then
-    /work/jzhu/project/zdata/tutosql.py -d opt -n -5 -a -o > /tmp/tu_opt.log 2>&1
+    /work/jzhu/project/zdata/tutosql.py -d opt -n -50 -a -o > /tmp/tu_opt.log 2>&1
     /work/jzhu/project/zdata/sqltocsv.py  -d opt -o> /tmp/cbcsv_opt.log 2>&1
 
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/opt/sql/dce/daily/ > /tmp/odp.log 2>&1
