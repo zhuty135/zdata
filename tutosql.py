@@ -11,12 +11,10 @@ from zutils import get_prev_business_date,get_business_date_list,get_config
 import tushare as ts
 import configparser
 
-mytoken = get_config(cfg = 'token')#'dfb6e9f4f9a3db86c59a3a0f680a9bdc46ed1b5adbf1e354c7faa761'
+mytoken = get_config(cfg = 'token')
 ts.set_token(mytoken)
 pro = ts.pro_api(mytoken)
-
-ix_symb_list = get_config(cfg = 'ix_symb')#'dfb6e9f4f9a3db86c59a3a0f680a9bdc46ed1b5adbf1e354c7faa761'
-
+ix_symb_list = get_config(cfg = 'ix_symb')
 
 import pandas as pd 
 import numpy as np 
@@ -68,7 +66,6 @@ def basic_to_db(dk,ex,d_type, df, aflag, oflag, verbose=True):
             doc = pd.read_sql_table(table_name=d_type, con=deb)
             print('Existing table', d_type, doc['ts_code'][-2:-1])
             doclist = doc['ts_code']
-            #if verbose: df.to_csv('/tmp/udf.'+dk+'.'+ex)
             udf = df[~df['ts_code'].isin(doclist)]
         else:
             udf = df
