@@ -32,8 +32,7 @@ stock_dict = {'SSE':'sse','SZSE':'szse'}
 def filter_fut_symb(s):
     skip_flag = False
     #if not re.match(r'^\w{2}[1-8]\d{1}.*\.SHF$',s):#ZN/RU
-    #hack 20200108 if not re.match(r'^\w{2}[1-8]\d{1}.*\.\w{3}$',s): 
-        #hack 20200108 skip_flag = True#continue
+    #hack20200108 if not re.match(r'^\w{2}[1-8]\d{1}.*\.\w{3}$',s): skip_flag = True#continue
     if re.match(r'^basic$',s):#ZN/RU
         skip_flag = False#continue
     print(skip_flag,s)
