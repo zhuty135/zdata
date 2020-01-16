@@ -32,11 +32,10 @@ do
 done
 
 echo "working on $d_type, $edate"
-exit 0
 
 if [ $d_type == 'fut' ]; then
     /work/jzhu/project/zdata/tutosql.py -d fut -n -50 -a -o -e $edate > /tmp/tu_fut.log 2>&1
-    /work/jzhu/project/zdata/sqltocsv.py  -d fut -o> /tmp/cbcsv_fut.log 2>&1
+    /work/jzhu/project/zdata/sqltocsv.py  -d fut -o -e $edate > /tmp/cbcsv_fut.log 2>&1
 
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/fut/sql/dce/daily/ > /tmp/fdp.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/fut/sql/zce/daily/ > /tmp/fzp.log 2>&1
@@ -65,7 +64,7 @@ elif [ $d_type == 'ci' ]; then
     /work/jzhu/project/finger/index/co_index.py > /tmp/ci.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i Index --index_col='time' > /tmp/cipol.log 2>&1
 
-    scp -r /work/jzhu//data/pol/Index/*.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ #> /tmp/ciscp.log 2>&1
+    scp -r /work/jzhu//data/pol/Index/*.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
 
 else
     echo "WARNING: wrong data type $d_type"
