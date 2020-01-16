@@ -150,7 +150,7 @@ def get_db_data(d_path,sd,ed,uname,bdt_list=None,dk = 'opt',d_type='daily',oflag
 def main():
     import getopt, sys
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"d:u:hoclv",["datakey=", "help"])
+        opts, args = getopt.getopt(sys.argv[1:],"d:u:e:hoclv",["datakey=", "help"])
     except getopt.GetoptError as err:
         print(str(err))
         usage()
@@ -164,6 +164,7 @@ def main():
     link_flag = False 
     verbose = False
     dkey = 'opt'
+    edate = None 
     for o, a in opts:
         if o == "-v":
             verbose = True
@@ -175,16 +176,15 @@ def main():
             output_flag = True
         elif o == '-c':
             conv_flag = True
+        elif o == '-e':
+            edate = a
         elif o == '-l':
             link_flag = True
         else:
             assert False, 'unhandled option'
 
-
-
-
     print(dkey)
-    edate = get_prev_business_date(date.today(), -1)#.strftime("%Y%m%d")
+    edate = get_prev_business_date(date.today(), -1) if edate is None else edate
     sdate = get_prev_business_date(date.today() - timedelta(7), -1)#.strftime("%Y%m%d")
     print(sdate,edate)
 
