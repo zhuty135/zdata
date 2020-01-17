@@ -61,7 +61,7 @@ elif [ $d_type == 'index' ]; then
     /work/jzhu/project/zdata/sqltocsv.py  -d index -o> /tmp/cbcsv_index.log 2>&1
 
 elif [ $d_type == 'ci' ]; then
-    /work/jzhu/project/finger/index/co_index.py > /tmp/ci.log 2>&1
+    /work/jzhu/project/finger/index/co_index.py -e  $edate > /tmp/ci.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i Index --index_col='time' > /tmp/cipol.log 2>&1
 
     scp -r /work/jzhu//data/pol/Index/*.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
