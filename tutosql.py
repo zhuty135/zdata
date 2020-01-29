@@ -121,24 +121,24 @@ def fetch_fs_data(i,f,s,e,dk):
         return None 
     return df
 
-def fetch_fund_data(i,s,e,dk):
-    assert(0)
+def fetch_nav_data(i,s,e,dk, ex):
     df = None
     sort_key_str = 'trade_date'
     fld_str = 'close'
-    fcall = 'pro.' + dk + "_daily(ts_code='"+ i + "',start_date='" + s + "',end_date='" + e + "')"  
-    if dk == 'fund_nav':
-        fcall = 'pro.' + dk + "(ts_code='"+ i + "')"  
+    fcall =  None
+    if dk == 'fund_nav' or (dk == 'fund' and ex == 'o'):
+        fcall = "pro.fund_nav(ts_code='"+ i + "')"  
         sort_key_str = 'end_date'
         fld_str = 'adj_nav'
-    fcall = 'pro.' + dk + "_daily(ts_code='"+ i + "',start_date='" + s + "',end_date='" + e + "')"  
+    else:
+        fcall = 'pro.' + dk + "_daily(ts_code='"+ i + "',start_date='" + s + "',end_date='" + e + "')"  
     try:
-        #df = pro.fund_daily(ts_code='150018.SZ', start_date='20180101', end_date='20181029')
         df = eval(fcall).sort_values(by=[sort_key_str]) 
     except Exception as e:
         print(e)
     print(fcall)
     print(df)
+    assert(0)
     if df is None or df.empty:
         print('skipping4',i)
         return None#continue
@@ -168,11 +168,15 @@ def fetch_index_data(i,f,s,e,dk):
     return df
 
 adict = {'stock':'E', 'index':'I','fut':'FT','fund':'FD','fund_nav':'FD','opt':'O', }
-def fetch_daily_data(i,s,e,dk):
-    a =  "ts.pro_bar(ts_code='"+ i + "',asset='" + adict[dk]  
-    fcallbasic =  a + "',start_date='" + s + "',end_date='" + e + "')"
-    fcall =  fcallbasic #+ "',adj='hfq')" if dk =='stock' else  fcallbasic + "')"
-    df = eval(fcall) 
+def fetch_daily_data(i,s,e,dk,ex):
+    df = None
+    if dk == 'fund' and ex == 'o':
+        fetch_nav_data(i,s,e,dk, ex)
+    else:
+        a =  "ts.pro_bar(ts_code='"+ i + "',asset='" + adict[dk]  
+        fcallbasic =  a + "',start_date='" + s + "',end_date='" + e + "')"
+        fcall =  fcallbasic #+ "',adj='hfq')" if dk =='stock' else  fcallbasic + "')"
+        df = eval(fcall) 
     if df is None or df.empty:
         return None 
     time.sleep(0.12)
@@ -182,7 +186,7 @@ def fetch_daily_data(i,s,e,dk):
         df["adjusted"] = df["close"]
     return df
 
-def amend_daily_data(i,sd,ed,dk,ded):
+def amend_daily_data(i,sd,ed,dk,ded,ex):
     dt_series = None
     try:
         dt_series = (pd.read_sql_table(table_name=i, con=ded)['date'].sort_values())
@@ -191,11 +195,11 @@ def amend_daily_data(i,sd,ed,dk,ded):
     df = None
     if dt_series is None or dt_series.empty:
         if dk in ('fund_nav',):
-            df = fetch_fund_data(i,sd,ed,dk) 
+            df = fetch_nav_data(i,sd,ed,dk,ex) 
         #elif dk == 'index':
         #    df = fetch_index_data(i,sd,ed,dk)
         else:
-            df = fetch_daily_data(i,sd,ed,dk) 
+            df = fetch_daily_data(i,sd,ed,dk,ex) 
     else:
         dt_set = set(dt_series)
         bd_list = get_business_date_list(fmt='%Y%m%d')
@@ -223,7 +227,7 @@ def amend_daily_data(i,sd,ed,dk,ded):
             dt_end = (pd_dt - timedelta(1)).strftime('%Y%m%d')
             if dt_diff > timedelta(31):
                 dt_end = dt_begin
-            tmpdf = fetch_daily_data(i, dt_begin, dt_end, dk)
+            tmpdf = fetch_daily_data(i, dt_begin, dt_end, dk, ex)
             print('amending date:',dt_begin,dt_end,dt_diff)
             dt_begin = dt 
             time.sleep(0.10)
@@ -294,7 +298,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
                 ks = 'date'
                 if dk in ('fund_nav',) and not aflag: 
                     cdict = {'end_date':ks}
-                    df = fetch_fund_data(i,s,e,dk) 
+                    df = fetch_nav_data(i,s,e,dk,ex) 
                 elif dk == 'stock' and d_type in fs_list: 
                     cdict = {'trade_date':'date'}  if d_type == 'daily_basic' else cdict
                     ks = ks if d_type == 'daily_basic' else 'end_date'
@@ -303,7 +307,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
                     cdict = {'trade_date':'date'} 
                     df = fetch_index_data(i,d_type,s,e,dk) 
                 else:
-                    df = amend_daily_data(i,s,e,dk,ded) if aflag else fetch_daily_data(i,s,e,dk)
+                    df = amend_daily_data(i,s,e,dk,ded) if aflag else fetch_daily_data(i,s,e,dk, ex)
                     cdict = {'trade_date':'date','vol':"volume"}
                 if df is None or df.empty:
                     continue
@@ -322,6 +326,10 @@ def get_tu_data(d_path,sd,ed,dk = 'opt',d_type='basic',aflag=False,dlflag=False,
             if verbose: print(df.iloc[-1,])
             result = basic_to_db(dk,ex,d_type, df, aflag, oflag, verbose=True)
         else:
+            print(dk,ex,d_type,sd,ed, aflag, dlflag, fflag, oflag, )
+            if ex == 'e':
+                print('skiiping echange',ex)
+                continue
             result = bar_to_db(dk,ex,d_type,sd,ed, aflag, dlflag, fflag, oflag, verbose=True)
 
 def main():
