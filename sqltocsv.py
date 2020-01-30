@@ -25,8 +25,8 @@ from pprint import pprint
 #fut_dict = {'SHFE':'shf'}
 fut_dict = {'CFFEX':'cfx','DCE':'dce','CZCE':'zce','SHFE':'shf','INE':'ine'}
 opt_dict = {'SSE':'sse','DCE':'dce','CZCE':'zce','SHFE':'shf'}
+fund_dict = {'E':'e'}
 fund_nav_dict = {'E':'e','O':'o'}
-fund_dict = fund_nav_dict 
 index_dict = {'CSI':'csi','SSE':'sse','SZSE':'szse'}
 stock_dict = {'SSE':'sse','SZSE':'szse'}
 def filter_fut_symb(s):
@@ -94,6 +94,10 @@ def get_db_data(d_path,sd,ed,uname,bdt_list=None,dk = 'opt',d_type='daily',oflag
         os.makedirs(back_path,exist_ok=True)
         os.makedirs(dst_path,exist_ok=True)
         print(hist_path,back_path,dst_path)
+        print('check2020',symbols)
+        if ex == 'e':
+            print('skipping exchange',ex)
+            continue
         if os.path.exists(hist_path) and (not os.path.exists(back_path)):
             shutil.copytree(hist_path, back_path)
         for i in symbols:
@@ -119,7 +123,8 @@ def get_db_data(d_path,sd,ed,uname,bdt_list=None,dk = 'opt',d_type='daily',oflag
             else: 
                 #df = pd.DataFrame([doc for doc in db[s].find()])
                 df = pd.read_sql_table(table_name=i, con=ded)
-                df = fake_data(df) if dk in ('fund_nav',) and d_type == 'daily' else df
+                if dk in ('fund_nav',)  and  d_type == 'daily':
+                    df = fake_data(df) 
                 print(df)
                 cdf = df if d_type == 'basic' or d_type in fs_list or d_type in ix_list  else df[flds]
                 sortkey = 'ts_code' if d_type == 'basic' else 'ann_date' if (d_type in fs_list) and \
