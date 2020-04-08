@@ -89,6 +89,7 @@ elif [ $d_type == 'mpa' ]; then
     /work/jzhu/project/slib/script/bbw.py > /tmp/mpa_bbw.log 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.ewvt > /tmp/mpa_ewvt.log 
     scp -r /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ > /tmp/mpa_scp.log 
+    scp -r /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@106.14.226.83:/work/jzhu/input/se2018/daily/ > /tmp/mpa_scp.log 
 
 else
     echo "WARNING: wrong data type $d_type"
