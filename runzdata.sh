@@ -86,6 +86,7 @@ elif [ $d_type == 'pi' ]; then
 
 elif [ $d_type == 'mpa' ]; then
     /work/jzhu/project/ql/script/mpa.py > /work/shared/daily/mpa.log 2>&1
+    scp /work/shared/daily/ql/mpa/MPA.wsign.co.20200521 jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
 
 
     /work/jzhu/project/ql/script/bondtech.py
@@ -95,6 +96,8 @@ elif [ $d_type == 'mpa' ]; then
 
 
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  > /tmp/mpa_sgrid.log 
+
+ 
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCGSA.PO > /tmp/mpa_sgrid_SC.log 
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFNMSA.PO > /tmp/mpa_sgrid_NM.log 
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCMSA.PO > /tmp/mpa_sgrid_CM.log 
@@ -106,6 +109,8 @@ elif [ $d_type == 'mpa' ]; then
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/single  > /tmp/mpa_pk_to_csv.log 
 
     /work/jzhu/project/slib/script/bbw.py > /tmp/mpa_bbw.log 
+    scp /work/shared/daily/slib/bbx/mpa.absw.co.20200521 jzhu@106.14.226.83:/work/shared/daily/slib/bbx
+
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.ewvt > /tmp/mpa_ewvt.log 
     scp -r /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ > /tmp/mpa_scp.log 
     scp -r /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@106.14.226.83:/work/jzhu/input/se2018/daily/ > /tmp/mpa_scp.log 
