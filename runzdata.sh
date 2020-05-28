@@ -76,48 +76,28 @@ elif [ $d_type == 'ci' ]; then
     /work/jzhu/project/finger/index/co_index.py  > /tmp/ci.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i Index --index_col='time' > /tmp/cipol.log 2>&1
 
-    scp -r /work/jzhu//data/pol/Index/*.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
-    scp -r /work/jzhu/input/Index/ jzhu@106.14.226.83:/work/shared/raw/
+    scp -rp /work/jzhu//data/pol/Index/*.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
+    scp -rp /work/jzhu/input/Index/ jzhu@106.14.226.83:/work/shared/raw/
 
 elif [ $d_type == 'pi' ]; then
-    scp -r /work/jzhu/output/ql/mpa/*csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
-    scp -r /work/jzhu/output/dm/*csv  jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
+    scp -rp /work/jzhu/output/ql/mpa/*csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
+    scp -rp /work/jzhu/output/dm/*csv  jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
 
 
 elif [ $d_type == 'mpa' ]; then
     /work/jzhu/project/ql/script/mpa.py > /work/shared/daily/mpa.log 2>&1
-    scp -r /work/shared/daily/ql/mpa/MPA.wsign.co.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/ > /tmp/mpa_scp.log
-
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  > /tmp/mpa_sgrid.log 
-    /work/jzhu/project/slib/script/bbw.py > /tmp/mpa_bbw.log 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.ewvt
-
-    scp /work/shared/daily/slib/bbx/mpa.absw.co.2020* jzhu@106.14.226.83:/work/shared/daily/slib/bbx/ >> /tmp/mpa_scp.log
+    scp -rp /work/shared/daily/ql/mpa/MPA.wsign.co.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/ > /tmp/mpa_scp.log
 
     /work/jzhu/project/ql/script/bondtech.py > /tmp/bondtech.log 2>&1
-    scp -r /work/shared/daily/ql/mpa/MPA.wsign.t.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/TTK.MP.pi
-    scp /work/jzhu/output/ql/mpa/TTK.MP.pi.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
-    scp /work/jzhu/output/ql/mpa/TTK.MP.pi.csv jzhu@106.14.226.83:/work/shared/daily/ql/mpa/single/
+    scp -rp /work/shared/daily/ql/mpa/MPA.wsign.t.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
 
     /work/jzhu/project/ql/script/stocktechih.py > /tmp/stocktechih.log 2>&1
-    scp -r /work/shared/daily/ql/mpa/MPA.wsign.ih.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/single/IFIHPA.MPA
-    scp /work/jzhu/output/ql/mpa/single/IFIHPA.MPA.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
-    scp /work/jzhu/output/ql/mpa/single/IFIHPA.MPA.csv jzhu@106.14.226.83:/work/shared/daily/ql/mpa/single/
-
     /work/jzhu/project/ql/script/stocktech300.py > /tmp/stocktechif.log 2>&1
-    scp -r /work/shared/daily/ql/mpa/MPA.wsign.if.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/single/IFIFPA.MPA
-    scp /work/jzhu/output/ql/mpa/single/IFIFPA.MPA.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
-    scp /work/jzhu/output/ql/mpa/single/IFIFPA.MPA.csv jzhu@106.14.226.83:/work/shared/daily/ql/mpa/single/
-
     /work/jzhu/project/ql/script/stocktech500.py > /tmp/stocktechic.log 2>&1
-    scp -r /work/shared/daily/ql/mpa/MPA.wsign.ic.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/single/IFICPA.MPA
-    scp /work/jzhu/output/ql/mpa/single/IFICPA.MPA.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
-    scp /work/jzhu/output/ql/mpa/single/IFICPA.MPA.csv jzhu@106.14.226.83:/work/shared/daily/ql/mpa/single/
+    scp -rp /work/shared/daily/ql/mpa/MPA.wsign.i*.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
 
+elif [ $d_type == 'gbw' ]; then
+    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  > /tmp/mpa_sgrid.log 
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCGSA.PO > /tmp/mpa_sgrid_SC.log 
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFNMSA.PO > /tmp/mpa_sgrid_NM.log 
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCMSA.PO > /tmp/mpa_sgrid_CM.log 
@@ -126,11 +106,26 @@ elif [ $d_type == 'mpa' ]; then
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFECSA.PO > /tmp/mpa_sgrid_EC.log 
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFOPSA.PO > /tmp/mpa_sgrid_OP.log 
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCICA.PO > /tmp/mpa_sgrid_CI.log 
+
+
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/single  > /tmp/mpa_pk_to_csv.log 
 
+    /work/jzhu/project/slib/script/bbw.py > /tmp/mpa_bbw.log 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.ewvt > /tmp/mpa_ewvt.log 
-    scp -r /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ >> /tmp/mpa_scp.log 
-    scp -r /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@106.14.226.83:/work/jzhu/input/se2018/daily/ >> /tmp/mpa_scp.log 
+
+    scp -rp /work/shared/daily/slib/bbx/mpa.absw.co.2020* jzhu@106.14.226.83:/work/shared/daily/slib/bbx/ >> /tmp/mpa_scp.log
+
+elif [ $d_type == 'scp' ]; then
+
+    scp -rp /work/jzhu/output/ql/mpa/single/*.MPA.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
+    scp -rp /work/jzhu/output/ql/mpa/single/*.MPA.csv jzhu@106.14.226.83:/work/shared/daily/ql/mpa/single/
+
+    scp -rp /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ >> /tmp/mpa_scp.log 
+    scp -rp /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@106.14.226.83:/work/jzhu/input/se2018/daily/ >> /tmp/mpa_scp.log 
+
+
+
+
 
 else
     echo "WARNING: wrong data type $d_type"
