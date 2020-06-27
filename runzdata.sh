@@ -97,21 +97,22 @@ elif [ $d_type == 'mpa' ]; then
     scp -rp /work/shared/daily/ql/mpa/MPA.wsign.i*.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
 
 elif [ $d_type == 'gbw' ]; then
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  > /tmp/mpa_sgrid.log 
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCGSA.PO > /tmp/mpa_sgrid_SC.log 
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFNMSA.PO > /tmp/mpa_sgrid_NM.log 
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCMSA.PO > /tmp/mpa_sgrid_CM.log 
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFFMSA.PO > /tmp/mpa_sgrid_FM.log 
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFPMSA.PO > /tmp/mpa_sgrid_PM.log 
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFECSA.PO > /tmp/mpa_sgrid_EC.log 
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFOPSA.PO > /tmp/mpa_sgrid_OP.log 
-    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCICA.PO > /tmp/mpa_sgrid_CI.log 
+    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single -t cfpa > /tmp/mpa_cfpa_sgrid.log 
+    /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single -t cfsa > /tmp/mpa_cfsa_sgrid.log 
+    #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCGSA.PO > /tmp/mpa_sgrid_SC.log 
+    #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFNMSA.PO > /tmp/mpa_sgrid_NM.log 
+    #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCMSA.PO > /tmp/mpa_sgrid_CM.log 
+    #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFFMSA.PO > /tmp/mpa_sgrid_FM.log 
+    #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFPMSA.PO > /tmp/mpa_sgrid_PM.log 
+    #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFECSA.PO > /tmp/mpa_sgrid_EC.log 
+    #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFOPSA.PO > /tmp/mpa_sgrid_OP.log 
+    #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCICA.PO > /tmp/mpa_sgrid_CI.log 
 
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/single  > /tmp/mpa_pk_to_csv.log 
 
-    /work/jzhu/project/slib/script/bbw.py -t cf > /tmp/mpa_bbw_co.log 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.ewvt > /tmp/mpa_ewvt.log 
+    /work/jzhu/project/slib/script/bbw.py -t cf -w ewvtb2 > /tmp/mpa_bbw_co.log 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.ewvtb2 > /tmp/mpa_ewvt.log 
 
     /work/jzhu/project/slib/script/bbw.py -t if > /tmp/mpa_bbw_eq.log 
     /work/jzhu/project/slib/script/bbw.py -t tf > /tmp/mpa_bbw_eq.log 
@@ -132,8 +133,7 @@ elif [ $d_type == 'scp' ]; then
 
 else
     echo "WARNING: wrong data type $d_type"
-fi
-
+fi 
 exit 0
 
 
