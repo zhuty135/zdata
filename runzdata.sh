@@ -84,9 +84,13 @@ elif [ $d_type == 'pi' ]; then
     scp -rp /work/jzhu/output/dm/*csv  jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
 
 
+elif [ $d_type == 'calm' ]; then
+    /work/jzhu/project/ql/script/calm.py > /work/shared/daily/calm.log 2>&1
+    scp -rp /work/shared/daily/ql/calm/CALM.wsign.cfpa.2020* jzhu@106.14.226.83:/work/shared/daily/ql/calm/ > /tmp/calm_scp.log
+
 elif [ $d_type == 'mpa' ]; then
     /work/jzhu/project/ql/script/mpa.py > /work/shared/daily/mpa.log 2>&1
-    scp -rp /work/shared/daily/ql/mpa/MPA.wsign.cf.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/ > /tmp/mpa_scp.log
+    scp -rp /work/shared/daily/ql/mpa/MPA.wsign.cfpa.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/ > /tmp/mpa_scp.log
 
     /work/jzhu/project/ql/script/bondtech.py > /tmp/bondtech.log 2>&1
     scp -rp /work/shared/daily/ql/mpa/MPA.wsign.t.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
@@ -111,13 +115,16 @@ elif [ $d_type == 'gbw' ]; then
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/single  > /tmp/mpa_pk_to_csv.log 
 
-    /work/jzhu/project/slib/script/bbw.py -t cf -w ewvtb2 > /tmp/mpa_bbw_co.log 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.ewvtb2 > /tmp/mpa_ewvt.log 
+    /work/jzhu/project/slib/script/bbw.py -t cfpa -w ewvtb2 > /tmp/mpa_bbw_cfpa.log 
+    /work/jzhu/project/slib/script/bbw.py -t cfsa -w ewvtb2 > /tmp/mpa_bbw_cfsa.log 
 
     /work/jzhu/project/slib/script/bbw.py -t if > /tmp/mpa_bbw_eq.log 
     /work/jzhu/project/slib/script/bbw.py -t tf > /tmp/mpa_bbw_eq.log 
 
     scp -rp /work/shared/daily/slib/bbx/mpa.absw.*.2020* jzhu@106.14.226.83:/work/shared/daily/slib/bbx/ >> /tmp/mpa_scp.log
+
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.cfpa.ewvtb2 > /tmp/mpa_cfpa_ewvt.log 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.cfsa.ewvtb2 > /tmp/mpa_cfsa_ewvt.log 
 
 elif [ $d_type == 'scp' ]; then
 
