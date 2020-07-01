@@ -85,11 +85,13 @@ elif [ $d_type == 'pi' ]; then
 
 
 elif [ $d_type == 'calm' ]; then
-    /work/jzhu/project/ql/script/calm.py > /work/shared/daily/calm.log 2>&1
+    /work/jzhu/project/ql/script/calm.py > /work/shared/daily/log/calm.log 2>&1
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/calm/CALM.cfpa >> /work/shared/daily/log/calm.log 2>&1
     scp -rp /work/shared/daily/ql/calm/CALM.wsign.cfpa.2020* jzhu@106.14.226.83:/work/shared/daily/ql/calm/ > /tmp/calm_scp.log
 
+
 elif [ $d_type == 'mpa' ]; then
-    /work/jzhu/project/ql/script/mpa.py > /work/shared/daily/mpa.log 2>&1
+    /work/jzhu/project/ql/script/mpa.py > /work/shared/daily/log/mpa.log 2>&1
     scp -rp /work/shared/daily/ql/mpa/MPA.wsign.cfpa.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/ > /tmp/mpa_scp.log
 
     /work/jzhu/project/ql/script/bondtech.py > /tmp/bondtech.log 2>&1
