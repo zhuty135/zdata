@@ -92,15 +92,19 @@ elif [ $d_type == 'calm' ]; then
 
 elif [ $d_type == 'mpa' ]; then
     /work/jzhu/project/ql/script/mpa.py > /work/shared/daily/log/mpa.log 2>&1
-    scp -rp /work/shared/daily/ql/mpa/MPA.wsign.cfpa.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/ > /tmp/mpa_scp.log
+    scp -rp /work/shared/daily/ql/mpa/MPA.wsign.cfpa.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/ 
+
+    /work/jzhu/project/ql/script/zmpa.py -t ifpa > /work/shared/daily/log/zmpa.ifpa.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t tfpa > /work/shared/daily/log/zmpa.tfpa.log 2>&1
+    scp -rp /work/shared/daily/ql/zmpa/* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
 
     /work/jzhu/project/ql/script/bondtech.py > /tmp/bondtech.log 2>&1
     scp -rp /work/shared/daily/ql/mpa/MPA.wsign.t.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
 
-    /work/jzhu/project/ql/script/stocktechih.py > /tmp/stocktechih.log 2>&1
-    /work/jzhu/project/ql/script/stocktech300.py > /tmp/stocktechif.log 2>&1
-    /work/jzhu/project/ql/script/stocktech500.py > /tmp/stocktechic.log 2>&1
-    scp -rp /work/shared/daily/ql/mpa/MPA.wsign.i*.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
+    #/work/jzhu/project/ql/script/stocktechih.py > /tmp/stocktechih.log 2>&1
+    #/work/jzhu/project/ql/script/stocktech300.py > /tmp/stocktechif.log 2>&1
+    #/work/jzhu/project/ql/script/stocktech500.py > /tmp/stocktechic.log 2>&1
+    #scp -rp /work/shared/daily/ql/mpa/MPA.wsign.i*.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
 
 elif [ $d_type == 'gbw' ]; then
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single -t cfpa > /tmp/mpa_cfpa_sgrid.log 
@@ -116,6 +120,10 @@ elif [ $d_type == 'gbw' ]; then
 
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/single  > /tmp/mpa_pk_to_csv.log 
+
+    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t ifpa > /tmp/zmpa_ifpa_zgrid.log 
+    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t tfpa > /tmp/zmpa_tfpa_zgrid.log 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single  > /tmp/zmpa_pk_to_csv.log 
 
     /work/jzhu/project/slib/script/bbw.py -t cfpa -w ewvtb2 > /tmp/mpa_bbw_cfpa.log 
     /work/jzhu/project/slib/script/bbw.py -t cfsa -w ewvtb2 > /tmp/mpa_bbw_cfsa.log 
