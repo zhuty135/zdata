@@ -93,7 +93,7 @@ elif [ $d_type == 'calm' ]; then
 elif [ $d_type == 'mpa' ]; then
     /work/jzhu/project/ql/script/mpa.py > /work/shared/daily/log/mpa_cfpa.log 2>&1
     /work/jzhu/project/ql/script/mpa.py -t cfsa > /work/shared/daily/log/mpa_cfsa.log 2>&1
-    scp -rp /work/shared/daily/ql/mpa/MPA.wsign.cf*a.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/ 
+    #scp -rp /work/shared/daily/ql/mpa/MPA.wsign.cf*a.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/ 
 
     #/work/jzhu/project/ql/script/bondtech.py > /tmp/bondtech.log 2>&1
     #scp -rp /work/shared/daily/ql/mpa/MPA.wsign.t.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
@@ -106,8 +106,20 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/ql/script/zmpa.py -t ifpa > /work/shared/daily/log/zmpa.ifpa.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t tfpa > /work/shared/daily/log/zmpa.tfpa.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t cfca > /work/shared/daily/log/zmpa.cica.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t cfpa > /work/shared/daily/log/zmpa.cfca.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t cfsa > /work/shared/daily/log/zmpa.cfsa.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t cfpa > /work/shared/daily/log/zmpa.cfpa.log 2>&1
     scp -rp /work/shared/daily/ql/zmpa/* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+
+elif [ $d_type == 'zbw' ]; then
+    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t cfpa > /work/shared/daily/log/zmpa_cfpa_zgrid.log 2>&1  
+    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t cfsa > /work/shared/daily/log/zmpa_cfsa_zgrid.log 2>&1 
+    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t ifpa > /work/shared/daily/log/zmpa_ifpa_zgrid.log 2>&1
+    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t tfpa > /work/shared/daily/log/zmpa_tfpa_zgrid.log 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single  > /work/shared/daily/log/zmpa_pk_to_csv.log  2>&1 
+    /work/jzhu/project/slib/script/bbw.py -t cfpa -w ewvtb2  -m slib/bbx/zmpa > /tmp/zmpa_bbw_cfpa.log 
+    /work/jzhu/project/slib/script/bby.py -t cfpa -w ewvtb2  -m slib/bbz/zmpa > /tmp/zmpa_bby_cfpa.log 
+
+    scp -rp /work/shared/daily/slib/bbx/zmpa.absw.*.2020* jzhu@106.14.226.83:/work/shared/daily/slib/bbx/ >> /tmp/zmpa_scp.log
 
 elif [ $d_type == 'gbw' ]; then
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single -t cfpa > /tmp/mpa_cfpa_sgrid.log 
@@ -121,22 +133,13 @@ elif [ $d_type == 'gbw' ]; then
     #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFOPSA.PO > /tmp/mpa_sgrid_OP.log 
     #/work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single  -i CFCICA.PO > /tmp/mpa_sgrid_CI.log 
 
-
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/mpa/single  > /tmp/mpa_pk_to_csv.log 
 
-    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t cfpa > /tmp/zmpa_cfpa_zgrid.log 
-    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t ifpa > /tmp/zmpa_ifpa_zgrid.log 
-    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t tfpa > /tmp/zmpa_tfpa_zgrid.log 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single  > /tmp/zmpa_pk_to_csv.log 
-
-    /work/jzhu/project/slib/script/bbw.py -t cfpa -w ewvtb2  -m slib/bbx/zmpa > /tmp/zmpa_bbw_cfpa.log 
     /work/jzhu/project/slib/script/bbw.py -t cfpa -w ewvtb2 > /tmp/mpa_bbw_cfpa.log 
     /work/jzhu/project/slib/script/bbw.py -t cfsa -w ewvtb2 > /tmp/mpa_bbw_cfsa.log 
 
     /work/jzhu/project/slib/script/bbw.py -t if > /tmp/mpa_bbw_if.log 
     /work/jzhu/project/slib/script/bbw.py -t tf > /tmp/mpa_bbw_tf.log 
-
-    scp -rp /work/shared/daily/slib/bbx/zmpa.absw.*.2020* jzhu@106.14.226.83:/work/shared/daily/slib/bbx/ >> /tmp/zmpa_scp.log
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.cfpa.ewvtb2 > /tmp/mpa_cfpa_ewvt.log 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.cfsa.ewvtb2 > /tmp/mpa_cfsa_ewvt.log 
