@@ -116,10 +116,11 @@ elif [ $d_type == 'zbw' ]; then
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t ifpa > /work/shared/daily/log/zmpa_ifpa_zgrid.log 2>&1
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t tfpa > /work/shared/daily/log/zmpa_tfpa_zgrid.log 2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single  > /work/shared/daily/log/zmpa_pk_to_csv.log  2>&1 
-    /work/jzhu/project/slib/script/bbw.py -t cfpa -w ewvtb2  -m slib/bbx/zmpa > /tmp/zmpa_bbw_cfpa.log 
-    /work/jzhu/project/slib/script/bby.py -t cfpa -w ewvtb2  -m slib/bbz/zmpa > /tmp/zmpa_bby_cfpa.log 
+    /work/jzhu/project/slib/script/bby.py -t cfpa -w ewvt  -m slib/zbw/zmpa > /tmp/zmpa_zbw_cfpa.log 
+    #/work/jzhu/project/slib/script/bbw.py -t cfpa -w ewvtb2  -m slib/bbx/zmpa > /tmp/zmpa_bbw_cfpa.log 
+    #/work/jzhu/project/slib/script/bby.py -t cfpa -w ewvtb2  -m slib/bbz/zmpa > /tmp/zmpa_bby_cfpa.log 
 
-    scp -rp /work/shared/daily/slib/bbx/zmpa.absw.*.2020* jzhu@106.14.226.83:/work/shared/daily/slib/bbx/ >> /tmp/zmpa_scp.log
+    scp -rp /work/shared/daily/slib/zbw/zmpa.absw.*.2020* jzhu@106.14.226.83:/work/shared/daily/slib/zbw/ >> /tmp/zbw_scp.log
 
 elif [ $d_type == 'gbw' ]; then
     /work/jzhu/project/ql/script/sgrid.py -m ql/mpa/single -t cfpa > /tmp/mpa_cfpa_sgrid.log 
