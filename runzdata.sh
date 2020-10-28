@@ -125,10 +125,11 @@ elif [ $d_type == 'zbw' ]; then
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t cfpa > /work/shared/daily/log/zmpa_cfpa_pk_to_csv.log  2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t cfsa > /work/shared/daily/log/zmpa_cfpa_pk_to_csv.log  2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t ifpa > /work/shared/daily/log/zmpa_ifpa_pk_to_csv.log  2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t tfpa > /work/shared/daily/log/zmpa_tfpa_pk_to_csv.log  2>&1 
 
-    /work/jzhu/project/slib/script/bby.py -t cfpa -w ewvt  -m slib/zbw/zmpa -s 20160512 > /tmp/zmpa_zbw_cfpa_ewvtb2.log 2>&1 
     /work/jzhu/project/slib/script/bby.py -t tfpa -w ewvtb2  -m slib/zbw/zmpa -s 20161127 > /tmp/zmpa_zbw_tfpa_ewvtb2.log 2>&1
     /work/jzhu/project/slib/script/bby.py -t ifpa -w ewb2  -m slib/zbw/zmpa  -s 20160512 > /tmp/zmpa_zbw_ifpa_ewb2.log 2>&1 
+    /work/jzhu/project/slib/script/bby.py -t cfpa -w ewvt  -m slib/zbw/zmpa -s 20160512 > /tmp/zmpa_zbw_cfpa_ewvt.log 2>&1 
     #/work/jzhu/project/slib/script/bby.py -t cfpa -w ewvt  -m slib/zbw/zmpa > /tmp/zmpa_zbw_cfpa.log 
     #/work/jzhu/project/slib/script/bbw.py -t cfpa -w ewvtb2  -m slib/bbx/zmpa > /tmp/zmpa_bbw_cfpa.log 
     #/work/jzhu/project/slib/script/bby.py -t cfpa -w ewvtb2  -m slib/bbz/zmpa > /tmp/zmpa_bby_cfpa.log 
@@ -157,6 +158,10 @@ elif [ $d_type == 'gbw' ]; then
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.cfpa.ewvtb2 -t cfpa > /tmp/mpa_cfpa_ewvt.log 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.cfsa.ewvtb2 -t cfsa > /tmp/mpa_cfsa_ewvt.log 
+
+elif [ $d_type == 'lns' ]; then
+    /work/jzhu/project/slib/script/rgrid.py -m slib/lns/single -t cfpa  >  /work/shared/daily/log/lns_cfpa.log 2>&1 &
+    /work/jzhu/project/slib/script/rgrid.py -m slib/lns/single -t cfir  >  /work/shared/daily/log/lns_cfir.log 2>&1 &
 
 elif [ $d_type == 'scp' ]; then
 
