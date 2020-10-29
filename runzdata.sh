@@ -160,8 +160,9 @@ elif [ $d_type == 'gbw' ]; then
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/bbx/mpa.cfsa.ewvtb2 -t cfsa > /tmp/mpa_cfsa_ewvt.log 
 
 elif [ $d_type == 'lns' ]; then
-    /work/jzhu/project/slib/script/rgrid.py -m slib/lns/single -t cfpa  >  /work/shared/daily/log/lns_cfpa.log 2>&1 &
-    /work/jzhu/project/slib/script/rgrid.py -m slib/lns/single -t cfir  >  /work/shared/daily/log/lns_cfir.log 2>&1 &
+    /work/jzhu/project/slib/script/rgrid.py -m slib/lns/single -t cfpa  >  /work/shared/daily/log/lns_cfpa.log 2>&1 
+    /work/jzhu/project/slib/script/rgrid.py -m slib/lns/single -t cfir  >  /work/shared/daily/log/lns_cfir.log 2>&1 
+    scp -rp /work/shared/daily/slib/lns/single.w.cfpa.CF* jzhu@106.14.226.83:/work/shared/daily/slib/lns/
 
 elif [ $d_type == 'scp' ]; then
 
