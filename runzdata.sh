@@ -167,6 +167,9 @@ elif [ $d_type == 'lns' ]; then
     /work/jzhu/project/slib/script/rgrid.py -m slib/lns/single -t cfir  >  /work/shared/daily/log/lns_cfir.log 2>&1 
     scp -rp /work/shared/daily/slib/lns/single.w.cf* jzhu@106.14.226.83:/work/shared/daily/slib/lns/
 
+elif [ $d_type == 'idxetf' ]; then
+    scp -rp 123.57.60.6:/tmp/assets/ /work/jzhu/input/idxetf/ > /tmp/idxetf.scp.log 2>&1
+
 elif [ $d_type == 'scp' ]; then
 
     scp -rp /work/jzhu/output/ql/mpa/single/*.MPA.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
