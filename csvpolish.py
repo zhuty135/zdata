@@ -19,12 +19,15 @@ def get_univ(iwf):
     print('coutn',udf.count())
     return udf.sort_values().tolist()
 
-def fake_data(df):
-    df["high"] = df.iloc[:,0]
-    df["low"]  = df.iloc[:,0]
-    df["close"] = df.iloc[:,0]
-    df["volume"] = np.sign(df.iloc[:,0])*1e9
-    df["adjusted"] = df.iloc[:,0]
+def fake_data(df,adjflag=False):
+    if adjflag:
+        df["adjusted"] = df.iloc[:,3]
+    else:
+        df["high"] = df.iloc[:,0]
+        df["low"]  = df.iloc[:,0]
+        df["close"] = df.iloc[:,0]
+        df["volume"] = np.sign(df.iloc[:,0])*1e9
+        df["adjusted"] = df.iloc[:,0]
     
     return df
 
@@ -59,6 +62,8 @@ def fill_missing_data(fin,fout,index_col,zfix):
 
     if df.shape[1] < 2:
         df = fake_data(df)
+    elif re.match(r'.*FX\.csv$',fin.split('/')[-1]):
+        df = fake_data(df,adjflag=True)
 
     if zfix:
         zfix_dt = pd.to_datetime(bd_list[ bd_list > ed ][0])
