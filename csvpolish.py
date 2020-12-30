@@ -49,14 +49,18 @@ def fill_missing_data(fin,fout,index_col,zfix):
     bd_list = get_business_date_list(fmt=dt_fmt)
     print(sd,ed,type(bd_list))
     short_bd_list = pd.to_datetime(bd_list[(bd_list >= sd) & (bd_list <= ed)])
-    print('jzcheck', len(df.index),df.index)
+    print('jzcheck', df.iloc[-10:,])
     print(short_bd_list)
+    df.sort_index(inplace=True)
     try: 
-        df = df.drop_duplicates()
+        #df.index.df.drop_duplicates(inplace=True)
+        df = df[~df.index.duplicated()]
+
+        #df = df.drop_duplicates()
     except Exception as err:
         print('jzerror:', str(err))
-    print('jzcheck2',len(df.index),df.index)
-
+    print('jzcheck2',df.iloc[-10:,])
+    df.sort_index(inplace=True)
     df = df.reindex(short_bd_list,method='ffill')
     df = df.fillna(method='ffill') 
 
