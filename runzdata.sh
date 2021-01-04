@@ -135,8 +135,9 @@ elif [ $d_type == 'idxetf' ]; then
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t idxetf > /work/shared/daily/log/zmpa.idxetf.grid.log 2>&1 
 
-
     /work/jzhu/project/slib/script/bby.py -t idxetf -w ew  -m slib/zbw/zmpa -s 20161127 > /tmp/zmpa_zbw_idxetf_ewvtb2.log 2>&1
+
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.idxetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
 
 elif [ $d_type == 'idxcom' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/global/*.csv /work/jzhu/input/global/ > /tmp/global.scp.log 2>&1
@@ -148,6 +149,8 @@ elif [ $d_type == 'idxcom' ]; then
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t idxcom > /work/shared/daily/log/zmpa_idxcom_zgrid.log 2>&1  
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t idxcom > /work/shared/daily/log/zmpa.idxcom.grid.log 2>&1 
+
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.idxcom.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
 
 elif [ $d_type == 'zbw' ]; then
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t cfpa > /work/shared/daily/log/zmpa_cfpa_zgrid.log 2>&1  
