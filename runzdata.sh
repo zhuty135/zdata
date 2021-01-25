@@ -86,8 +86,8 @@ elif [ $d_type == 'pi' ]; then
 
 elif [ $d_type == 'calm' ]; then
     /work/jzhu/project/ql/script/calm.py > /work/shared/daily/log/calm.log 2>&1
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/calm/CALM.cfpa >> /work/shared/daily/log/calm.log 2>&1
-    scp -rp /work/shared/daily/ql/calm/CALM.wsign.cfpa.2020* jzhu@106.14.226.83:/work/shared/daily/ql/calm/ > /tmp/calm_scp.log
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/calm/CALM.cfpa > /work/shared/daily/log/calm.log 2>&1
+    scp -rp /work/shared/daily/ql/calm/CALM.wsign.cfpa.2021* jzhu@106.14.226.83:/work/shared/daily/ql/calm/ > /tmp/calm_scp.log
 
 
 elif [ $d_type == 'mpa' ]; then
@@ -107,7 +107,7 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/ql/script/zmpa.py -t tfpa -s 20160512 > /work/shared/daily/log/zmpa.tfpa.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t cfca > /work/shared/daily/log/zmpa.cfca.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t cfsa > /work/shared/daily/log/zmpa.cfsa.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t cfpa > /work/shared/daily/log/zmpa.cfpa.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t cfpa -r w > /work/shared/daily/log/zmpa.cfpa.log 2>&1
     scp -rp /work/shared/daily/ql/zmpa/* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
     scp -rp /work/shared/daily/ql/zmpa/* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
     
@@ -128,7 +128,16 @@ elif [ $d_type == 'idxetf' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf/ > /tmp/idxetf.pol.log 2>&1
 
     /work/jzhu/project/ql/script/zmpa.py -t idxetf -s 20160512 > /work/shared/daily/log/zmpa.idxetf.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t secetf -s 20160512 > /work/shared/daily/log/zmpa.secetf.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t athena -s 20160512 > /work/shared/daily/log/zmpa.athena.log 2>&1
+
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.idxetf > /work/shared/daily/log/zmpa.idxetf.clog 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.secetf > /work/shared/daily/log/zmpa.secetf.clog 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.athena > /work/shared/daily/log/zmpa.athena.clog 2>&1 
+
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.idxetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.secetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.athena.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
 
 
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t idxetf > /work/shared/daily/log/zmpa_idxetf_zgrid.log 2>&1  
@@ -137,7 +146,6 @@ elif [ $d_type == 'idxetf' ]; then
 
     /work/jzhu/project/slib/script/bby.py -t idxetf -w ew  -m slib/zbw/zmpa -s 20161127 > /tmp/zmpa_zbw_idxetf_ewvtb2.log 2>&1
 
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.idxetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
 
 elif [ $d_type == 'idxcom' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/global/*.csv /work/jzhu/input/global/ > /tmp/global.scp.log 2>&1
@@ -170,7 +178,7 @@ elif [ $d_type == 'zbw' ]; then
     #/work/jzhu/project/slib/script/bbw.py -t cfpa -w ewvtb2  -m slib/bbx/zmpa > /tmp/zmpa_bbw_cfpa.log 
     #/work/jzhu/project/slib/script/bby.py -t cfpa -w ewvtb2  -m slib/bbz/zmpa > /tmp/zmpa_bby_cfpa.log 
 
-    scp -rp /work/shared/daily/slib/zbw/zmpa.absw.*.2020* jzhu@106.14.226.83:/work/shared/daily/slib/zbw/ >> /tmp/zbw_scp.log
+    scp -rp /work/shared/daily/slib/zbw/zmpa.absw.*.2021* jzhu@106.14.226.83:/work/shared/daily/slib/zbw/ > /tmp/zbw_scp.log
     scp -rp /work/shared/daily/slib/zbw/zmpa.absw.yz*.* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa
 
 elif [ $d_type == 'gbw' ]; then
@@ -224,8 +232,8 @@ elif [ $d_type == 'scp' ]; then
     scp -rp /work/jzhu/output/ql/mpa/single/*.MPA.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
     scp -rp /work/jzhu/output/ql/mpa/single/*.MPA.csv jzhu@106.14.226.83:/work/shared/daily/ql/mpa/single/
 
-    scp -rp /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ >> /tmp/mpa_scp.log 
-    scp -rp /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@106.14.226.83:/work/jzhu/input/se2018/daily/ >> /tmp/mpa_scp.log 
+    scp -rp /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ > /tmp/mpa_scp.log 
+    scp -rp /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@106.14.226.83:/work/jzhu/input/se2018/daily/ > /tmp/mpa_scp.log 
 
 
 
