@@ -73,6 +73,7 @@ elif [ $d_type == 'index' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/index/sql/sse/daily/ > /tmp/index_sh.log 2>&1
 
 elif [ $d_type == 'ci' ]; then
+    /work/jzhu/project/finger/zlib/zutils.py > /tmp/generate_new _cal_file.ci.log
     /work/jzhu/project/finger/index/co_index.py  > /tmp/ci.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i Index --index_col='time' > /tmp/cipol.log 2>&1
 
@@ -124,41 +125,43 @@ elif [ $d_type == 'iv' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/iv/ > /tmp/iv.pol.log 2>&1
 
 elif [ $d_type == 'idxetf' ]; then
-    scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*.csv /work/jzhu/input/idxetf/ > /tmp/idxetf.scp.log 2>&1
-    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf/ > /tmp/idxetf.pol.log 2>&1
+    scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*.csv /work/jzhu/input/idxetf/ > /tmp/idxetf.scp.log 
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf/ > /tmp/idxetf.pol.log 
 
-    /work/jzhu/project/ql/script/zmpa.py -t idxetf -s 20160512 > /work/shared/daily/log/zmpa.idxetf.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t secetf -s 20160512 > /work/shared/daily/log/zmpa.secetf.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t athena -s 20160512 > /work/shared/daily/log/zmpa.athena.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t gloetf -s 20160512 > /work/shared/daily/log/zmpa.gloetf.log 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.gloetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.idxetf > /work/shared/daily/log/zmpa.idxetf.clog 2>&1 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.secetf > /work/shared/daily/log/zmpa.secetf.clog 2>&1 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.athena > /work/shared/daily/log/zmpa.athena.clog 2>&1 
-
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.idxetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+    /work/jzhu/project/ql/script/zmpa.py -t secetf -s 20160512 > /work/shared/daily/log/zmpa.secetf.log
     scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.secetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.athena.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+
+    /work/jzhu/project/ql/script/zmpa.py -t cashetf -s 20160512 > /work/shared/daily/log/zmpa.cashetf.log
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.cashetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.gloetf > /work/shared/daily/log/zmpa.gloetf.clog 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.secetf > /work/shared/daily/log/zmpa.secetf.clog
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.cashetf > /work/shared/daily/log/zmpa.cashetf.clog
 
 
-    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t idxetf > /work/shared/daily/log/zmpa_idxetf_zgrid.log 2>&1  
 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t idxetf > /work/shared/daily/log/zmpa.idxetf.grid.log 2>&1 
+    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t gloetf > /work/shared/daily/log/zmpa_gloetf_zgrid.log
 
-    /work/jzhu/project/slib/script/bby.py -t idxetf -w ew  -m slib/zbw/zmpa -s 20161127 > /tmp/zmpa_zbw_idxetf_ewvtb2.log 2>&1
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t gloetf > /work/shared/daily/log/zmpa.gloetf.grid.log 
+
+    /work/jzhu/project/slib/script/bby.py -t gloetf -w ew  -m slib/zbw/zmpa -s 20161127 > /tmp/zmpa_zbw_gloetf_ewvtb2.log 
 
 
 elif [ $d_type == 'idxcom' ]; then
-    scp -rp 123.57.60.6:/work/jzhu/input/global/*.csv /work/jzhu/input/global/ > /tmp/global.scp.log 2>&1
-    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/global/ > /tmp/global.pol.log 2>&1
+    scp -rp 123.57.60.6:/work/jzhu/input/global/*.csv /work/jzhu/input/global/ > /tmp/global.scp.log 
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/global/ > /tmp/global.pol.log 
 
-    /work/jzhu/project/ql/script/zmpa.py -t idxcom -s 20160512 > /work/shared/daily/log/zmpa.idxcom.log 2>&1
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.idxcom > /work/shared/daily/log/zmpa.idxcom.clog 2>&1 
-
-    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t idxcom > /work/shared/daily/log/zmpa_idxcom_zgrid.log 2>&1  
-
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t idxcom > /work/shared/daily/log/zmpa.idxcom.grid.log 2>&1 
-
+    /work/jzhu/project/ql/script/zmpa.py -t idxcom -s 20190512 > /work/shared/daily/log/zmpa.idxcom.log 
     scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.idxcom.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.idxcom > /work/shared/daily/log/zmpa.idxcom.clog 
+
+    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t idxcom > /work/shared/daily/log/zmpa_idxcom_zgrid.log 
+
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t idxcom > /work/shared/daily/log/zmpa.idxcom.grid.log 
+
 
 elif [ $d_type == 'zbw' ]; then
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t cfpa > /work/shared/daily/log/zmpa_cfpa_zgrid.log 2>&1  
