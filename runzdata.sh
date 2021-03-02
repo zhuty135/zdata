@@ -126,24 +126,22 @@ elif [ $d_type == 'iv' ]; then
 
 elif [ $d_type == 'idxetf' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*.csv /work/jzhu/input/idxetf/ > /tmp/idxetf.scp.log 
-    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf/ > /tmp/idxetf.pol.log 
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf/  > /tmp/idxetf.pol.log 
 
-    /work/jzhu/project/ql/script/zmpa.py -t gloetf -s 20160512 > /work/shared/daily/log/zmpa.gloetf.log 
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.gloetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+    /work/jzhu/project/ql/script/zmpa.py -t gloetf -s 20190512 > /work/shared/daily/log/zmpa.gloetf.log 2>&1 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.gloetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
 
-    /work/jzhu/project/ql/script/zmpa.py -t secetf -s 20160512 > /work/shared/daily/log/zmpa.secetf.log
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.secetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+    /work/jzhu/project/ql/script/zmpa.py -t secetf -s 20190512 > /work/shared/daily/log/zmpa.secetf.log 2>&1 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.secetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
 
-    /work/jzhu/project/ql/script/zmpa.py -t cashetf -s 20160512 > /work/shared/daily/log/zmpa.cashetf.log
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.cashetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
+    /work/jzhu/project/ql/script/zmpa.py -t cashetf -s 20190512 > /work/shared/daily/log/zmpa.cashetf.log 2>&1  
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.cashetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1 
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.gloetf > /work/shared/daily/log/zmpa.gloetf.clog 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.secetf > /work/shared/daily/log/zmpa.secetf.clog
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.cashetf > /work/shared/daily/log/zmpa.cashetf.clog
 
-
-
-    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t gloetf > /work/shared/daily/log/zmpa_gloetf_zgrid.log
+    /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t gloetf > /work/shared/daily/log/zmpa_gloetf_zgrid.log 2>&1 
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t gloetf > /work/shared/daily/log/zmpa.gloetf.grid.log 
 
@@ -152,11 +150,11 @@ elif [ $d_type == 'idxetf' ]; then
 
 elif [ $d_type == 'idxcom' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/global/*.csv /work/jzhu/input/global/ > /tmp/global.scp.log 
-    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/global/ > /tmp/global.pol.log 
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/global/  > /tmp/global.pol.log 
 
-    /work/jzhu/project/ql/script/zmpa.py -t idxcom -s 20190512 > /work/shared/daily/log/zmpa.idxcom.log 
+    /work/jzhu/project/ql/script/zmpa.py -t idxcom -s 20190512 > /work/shared/daily/log/zmpa.idxcom.log 2>&1 
     scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.idxcom.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.idxcom > /work/shared/daily/log/zmpa.idxcom.clog 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.idxcom > /work/shared/daily/log/zmpa.idxcom.clog  2>&1 
 
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t idxcom > /work/shared/daily/log/zmpa_idxcom_zgrid.log 
 
@@ -229,8 +227,8 @@ elif [ $d_type == 'scp' ]; then
     scp /work/jzhu/data/pol/Index/*.csv 106.14.226.83:/work/shared/data/pol/Index/
     scp /work/jzhu/data/pol/Index/*.csv 123.57.60.6:/work/jzhu/data/pol/Index/
     scp /work/jzhu/input/index/sql/szse/daily/399300.SZ.csv 123.57.60.6:/work/jzhu/input/index/sql/szse/daily/
-    scp /work/jzhu/data/pol/work/jzhu/input/global/*.csv 123.57.60.6:/work/jzhu/data/pol/work/jzhu/input/global/
-    scp /work/jzhu/data/pol/work/jzhu/input/idxetf/*.csv 123.57.60.6:/work/jzhu/data/pol/work/jzhu/input/idxetf/
+    #scp /work/jzhu/data/pol/work/jzhu/input/global/*.csv 123.57.60.6:/work/jzhu/data/pol/work/jzhu/input/global/
+    #scp /work/jzhu/data/pol/work/jzhu/input/idxetf/*.csv 123.57.60.6:/work/jzhu/data/pol/work/jzhu/input/idxetf/
 
     scp -rp /work/jzhu/output/ql/mpa/single/*.MPA.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
     scp -rp /work/jzhu/output/ql/mpa/single/*.MPA.csv jzhu@106.14.226.83:/work/shared/daily/ql/mpa/single/
