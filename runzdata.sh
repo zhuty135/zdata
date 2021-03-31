@@ -124,6 +124,10 @@ elif [ $d_type == 'iv' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/iv/*.csv /work/jzhu/input/iv/ > /tmp/iv.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/iv/ > /tmp/iv.pol.log 2>&1
 
+elif [ $d_type == 'nh' ]; then
+    scp -rp 123.57.60.6:/work/jzhu/input/nh/*.csv /work/jzhu/input/nh/ > /tmp/nh.log 2>&1
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/nh/ > /tmp/nh.pol.log 2>&1
+
 elif [ $d_type == 'idxetf' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*.csv /work/jzhu/input/idxetf/ > /tmp/idxetf.scp.log 
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf/  > /tmp/idxetf.pol.log 
@@ -212,6 +216,9 @@ elif [ $d_type == 'lns' ]; then
 
 elif [ $d_type == 'macro' ]; then
     scp 123.57.60.6:/tmp/macro/*csv /work/jzhu/data/raw
+    mv /work/jzhu/data/raw/macroraw.csv /work/jzhu/data/raw/macroraw.csv.$edate
+    #cp macro2021-04-01.csv macroraw.csv
+
     /work/jzhu/project/zlib/zstats.py -m cal_macro -o > /tmp/cal_macro.log
     cp /work/jzhu/output/macro/ODSCHG.csv /work/jzhu/project/ql/data/
     cp /work/jzhu/output/macro/DEBTCHG_YEAR.csv /work/jzhu/project/ql/data/
