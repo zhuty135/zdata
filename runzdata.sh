@@ -170,6 +170,7 @@ elif [ $d_type == 'doch' ]; then
     /work/jzhu/project/slib/script/kdj.py -t cfos -s 20180505 > /work/shared/daily/log/chaodi_cfos.log  2>&1 
 elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t idxetf > /tmp/chaodi.log
+    /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t spgs > /tmp/chaodi.log
     /work/jzhu/project/slib/script/kdj.py -t glis -s 20180505 > /work/shared/daily/log/chaodi_glis.log  2>&1
     /work/jzhu/project/slib/script/kdj.py -t glos -s 20180505 > /work/shared/daily/log/chaodi_glos.log  2>&1 
 elif [ $d_type == 'zbw' ]; then
