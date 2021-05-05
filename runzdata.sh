@@ -225,7 +225,9 @@ elif [ $d_type == 'lns' ]; then
 elif [ $d_type == 'macro' ]; then
     scp 123.57.60.6:/tmp/macro/*csv /work/jzhu/data/raw
     mv /work/jzhu/data/raw/macroraw.csv /work/jzhu/data/raw/macroraw.csv.$edate
+    mv /work/jzhu/data/raw/SHIBOR3M.csv /work/jzhu/data/raw/SHIBOR3M.csv.$edate
     #cp macro2021-04-01.csv macroraw.csv
+    #cp SHIBOR2021-05-01.csv SHIBOR3M.csv
 
     /work/jzhu/project/zlib/zstats.py -m cal_macro -o > /tmp/cal_macro.log
     cp /work/jzhu/output/macro/ODSCHG.csv /work/jzhu/project/ql/data/
