@@ -110,7 +110,7 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/ql/script/zmpa.py -t cfsa > /work/shared/daily/log/zmpa.cfsa.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t cfpa > /work/shared/daily/log/zmpa.cfpa.log 2>&1
     scp -rp /work/shared/daily/ql/zmpa/*2021* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
-    scp -rp /work/shared/daily/ql/zmpa/* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
+    scp -rp /work/shared/daily/ql/zmpa/*2021* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
     
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.cfpa > /work/shared/daily/log/zmpa.cfpa.clog 2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.cfsa > /work/shared/daily/log/zmpa.cfsa.clog 2>&1 &
@@ -165,9 +165,12 @@ elif [ $d_type == 'idxcom' ]; then
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/single -t idxcom > /work/shared/daily/log/zmpa.idxcom.grid.log 
 
 elif [ $d_type == 'doch' ]; then
-    /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t cfpa > /tmp/chaodi.log
-    /work/jzhu/project/slib/script/kdj.py -t cfis -s 20180505 > /work/shared/daily/log/chaodi_cfis.log  2>&1
-    /work/jzhu/project/slib/script/kdj.py -t cfos -s 20180505 > /work/shared/daily/log/chaodi_cfos.log  2>&1 
+    /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t cfpa > /tmp/chaodi_cfpa.log
+    /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t shsz > /tmp/chaodi_shsz.log
+    /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t iv > /tmp/chaodi_iv.log
+    /work/jzhu/project/slib/script/kdj.py -t cflo -s 20180505 > /work/shared/daily/log/chaodi_cflo.log  2>&1
+    /work/jzhu/project/slib/script/kdj.py -t colo -s 20180505 > /work/shared/daily/log/chaodi_colo.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -t hzlo -s 20180505 > /work/shared/daily/log/chaodi_hzlo.log  2>&1 
 elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t idxetf > /tmp/chaodi.log
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t spgs > /tmp/chaodi.log
