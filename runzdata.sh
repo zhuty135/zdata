@@ -110,7 +110,7 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/ql/script/zmpa.py -t cfsa > /work/shared/daily/log/zmpa.cfsa.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t cfpa > /work/shared/daily/log/zmpa.cfpa.log 2>&1
 
-    /work/jzhu/project/ql/script/zmpa.py -t cfpa -m ql/zmpa/LOZMPA > /work/shared/daily/log/zmpa.cfpa.log.lo 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t cfz2 -m ql/zmpa/LOZMPA > /work/shared/daily/log/zmpa.cfz2.log.lo 2>&1
 
     scp -rp /work/shared/daily/ql/zmpa/*2021* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
     scp -rp /work/shared/daily/ql/zmpa/*2021* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
@@ -132,16 +132,15 @@ elif [ $d_type == 'nh' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/nh/ > /tmp/nh.pol.log 2>&1
 
 elif [ $d_type == 'idxetf' ]; then
-    scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*.csv /work/jzhu/input/idxetf/ > /tmp/idxetf.scp.log 
+    #scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*.csv /work/jzhu/input/idxetf/ > /tmp/idxetf.scp.log 
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf/  > /tmp/idxetf.pol.log 
 
     /work/jzhu/project/ql/script/zmpa.py -t gloetf -s 20190512 > /work/shared/daily/log/zmpa.gloetf.log 2>&1 
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.gloetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
-
     /work/jzhu/project/ql/script/zmpa.py -t secetf -s 20190512 > /work/shared/daily/log/zmpa.secetf.log 2>&1 
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.secetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
-
     /work/jzhu/project/ql/script/zmpa.py -t cashetf -s 20190512 > /work/shared/daily/log/zmpa.cashetf.log 2>&1  
+
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.gloetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.secetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
     scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.cashetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1 
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.gloetf > /work/shared/daily/log/zmpa.gloetf.clog 
@@ -156,7 +155,7 @@ elif [ $d_type == 'idxetf' ]; then
 
 
 elif [ $d_type == 'idxcom' ]; then
-    scp -rp 123.57.60.6:/work/jzhu/input/global/*.csv /work/jzhu/input/global/ > /tmp/global.scp.log 
+    #scp -rp 123.57.60.6:/work/jzhu/input/global/*.csv /work/jzhu/input/global/ > /tmp/global.scp.log 
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/global/  > /tmp/global.pol.log 
 
     /work/jzhu/project/ql/script/zmpa.py -t idxcom -s 20190512 > /work/shared/daily/log/zmpa.idxcom.log 2>&1 
@@ -174,11 +173,14 @@ elif [ $d_type == 'doch' ]; then
     /work/jzhu/project/slib/script/kdj.py -t cflo -s 20180505 > /work/shared/daily/log/chaodi_cflo.log  2>&1
     /work/jzhu/project/slib/script/kdj.py -t colo -s 20180505 > /work/shared/daily/log/chaodi_colo.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t hzlo -s 20180505 > /work/shared/daily/log/chaodi_hzlo.log  2>&1 
+    scp -rp /work/shared/daily/slib/fsd/jw*2021* jzhu@106.14.226.83:/work/shared/daily//slib/fsd/
 elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t idxetf > /tmp/chaodi.log
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t spgs > /tmp/chaodi.log
-    /work/jzhu/project/slib/script/kdj.py -t glis -s 20180505 > /work/shared/daily/log/chaodi_glis.log  2>&1
-    /work/jzhu/project/slib/script/kdj.py -t glos -s 20180505 > /work/shared/daily/log/chaodi_glos.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -t splo -s 20180505 > /work/shared/daily/log/chaodi_splo.log  2>&1
+    /work/jzhu/project/slib/script/kdj.py -t fasg -s 20180505 > /work/shared/daily/log/chaodi_fasg.log  2>&1
+    /work/jzhu/project/slib/script/kdj.py -t slog -s 20180505 > /work/shared/daily/log/chaodi_slog.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -t morb -e 20180505 > /work/shared/daily/log/chaodi_morb.log  2>&1 
 elif [ $d_type == 'zbw' ]; then
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t cfpa > /work/shared/daily/log/zmpa_cfpa_zgrid.log 2>&1  
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t cfsa > /work/shared/daily/log/zmpa_cfsa_zgrid.log 2>&1 
