@@ -110,7 +110,9 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/ql/script/zmpa.py -t cfsa > /work/shared/daily/log/zmpa.cfsa.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t cfpa > /work/shared/daily/log/zmpa.cfpa.log 2>&1
 
-    /work/jzhu/project/ql/script/zmpa.py -t cfz2 -m ql/zmpa/LOZMPA > /work/shared/daily/log/lozmpa.cfz2.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t cfo2 -m ql/zmpa/LOZMPA -r w > /work/shared/daily/log/lozmpa.cfo2.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t hack -m ql/zmpa/LOZMPA -r w > /work/shared/daily/log/lozmpa.hack.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t ifpa -m ql/zmpa/LOZMPA > /work/shared/daily/log/lozmpa.ifpa.log 2>&1
 
     scp -rp /work/shared/daily/ql/zmpa/*2021* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
     scp -rp /work/shared/daily/ql/zmpa/*2021* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
@@ -123,16 +125,34 @@ elif [ $d_type == 'zmpa' ]; then
 
     scp -rp /work/jzhu/output/ql/zmpa/ZMPA.*.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
 
+elif [ $d_type == 'drw' ]; then
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t cfpa -l 10
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t cfpa -l 20
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t cfpa -l 40
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t shsz -l 10
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t shsz -l 20
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t shsz -l 40
+
+elif [ $d_type == 'grw' ]; then
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t spgs -l 10
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t spgs -l 20
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t spgs -l 40
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t idxetf -l 10
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t idxetf -l 20
+    /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t idxetf -l 40
+
 elif [ $d_type == 'iv' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/iv/*.csv /work/jzhu/input/iv/ > /tmp/iv.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/iv/ > /tmp/iv.pol.log 2>&1
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t iv > /tmp/chaodi_iv.log
 
-    /work/jzhu/project/slib/script/kdj.py -t iv   -s 20180505 > /work/shared/daily/log/chaodi_iv.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -t iv6m   -s 20200905 > /work/shared/daily/log/chaodi_iv6m.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -t iv1m   -s 20200905 > /work/shared/daily/log/chaodi_iv1m.log  2>&1 
 
 elif [ $d_type == 'nh' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/nh/*.csv /work/jzhu/input/nh/ > /tmp/nh.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/nh/ > /tmp/nh.pol.log 2>&1
+    /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t nh > /tmp/chaodi_nh.log
 
 elif [ $d_type == 'idxetf' ]; then
     #scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*.csv /work/jzhu/input/idxetf/ > /tmp/idxetf.scp.log 
@@ -175,6 +195,7 @@ elif [ $d_type == 'doch' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t iv > /tmp/chaodi_iv.log
     /work/jzhu/project/slib/script/kdj.py -t cflo -s 20180505 > /work/shared/daily/log/chaodi_cflo.log  2>&1
     /work/jzhu/project/slib/script/kdj.py -t colo -s 20180505 > /work/shared/daily/log/chaodi_colo.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -m slib/sw/so  -t coso -s 20180505 > /work/shared/daily/log/chaodi_coso.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t hzlo -s 20180505 > /work/shared/daily/log/chaodi_hzlo.log  2>&1 
     scp -rp /work/shared/daily/slib/fsd/jw*2021* jzhu@106.14.226.83:/work/shared/daily//slib/fsd/
 elif [ $d_type == 'glch' ]; then
