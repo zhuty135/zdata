@@ -111,7 +111,7 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/ql/script/zmpa.py -t cfpa > /work/shared/daily/log/zmpa.cfpa.log 2>&1
 
     /work/jzhu/project/ql/script/zmpa.py -t cfo2 -m ql/zmpa/LOZMPA -r w > /work/shared/daily/log/lozmpa.cfo2.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t hack -m ql/zmpa/LOZMPA -r w > /work/shared/daily/log/lozmpa.hack.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t hack -m ql/zmpa/LOZMPA -r w -s 20210130 > /work/shared/daily/log/lozmpa.hack.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t ifpa -m ql/zmpa/LOZMPA > /work/shared/daily/log/lozmpa.ifpa.log 2>&1
 
     scp -rp /work/shared/daily/ql/zmpa/*2021* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
@@ -132,6 +132,11 @@ elif [ $d_type == 'drw' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t shsz -l 10
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t shsz -l 20
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t shsz -l 40
+    /work/jzhu/project/slib/script/rw.py -m slib/lws/lo -t coxm -r w -s 20180512 > /work/shared/daily/log/rw.lo.coxm.log 2>&1 
+    /work/jzhu/project/slib/script/rw.py -m slib/lws/so -t coxm -r w -s 20180512 > /work/shared/daily/log/rw.so.coxm.log 2>&1 
+
+    /work/jzhu/project/slib/script/rw.py -m slib/lws/lo -t hzxm -r w -s 20180512 > /work/shared/daily/log/rw.lo.hzxm.log 2>&1 
+
 
 elif [ $d_type == 'grw' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t spgs -l 10
@@ -258,8 +263,9 @@ elif [ $d_type == 'macro' ]; then
     scp 123.57.60.6:/tmp/macro/*csv /work/jzhu/data/raw
     mv /work/jzhu/data/raw/macroraw.csv /work/jzhu/data/raw/macroraw.csv.$edate
     mv /work/jzhu/data/raw/SHIBOR3M.csv /work/jzhu/data/raw/SHIBOR3M.csv.$edate
-    #cp macro2021-04-01.csv macroraw.csv
-    #cp SHIBOR2021-05-01.csv SHIBOR3M.csv
+    cd /work/jzhu/data/raw
+    # cp macro2021-04-01.csv macroraw.csv
+    # cp SHIBOR2021-05-01.csv SHIBOR3M.csv
 
     /work/jzhu/project/zlib/zstats.py -m cal_macro -o > /tmp/cal_macro.log
     cp /work/jzhu/output/macro/ODSCHG.csv /work/jzhu/project/ql/data/
@@ -269,6 +275,7 @@ elif [ $d_type == 'macro' ]; then
     cp /work/jzhu/output/macro/M1M2_CHG.csv /work/jzhu/project/ql/data/
     cp /work/jzhu/output/macro/CPI_PPI_CHG.csv /work/jzhu/project/ql/data/
 
+    /work/jzhu/project/ql/script/stockmacroih.py -e $edate
 
 
 elif [ $d_type == 'scp' ]; then
