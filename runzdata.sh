@@ -125,6 +125,12 @@ elif [ $d_type == 'zmpa' ]; then
 
     scp -rp /work/jzhu/output/ql/zmpa/ZMPA.*.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
 
+elif [ $d_type == 'dmw' ]; then
+    /work/jzhu/project/slib/script/mw.py -s 20210630 > /work/shared/daily/log/mw.log 2>&1 
+    scp -rp /work/shared/daily/slib/mmw/*202* jzhu@106.14.226.83:/work/shared/daily/slib/mmw/ 2>&1  
+elif [ $d_type == 'dlw' ]; then
+    /work/jzhu/project/ql/script/lw.py -m ql/ssl/ls -t coss -r w -s 20180512 > /work/shared/daily/log/lw.ls.coss.log 2>&1 
+
 elif [ $d_type == 'drw' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t cfpa -l 10
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t cfpa -l 20
