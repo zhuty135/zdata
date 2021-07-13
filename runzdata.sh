@@ -155,6 +155,7 @@ elif [ $d_type == 'grw' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t idxetf -l 20
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t idxetf -l 40
     /work/jzhu/project/slib/script/rw.py -m slib/lws/lo -t idxetf -r w -s 20191212 > /work/shared/daily/log/rw.lo.idxetf.log 2>&1 
+    /work/jzhu/project/slib/script/rw.py -m slib/lws/so -t idxetf -r w -s 20191212 > /work/shared/daily/log/rw.so.idxetf.log 2>&1 
 
     /work/jzhu/project/slib/script/rwgrid.py -m slib/lws/single -t secetf  -l lo -x 4  > /tmp/sec.log 2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/lws/single -t idxetf  > /tmp/idx.log 2>&1 &
