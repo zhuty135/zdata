@@ -144,6 +144,7 @@ elif [ $d_type == 'drw' ]; then
     /work/jzhu/project/slib/script/rw.py -m slib/lws/lo -t hzxm -r w -s 20180512 > /work/shared/daily/log/rw.lo.hzxm.log 2>&1 
 
 
+
 elif [ $d_type == 'grw' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t spgs -l 10
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t spgs -l 20
@@ -151,6 +152,12 @@ elif [ $d_type == 'grw' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t idxetf -l 10
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t idxetf -l 20
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t idxetf -l 40
+    /work/jzhu/project/slib/script/rw.py -m slib/lws/lo -t idxetf -r w -s 20180512 > /work/shared/daily/log/rw.lo.idxetf.log 2>&1 
+
+    /work/jzhu/project/slib/script/rwgrid.py -m slib/lws/single -t secetf  -l lo -x 4  > /tmp/sec.log 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/lws/single -t idxetf  > /tmp/idx.log 2>&1 &
+
+
 
 elif [ $d_type == 'iv' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/iv/*.csv /work/jzhu/input/iv/ > /tmp/iv.log 2>&1
@@ -172,6 +179,7 @@ elif [ $d_type == 'idxetf' ]; then
     /work/jzhu/project/ql/script/zmpa.py -t gloetf -s 20190512 > /work/shared/daily/log/zmpa.gloetf.log 2>&1 
     /work/jzhu/project/ql/script/zmpa.py -t secetf -s 20190512 > /work/shared/daily/log/zmpa.secetf.log 2>&1 
     /work/jzhu/project/ql/script/zmpa.py -t cashetf -s 20190512 > /work/shared/daily/log/zmpa.cashetf.log 2>&1  
+    /work/jzhu/project/ql/script/zmpa.py -t idxetf -s 20190512 -m ql/zmpa/ZMPA -r w -l lo > /work/shared/daily/log/zmpa.idxetf.log 2>&1 
 
     scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.gloetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
     scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.secetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
@@ -216,6 +224,7 @@ elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/slib/script/kdj.py -t fasg -s 20180505 > /work/shared/daily/log/chaodi_fasg.log  2>&1
     /work/jzhu/project/slib/script/kdj.py -t slog -s 20180505 > /work/shared/daily/log/chaodi_slog.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t morb -s 20180505 > /work/shared/daily/log/chaodi_morb.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -t idxetf -s 20180505 > /work/shared/daily/log/chaodi_idxetf.log  2>&1 
 elif [ $d_type == 'zbw' ]; then
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t cfpa > /work/shared/daily/log/zmpa_cfpa_zgrid.log 2>&1  
     /work/jzhu/project/ql/script/zgrid.py -m ql/zmpa/single -t cfsa > /work/shared/daily/log/zmpa_cfsa_zgrid.log 2>&1 
