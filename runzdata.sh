@@ -108,9 +108,10 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/ql/script/zmpa.py -t tfpa -s 20160512 > /work/shared/daily/log/zmpa.tfpa.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t cfca > /work/shared/daily/log/zmpa.cfca.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t cfsa > /work/shared/daily/log/zmpa.cfsa.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t cfpa > /work/shared/daily/log/zmpa.cfpa.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t cfpa  -s 20160512 > /work/shared/daily/log/zmpa.cfpa.log 2>&1
 
-    /work/jzhu/project/ql/script/zmpa.py -t cfo2 -m ql/zmpa/LOZMPA -r w > /work/shared/daily/log/lozmpa.cfo2.log 2>&1
+    #/work/jzhu/project/ql/script/zmpa.py -t cfo2 -m ql/zmpa/LOZMPA -r w -s 20151212 > /work/shared/daily/log/lozmpa.cfo2.log 2>&1
+    /work/jzhu/project/ql/script/zmpa.py -t cfz2 -m ql/zmpa/LOZMPA -r w -s 20151212 > /work/shared/daily/log/lozmpa.cfz2.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t hack -m ql/zmpa/LOZMPA -r w -s 20210130 > /work/shared/daily/log/lozmpa.hack.log 2>&1
     /work/jzhu/project/ql/script/zmpa.py -t ifpa -m ql/zmpa/LOZMPA -r w > /work/shared/daily/log/lozmpa.ifpa.log 2>&1
 
@@ -122,7 +123,8 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.cfca > /work/shared/daily/log/zmpa.cfca.clog 2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.ifpa > /work/shared/daily/log/zmpa.ifpa.clog 2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.tfpa > /work/shared/daily/log/zmpa.tfpa.clog 2>&1 &
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/LOZMPA.cfo2 > /work/shared/daily/log/zmpa.cfo2.clog 2>&1 &
+    #/work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/LOZMPA.cfo2 > /work/shared/daily/log/zmpa.cfo2.clog 2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/LOZMPA.cfz2 > /work/shared/daily/log/zmpa.cfz2.clog 2>&1 &
 
     scp -rp /work/jzhu/output/ql/zmpa/ZMPA.*.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
 
@@ -132,13 +134,23 @@ elif [ $d_type == 'dmw' ]; then
     /work/jzhu/project/slib/script/mw.py -s 20210630 -t hzpc -o sep  > /work/shared/daily/log/mw.hz.sep.log 2>&1 
     scp -rp /work/shared/daily/slib/mmw/*202* jzhu@106.14.226.83:/work/shared/daily/slib/mmw/ 2>&1  
 elif [ $d_type == 'dlw' ]; then
-    /work/jzhu/project/ql/script/lw.py -m ql/ssl/ls -t colw -r w -s 20180512 > /work/shared/daily/log/lw.ls.colw.log 2>&1 
-    /work/jzhu/project/ql/script/lw.py -m ql/ssl/ls -t hzls -r w -s 20180512 > /work/shared/daily/log/lw.ls.hzlw.log 2>&1 
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/ssl/ls.colw  > /work/shared/daily/log/lw.colw.clog 2>&1 &
+    /work/jzhu/project/ql/script/lw.py -m ql/ssl/ls -t cflw -r w -s 20160512 > /work/shared/daily/log/lw.ls.cflw.log 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/ssl/ls.cflw  > /work/shared/daily/log/lw.cflw.clog 2>&1 &
+
+    #/work/jzhu/project/ql/script/lw.py -m ql/ssl/ls -t colw -r w -s 20160512 > /work/shared/daily/log/lw.ls.colw.log 2>&1 
+    #/work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/ssl/ls.colw  > /work/shared/daily/log/lw.colw.clog 2>&1 &
+
+    /work/jzhu/project/ql/script/lw.py -m ql/ssl/ls -t hzls -r w -s 20160512 > /work/shared/daily/log/lw.ls.hzlw.log 2>&1 
     scp -rp /work/jzhu/output/ql/ssl/ls.colw.csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/
 elif [ $d_type == 'ddma' ]; then
-    /work/jzhu/project/ql/script/dma.py -t cfca -r w -s 201901212  > /work/shared/daily/log/dma.cfca.log 2>&1 
+    /work/jzhu/project/ql/script/dma.py -t cfca -r w -s 20151212  > /work/shared/daily/log/dma.cfca.log 2>&1 
+    /work/jzhu/project/ql/script/dma.py -t cfsa -r w -s 20151212  > /work/shared/daily/log/dma.cfsa.log 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/dma/DMA.ls.cfca > /work/shared/daily/log/dma.cfca.clog 2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/dma/DMA.ls.cfsa > /work/shared/daily/log/dma.cfsa.clog 2>&1 &
+
     /work/jzhu/project/ql/script/dgrid.py   -t cfca -r w > /work/shared/daily/log/dgrid.cfca.single.log 2>&1 
+    /work/jzhu/project/ql/script/dgrid.py   -t CYNMSA.PO -r w -a -m ql/dma/grid > /work/shared/daily/log/dgrid.cfsa.single.log 2>&1 
+
 
 
 
@@ -153,8 +165,9 @@ elif [ $d_type == 'drw' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t shsz -l 10
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t shsz -l 20
     /work/jzhu/project/zlib/zstats.py -m cal_bb -o -t shsz -l 40
-    /work/jzhu/project/slib/script/rw.py -m slib/lws/lo -t corw -r w -s 20180512 > /work/shared/daily/log/rw.lo.corw.log 2>&1 
-    /work/jzhu/project/slib/script/rw.py -m slib/lws/so -t corw -r w -s 20180512 > /work/shared/daily/log/rw.so.corw.log 2>&1 
+
+    /work/jzhu/project/slib/script/rw.py -m slib/lws/lo -t cfrw -r w -s 20160512 > /work/shared/daily/log/rw.lo.cfrw.log 2>&1 
+    /work/jzhu/project/slib/script/rw.py -m slib/lws/so -t cfrw -r w -s 20160512 > /work/shared/daily/log/rw.so.cfrw.log 2>&1 
 
     /work/jzhu/project/slib/script/rw.py -m slib/lws/lo -t hzrw -r w -s 20180512 > /work/shared/daily/log/rw.lo.hzrw.log 2>&1 
 
@@ -233,10 +246,15 @@ elif [ $d_type == 'doch' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t cfpa > /tmp/chaodi_cfpa.log
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t shsz > /tmp/chaodi_shsz.log
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t iv > /tmp/chaodi_iv.log
-    /work/jzhu/project/slib/script/kdj.py -t cflo -s 20180505 > /work/shared/daily/log/chaodi_cflo.log  2>&1
-    /work/jzhu/project/slib/script/kdj.py -t colo -s 20180505 > /work/shared/daily/log/chaodi_colo.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -t cflo -s 20160505 > /work/shared/daily/log/chaodi_cflo.log  2>&1
+    /work/jzhu/project/slib/script/kdj.py -t colo -s 20160505 > /work/shared/daily/log/chaodi_colo.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -m slib/sw/so  -t coso -s 20180505 > /work/shared/daily/log/chaodi_coso.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t hzlo -s 20180505 > /work/shared/daily/log/chaodi_hzlo.log  2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.cflo > /work/shared/daily/log/chaodi_cflo.clog  2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.colo > /work/shared/daily/log/chaodi_colo.clog  2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.coso > /work/shared/daily/log/chaodi_coso.clog  2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.hzlo > /work/shared/daily/log/chaodi_hzlo.clog  2>&1 &
+
     scp -rp /work/shared/daily/slib/fsd/jw*2021* jzhu@106.14.226.83:/work/shared/daily//slib/fsd/
 elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t idxetf > /tmp/chaodi.log
@@ -315,8 +333,10 @@ elif [ $d_type == 'macro' ]; then
     cp /work/jzhu/output/macro/CPI_PPI_CHG.csv /work/jzhu/project/ql/data/
     cp /work/jzhu/output/macro/M1ADVPPI.csv /work/jzhu/project/ql/data/
 
-    /work/jzhu/project/ql/script/stockmacroih.py -e $edate
-    /work/jzhu/project/ql/script/comacro.py -s 20200101 -e $edate
+    /work/jzhu/project/ql/script/stockmacroih.py -e $edate  >  /work/shared/daily/log/stockmacroih.log 2>&1
+    /work/jzhu/project/ql/script/comacro.py -s 20160101 -e $edate >  /work/shared/daily/log/comacro.log 2>&1
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  /ql/mac/macro.cfca > /tmp/macro.cfca.log 
+
 
 
 
