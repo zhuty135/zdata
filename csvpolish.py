@@ -37,6 +37,7 @@ def fill_missing_data(fin,fout,index_col,zfix):
         df = pd.read_csv(fin,index_col=index_col,parse_dates=True)
     except Exception as err:
         print(str(err))
+    print('kkk',index_col)
     dt_fmt='%Y-%m-%d'
 
     if df.shape[1] < 2:
@@ -46,7 +47,7 @@ def fill_missing_data(fin,fout,index_col,zfix):
         return False
     sd = df.index[0].strftime(dt_fmt)
     ed = df.index[-1].strftime(dt_fmt)
-    bd_list = get_business_date_list(fmt=dt_fmt)
+    bd_list = get_business_date_list(fmt=dt_fmt,caltype=os.environ['CALTYPE'])
     print(sd,ed,type(bd_list))
     short_bd_list = pd.to_datetime(bd_list[(bd_list >= sd) & (bd_list <= ed)])
     print('jzcheck', df.iloc[-10:,])
@@ -88,7 +89,7 @@ def get_ex(i):
     tmp_list = i.split('.')
     return ex_dict[tmp_list[1].lower()]
 
-def create_symb_link(d_type,i_type,ix_weight_file):
+def create_symb_link(d_type,i_type,ix_weight_file,index_col):
     ulist = get_univ(ix_weight_file)
 
     dst_path = '/work/'+uname+'/input/' + i_type + '/daily/' 
@@ -101,7 +102,7 @@ def create_symb_link(d_type,i_type,ix_weight_file):
         ex = get_ex(i)
         hist_path = '/work/'+uname+'/input/' + d_type + '/sql/' + ex + '/daily/'
         forig = hist_path + i + '.csv'
-        ffake = fake_path + i + '.csv'
+        ffake = fake_path + i + '.csv' + os.environ['DERIVED']
         print('forig',forig)
         print('ffake',ffake)
         fill_missing_data(forig,ffake,index_col)
@@ -136,7 +137,7 @@ def start_polish(input_dir,output_dir,index_col,zfix):
 def main():
     import getopt, sys
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"i:k:o:zv",["index_col=","help"])
+        opts, args = getopt.getopt(sys.argv[1:],"c:i:k:o:zdv",["index_col=","help"])
     except getopt.GetoptError as err:
         print(str(err))
         usage()
@@ -147,17 +148,25 @@ def main():
     output_dir = None 
     index_col =  'date' 
     zfix = False
+    os.environ['CALTYPE'] = 'XSHG'
+    os.environ['DERIVED'] = ''
     for o, a in opts:
         if o == "-v":
             verbose = True
         elif o in ("-i"):
             input_dir  = a
+            if a in ['iv30','dpi','gex','Index']:
+                os.environ['DERIVED'] = a
         elif o == ('-o'):
             output_dir = a 
+        elif o == ('-c'):
+            os.environ['CALTYPE'] = a
         elif o == ('-z'):
             zfix = True 
-        elif o == ('--index_col'):
+        elif o == ('--index_col') and not os.environ['DERIVED'] == '':
             index_col =  a 
+
+
     if input_dir is not None:
         if input_dir.find('/')!= -1 :
             id_split = input_dir.split('/')
@@ -180,7 +189,7 @@ def main():
     d_type='stock'
     i_type='cnix_399300_sz'
     ix_weight_file = '/work/jzhu/input/index/sql/szse/index_weight/399300.sz.csv'
-    create_symb_link(d_type,i_type,ix_weight_file)
+    create_symb_link(d_type,i_type,ix_weight_file,index_col)
     tmp_list = i.split('.')
 
 if __name__ == '__main__':
