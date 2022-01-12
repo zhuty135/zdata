@@ -44,12 +44,13 @@ if [ $d_type == 'fut' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/fut/sql/cfx/daily/ > /tmp/fcp.log 2>&1
 
 elif [ $d_type == 'gtaa' ]; then
-    scp user1@8.142.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/yf > /tmp/yf.log 2>&1
     /work/jzhu/project/ql/script/taa.py -m ql/taa/lo -s 20130512 -g 1 -t glob > /tmp/gtaa.log 2>&1 
 
 elif [ $d_type == 'dtaa' ]; then
     scp user1@8.142.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
+    scp /work/jzhu/input/yf/*  123.57.60.6:/work/jzhu/input/yf/
+
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/yf > /tmp/yf.log 2>&1
     /work/jzhu/project/ql/script/taa.py -m ql/taa/lo -s 20190512 -g 2 -t glob > /tmp/dtaa.log 2>&1 
     scp -rp /work/shared/daily/ql/taa/*glob*2022* user1@8.142.157.170:/work/shared/daily/slib/mmw/
@@ -418,7 +419,7 @@ elif [ $d_type == 'macro' ]; then
     cp /work/jzhu/output/macro/M1ADVPPI.csv /work/jzhu/project/ql/data/
 
     #/work/jzhu/project/ql/script/stockmacroih.py -e $edate  >  /work/shared/daily/log/stockmacroih.log 2>&1
-    /work/jzhu/project/ql/script/hzmacro.py -s 20160101  >  /work/shared/daily/log/hzmacro.log 2>&1
+    /work/jzhu/project/ql/script/hzmacro.py -s 20160101 -r w  >  /work/shared/daily/log/hzmacro.log 2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  /ql/mac/macro.hzpa > /tmp/macro.hzpa.log 
 
     #/work/jzhu/project/ql/script/comacro.py -s 20160101 -e $edate >  /work/shared/daily/log/comacro.log 2>&1
