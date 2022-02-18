@@ -102,6 +102,10 @@ elif [ $d_type == 'ci' ]; then
     scp -rp /work/jzhu/input/Index/ jzhu@106.14.226.83:/work/shared/raw/
     scp -rp /work/jzhu/input/Index/ user1@8.142.157.170:/work/shared/raw/
 
+elif [ $d_type == 'plt' ]; then
+    /work/jzhu/project/finger/misc/futures_plot.py > /tmp/futures_plot.log 2>&1 &
+    scp -rp /work/shared/output/complot* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
+
 elif [ $d_type == 'pi' ]; then
     scp -rp /work/jzhu/output/ql/mpa/*csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
     scp -rp /work/jzhu/output/dm/*csv  jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
@@ -139,6 +143,7 @@ elif [ $d_type == 'zmpa' ]; then
 
     scp -rp /work/shared/daily/ql/zmpa/*2022* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
     scp -rp /work/shared/daily/ql/zmpa/*2022* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
+
     
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.cfpa > /work/shared/daily/log/zmpa.cfpa.clog 2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.cfsa > /work/shared/daily/log/zmpa.cfsa.clog 2>&1 &
@@ -263,12 +268,33 @@ elif [ $d_type == 'grw' ]; then
 
 
 elif [ $d_type == 'iv' ]; then
+    scp -rp   user1@8.142.157.170:/work/shared/tradedata/SH/*22* /work/jzhu/input/tradedata/SH/
+    scp -rp   user1@8.142.157.170:/work/shared/tradedata/SZ/*22* /work/jzhu/input/tradedata/SZ/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/CFE/*22* /work/jzhu/input/tradedata/CFE/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/CZC/*22* /work/jzhu/input/tradedata/CZC/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/DCE/*22* /work/jzhu/input/tradedata/DCE/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/INE/*22* /work/jzhu/input/tradedata/INE/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/SHF/*22* /work/jzhu/input/tradedata/SHF/
+
+    scp -rp   user1@8.142.157.170:/work/shared/tradedata/SH/*23* /work/jzhu/input/tradedata/SH/
+    scp -rp   user1@8.142.157.170:/work/shared/tradedata/SZ/*23* /work/jzhu/input/tradedata/SZ/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/CFE/*23* /work/jzhu/input/tradedata/CFE/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/CZC/*23* /work/jzhu/input/tradedata/CZC/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/DCE/*23* /work/jzhu/input/tradedata/DCE/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/INE/*23* /work/jzhu/input/tradedata/INE/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/SHF/*23* /work/jzhu/input/tradedata/SHF/
+
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/ticker.csv /work/jzhu/input/tradedata/
+
+    scp -rp  /work/jzhu/input/tradedata/*  jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/tradedata
+
     scp -rp 123.57.60.6:/work/jzhu/input/iv/*.csv /work/jzhu/input/iv/ > /tmp/iv.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/iv/ > /tmp/iv.pol.log 2>&1
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t iv > /tmp/chaodi_iv.log
 
     /work/jzhu/project/slib/script/kdj.py -t iv6m   -s 20200905 > /work/shared/daily/log/chaodi_iv6m.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t iv1m   -s 20200905 > /work/shared/daily/log/chaodi_iv1m.log  2>&1 
+
 
 elif [ $d_type == 'nh' ]; then
     scp -rp 123.57.60.6:/work/jzhu/input/nh/*.csv /work/jzhu/input/nh/ > /tmp/nh.log 2>&1
