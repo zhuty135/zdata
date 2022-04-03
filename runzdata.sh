@@ -122,6 +122,7 @@ elif [ $d_type == 'dplt' ]; then
     scp -rp /work/shared/output/a_*pm.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
 
 elif [ $d_type == 'gplt' ]; then
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf > /tmp/idp.log 2>&1
     /work/jzhu/project/finger/misc/qb_plt.py -t idxetf  -o -f > /tmp/qb_plt.log 2>&1  
     /work/jzhu/project/finger/misc/qb_plt.py -t idxetf   -o -f -m iv > /tmp/iv_ix.log 2>&1 
     cp -r /work/shared/output/complot* /work/dwhang/project/sit/Shiny/yzpa/
@@ -450,7 +451,7 @@ elif [ $d_type == 'lns' ]; then
 elif [ $d_type == 'macro' ]; then
     scp -rp 123.57.60.6:/tmp/macro/*csv /work/jzhu/data/raw
     #20220325 scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*csv /work/jzhu/input/idxetf/ 
-    scp -rp /work/jzhu/input/idxetf/.*csv 123.57.60.6:/work/jzhu/input/idxetf/
+    #scp -rp /work/jzhu/input/idxetf/*.csv 123.57.60.6:/work/jzhu/input/idxetf/
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf > /tmp/idp.log 2>&1
 
     mv /work/jzhu/data/raw/macroraw.csv /work/jzhu/data/raw/macroraw.csv.$edate
