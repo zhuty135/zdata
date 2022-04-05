@@ -112,6 +112,10 @@ elif [ $d_type == 'dplt' ]; then
     /work/jzhu/project/finger/misc/futures_plot.py > /tmp/futures_plot.log 2>&1 
     /work/jzhu/project/finger/misc/futures_plot_bkdata.py > /tmp/bk_plot.log 2>&1 
 
+    /work/jzhu/project/finger/misc/qb_plt.py -t nh -m cs -o -s 20200905  > /tmp/cs_nh.log 2>&1 
+    /work/jzhu/project/finger/misc/qb_plt.py -t hz -m cs -o -s 20200905  > /tmp/cs_hz.log 2>&1
+
+
     /work/jzhu/project/finger/misc/qb_plt.py -t nh -o -f -m iv -s 20210108  > /tmp/iv_nh.log 2>&1  
 
     scp -rp /work/shared/output/complot* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
@@ -125,6 +129,9 @@ elif [ $d_type == 'gplt' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf > /tmp/idp.log 2>&1
     /work/jzhu/project/finger/misc/qb_plt.py -t idxetf  -o -f > /tmp/qb_plt.log 2>&1  
     /work/jzhu/project/finger/misc/qb_plt.py -t idxetf   -o -f -m iv > /tmp/iv_ix.log 2>&1 
+    /work/jzhu/project/finger/misc/qb_plt.py -t nh -m cs -o -s 20191205   > /tmp/nh_cs.log 2>&1
+    /work/jzhu/project/finger/misc/qb_plt.py -t hz -m cs -o -s 20191205   > /tmp/hz_cs.log 2>&1
+
     cp -r /work/shared/output/complot* /work/dwhang/project/sit/Shiny/yzpa/
     cp -r /work/shared/output/iv_*.pdf /work/dwhang/project/sit/Shiny/yzpa/tmp/
 
