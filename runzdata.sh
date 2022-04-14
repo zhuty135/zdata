@@ -48,15 +48,6 @@ elif [ $d_type == 'gtaa' ]; then
     /work/jzhu/project/ql/script/taa.py -m ql/taa/lo -s 20130512 -g 1 -t glob > /tmp/gtaa.log 2>&1 
 
 elif [ $d_type == 'dtaa' ]; then
-    scp -rp user1@8.142.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
-    scp -rp user1@8.142.157.170:/work/shared/nh/*csv /work/jzhu/input/yf/nh/
-    scp -rp user1@8.142.157.170:/work/shared/iv/*csv /work/jzhu/input/yf/iv/
-    scp -rp user1@8.142.157.170:/work/shared/idxetf/*csv /work/jzhu/input/yf/idxetf/
-    scp -rp user1@8.142.157.170:/work/shared/global/*csv /work/jzhu/input/yf/global/
-
-    scp -rp /work/jzhu/input/yf/*  123.57.60.6:/work/jzhu/input/yf/
-
-    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/yf > /tmp/yf.log 2>&1
     /work/jzhu/project/ql/script/taa.py -m ql/taa/lo -s 20190512 -g 2 -t glob > /tmp/dtaa.log 2>&1 
     scp -rp /work/shared/daily/ql/taa/*glob*2022* user1@8.142.157.170:/work/shared/daily/slib/mmw/
     scp -rp /work/shared/daily/ql/taa/*glob*2022* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
@@ -109,6 +100,15 @@ elif [ $d_type == 'ci' ]; then
     scp -rp /work/jzhu/input/Index/ user1@8.142.157.170:/work/shared/raw/
 
 elif [ $d_type == 'dplt' ]; then
+    scp -rp user1@8.l142.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
+    scp -rp user1@8.142.157.170:/work/shared/nh/*csv /work/jzhu/input/yf/nh/
+    scp -rp user1@8.142.157.170:/work/shared/iv/*csv /work/jzhu/input/yf/iv/
+    scp -rp user1@8.142.157.170:/work/shared/idxetf/*csv /work/jzhu/input/yf/idxetf/
+    scp -rp user1@8.142.157.170:/work/shared/global/*csv /work/jzhu/input/yf/global/
+
+    scp -rp /work/jzhu/input/yf/*  123.57.60.6:/work/jzhu/input/yf/
+
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/yf > /tmp/yf.log 2>&1
     /work/jzhu/project/finger/misc/futures_plot.py > /tmp/futures_plot.log 2>&1 
     /work/jzhu/project/finger/misc/futures_plot_bkdata.py > /tmp/bk_plot.log 2>&1 
 
@@ -118,12 +118,12 @@ elif [ $d_type == 'dplt' ]; then
 
     /work/jzhu/project/finger/misc/qb_plt.py -t nh -o -f -m iv -s 20210108  > /tmp/iv_nh.log 2>&1  
 
-    scp -rp /work/shared/output/complot* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
-    scp -rp /work/shared/output/iv_*.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/tmp/
+    scp -rp /work/shared/output/complot* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/  > /tmp/scp_plt.log 2>&1 &
+    scp -rp /work/shared/output/iv_*.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/tmp/  > /tmp/scp_iv.log 2>&1 &
 
 
     /work/jzhu/project/finger/misc/pm.R > /tmp/pm.log.$edate 2>&1 
-    scp -rp /work/shared/output/a_*pm.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
+    scp -rp /work/shared/output/a_*pm.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/ > /tmp/scp_pm.log 2>&1 &
 
 elif [ $d_type == 'gplt' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf > /tmp/idp.log 2>&1
