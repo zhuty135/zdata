@@ -100,7 +100,7 @@ elif [ $d_type == 'ci' ]; then
     scp -rp /work/jzhu/input/Index/ user1@8.142.157.170:/work/shared/raw/
 
 elif [ $d_type == 'dplt' ]; then
-    scp -rp user1@8.l142.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
+    scp -rp user1@8.l42.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
     scp -rp user1@8.142.157.170:/work/shared/nh/*csv /work/jzhu/input/yf/nh/
     scp -rp user1@8.142.157.170:/work/shared/iv/*csv /work/jzhu/input/yf/iv/
     scp -rp user1@8.142.157.170:/work/shared/idxetf/*csv /work/jzhu/input/yf/idxetf/
