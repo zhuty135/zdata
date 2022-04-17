@@ -49,6 +49,8 @@ elif [ $d_type == 'gtaa' ]; then
 
 elif [ $d_type == 'dtaa' ]; then
     /work/jzhu/project/ql/script/taa.py -m ql/taa/lo -s 20190512 -g 2 -t glob > /tmp/dtaa.log 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/taa/lo.glob.20 > /tmp/dtaa.pc.log 2>&1 
+
     scp -rp /work/shared/daily/ql/taa/*glob*2022* user1@8.142.157.170:/work/shared/daily/slib/mmw/
     scp -rp /work/shared/daily/ql/taa/*glob*2022* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
     /work/jzhu/project/slib/script/bby.py -t lo.glob.20 -w ewb2  -m ql/taa -s 20160512 > /tmp/zmpa_zbw_glob_ewb2.log 2>&1 
@@ -99,14 +101,47 @@ elif [ $d_type == 'ci' ]; then
     scp -rp /work/jzhu/input/Index/ jzhu@106.14.226.83:/work/shared/raw/
     scp -rp /work/jzhu/input/Index/ user1@8.142.157.170:/work/shared/raw/
 
-elif [ $d_type == 'dplt' ]; then
-    scp -rp user1@8.l42.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
+elif [ $d_type == 'user1' ]; then
+    scp -rp user1@8.142.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
     scp -rp user1@8.142.157.170:/work/shared/nh/*csv /work/jzhu/input/yf/nh/
     scp -rp user1@8.142.157.170:/work/shared/iv/*csv /work/jzhu/input/yf/iv/
     scp -rp user1@8.142.157.170:/work/shared/idxetf/*csv /work/jzhu/input/yf/idxetf/
     scp -rp user1@8.142.157.170:/work/shared/global/*csv /work/jzhu/input/yf/global/
-
     scp -rp /work/jzhu/input/yf/*  123.57.60.6:/work/jzhu/input/yf/
+
+elif [ $d_type == 'dplt' ]; then
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.iv.1m -o > /tmp/calixew_nhiv1m.log 2>&1  
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.iv.6m -o > /tmp/calixew_nhiv6m.log 2>&1 
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.sk.1m -o > /tmp/calixew_nhsk1m.log 2>&1  
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.sk.6m -o > /tmp/calixew_nhsk6m.log 2>&1 
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.bfly.1m -o  > /tmp/calixew_nhbfly.1m.log 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.bfly.6m -o  > /tmp/calixew_nhbfly.6m.log 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.cs -o  > /tmp/calixew_nhcs.log 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.corr -o  > /tmp/calixew_nhcorr.log 2>&1
+
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.iv.1m -o > /tmp/calixew_hz.iv.1m 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.iv.6m -o > /tmp/calixew_hz.iv.6m 2>&1 
+    #/work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.bfly.1m -o
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.bfly.6m -o > /tmp/calixew_hz.bfly.6m 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.corr  -o > /tmp/calixew_hz.corr  2>&1
+    #/work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.sk.1m  -o
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.sk.6m  -o > /tmp/calixew_hz.sk.6m 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.cs -o > /tmp/calixew_hz.cs    2>&1
+
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.viv.1m -o   > /tmp/calixew_hz.viv.1m 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t hz.viv.6m -o   > /tmp/calixew_hz.viv.6m 2>&1   
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.viv.1m -o   > /tmp/calixew_nh.viv.1m 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.viv.6m -o   > /tmp/calixew_nh.viv.6m 2>&1
+
+
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t ta.sect.cov  -o  > /tmp/calcrv_ta.sect.cov  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t hz.sect.cov  -o  > /tmp/calcrv_hz.sect.cov  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t nh.sect.cov  -o  > /tmp/calcrv_nh.sect.cov  2>&1
+
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t ta.sect.corr -o   > /tmp/calcrv_ta.sect.corr 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t hz.sect.corr -o   > /tmp/calcrv_hz.sect.corr 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t nh.sect.corr -o   > /tmp/calcrv_nh.sect.corr 2>&1
+   
 
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/yf > /tmp/yf.log 2>&1
     /work/jzhu/project/finger/misc/futures_plot.py > /tmp/futures_plot.log 2>&1 
