@@ -134,21 +134,17 @@ elif [ $d_type == 'dplt' ]; then
     /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.viv.6m -o   > /tmp/calixew_nh.viv.6m 2>&1
 
 
-    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t ta.sect.cov  -o  > /tmp/calcrv_ta.sect.cov  2>&1
+
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t dtta.sect.cov  -o  > /tmp/calcrv_dtta.sect.cov  2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_crv -t hz.sect.cov  -o  > /tmp/calcrv_hz.sect.cov  2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_crv -t nh.sect.cov  -o  > /tmp/calcrv_nh.sect.cov  2>&1
-    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t xl.sect.cov  -o  > /tmp/calcrv_xl.sect.cov  2>&1
-    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t xt.sect.cov  -o  > /tmp/calcrv_xt.sect.cov  2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_crv -t spgs.sect.cov  -o  > /tmp/calcrv_spgs.sect.cov  2>&1
-    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t gtaa.sect.cov  -o  > /tmp/calcrv_gtaa.sect.cov  2>&1
 
-    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t ta.sect.corr -o   > /tmp/calcrv_ta.sect.corr 2>&1
+
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t dtta.sect.corr -o   > /tmp/calcrv_dtta.sect.corr 2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_crv -t hz.sect.corr -o   > /tmp/calcrv_hz.sect.corr 2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_crv -t nh.sect.corr -o   > /tmp/calcrv_nh.sect.corr 2>&1
-    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t xl.sect.corr  -o  > /tmp/calcrv_xl.sect.corr 2>&1
-    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t xt.sect.corr  -o  > /tmp/calcrv_xt.sect.corr 2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_crv -t spgs.sect.corr  -o  > /tmp/calcrv_spgs.sect.corr 2>&1
-    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t gtaa.sect.corr  -o  > /tmp/calcrv_gtaa.sect.corr 2>&1
 
 
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/yf > /tmp/yf.log 2>&1
@@ -170,6 +166,21 @@ elif [ $d_type == 'dplt' ]; then
 
 elif [ $d_type == 'gplt' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf > /tmp/idp.log 2>&1
+
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t gtaa.sect.cov  -o  > /tmp/calcrv_gtaa.sect.cov  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t dm.sect.cov  -o  > /tmp/calcrv_dm.sect.cov  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t em.sect.cov  -o  > /tmp/calcrv_em.sect.cov  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t icln.sect.cov  -o  > /tmp/calcrv_icln.sect.cov  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t xl.sect.cov  -o  > /tmp/calcrv_xl.sect.cov  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t xt.sect.cov  -o  > /tmp/calcrv_xt.sect.cov  2>&1
+
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t gtaa.sect.corr  -o  > /tmp/calcrv_gtaa.sect.corr 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t dm.sect.corr  -o  > /tmp/calcrv_dm.sect.corr  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t em.sect.corr  -o  > /tmp/calcrv_em.sect.corr  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t icln.sect.corr  -o  > /tmp/calcrv_icln.sect.corr 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t xl.sect.corr  -o  > /tmp/calcrv_xl.sect.corr 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_crv -t xt.sect.corr  -o  > /tmp/calcrv_xt.sect.corr 2>&1
+
     /work/jzhu/project/finger/misc/qb_plt.py -t idxetf  -o -f > /tmp/qb_plt.log 2>&1  
     /work/jzhu/project/finger/misc/qb_plt.py -t idxetf   -o -f -m iv > /tmp/iv_ix.log 2>&1 
     /work/jzhu/project/finger/misc/qb_plt.py -t nh -m cs -o -s 20191205   > /tmp/nh_cs.log 2>&1
