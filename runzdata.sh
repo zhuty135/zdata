@@ -188,6 +188,8 @@ elif [ $d_type == 'gplt' ]; then
 
     cp -r /work/shared/output/complot* /work/dwhang/project/sit/Shiny/yzpa/
     cp -r /work/shared/output/iv_*.pdf /work/dwhang/project/sit/Shiny/yzpa/tmp/
+    cp -r /work/shared/output/a_* /work/dwhang/project/sit/Shiny/yzpa/
+
 
 elif [ $d_type == 'pi' ]; then
     scp -rp /work/jzhu/output/ql/mpa/*csv jzhu@123.57.60.6:/work/jzhu/input/se2018/daily/ 
