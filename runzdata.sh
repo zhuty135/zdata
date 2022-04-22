@@ -382,6 +382,9 @@ elif [ $d_type == 'iv' ]; then
 
     /work/jzhu/project/slib/script/kdj.py -t iv6m   -s 20200905 > /work/shared/daily/log/chaodi_iv6m.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t iv1m   -s 20200905 > /work/shared/daily/log/chaodi_iv1m.log  2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.iv6m > /work/shared/daily/log/chaodi_iv6m.clog 2>&1
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.iv1m > /work/shared/daily/log/chaodi_iv1m.clog 2>&1
+
 
 
 elif [ $d_type == 'nh' ]; then
@@ -434,14 +437,16 @@ elif [ $d_type == 'doch' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t shsz > /tmp/chaodi_shsz.log
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t iv > /tmp/chaodi_iv.log
 
-    /work/jzhu/project/slib/script/kdj.py -t cflo -s 20180505 > /work/shared/daily/log/chaodi_cflo.log  2>&1
+    /work/jzhu/project/slib/script/kdj.py -t cflo -s 20200505 > /work/shared/daily/log/chaodi_cflo.log  2>&1
     /work/jzhu/project/slib/script/kdj.py -t colo -s 20180505 > /work/shared/daily/log/chaodi_colo.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -m slib/sw/so  -t coso -s 20180505 > /work/shared/daily/log/chaodi_coso.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -m slib/sw/so  -t hzso -s 20180505 > /work/shared/daily/log/chaodi_hzso.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t hzlo -s 20060505 > /work/shared/daily/log/chaodi_hzlo.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t tflo -s 20160505 > /work/shared/daily/log/chaodi_tflo.log  2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.cflo > /work/shared/daily/log/chaodi_cflo.clog  2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.colo > /work/shared/daily/log/chaodi_colo.clog  2>&1 &
-    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.coso > /work/shared/daily/log/chaodi_coso.clog  2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/sw/so.coso > /work/shared/daily/log/chaodi_coso.clog  2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/sw/so.hzso > /work/shared/daily/log/chaodi_hzso.clog  2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.hzlo > /work/shared/daily/log/chaodi_hzlo.clog  2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.tflo > /work/shared/daily/log/chaodi_tflo.clog  2>&1 &
 
