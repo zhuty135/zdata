@@ -102,9 +102,9 @@ elif [ $d_type == 'ci' ]; then
     scp -rp /work/jzhu/input/Index/ user1@8.142.157.170:/work/shared/raw/
 
 elif [ $d_type == 'user1' ]; then
-    scp -rp user1@8.142.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
     scp -rp user1@8.142.157.170:/work/shared/nh/*csv /work/jzhu/input/yf/nh/
     scp -rp user1@8.142.157.170:/work/shared/iv/*csv /work/jzhu/input/yf/iv/
+    scp -rp user1@8.142.157.170:/work/shared/moredata/*csv /work/jzhu/input/yf/
     scp -rp user1@8.142.157.170:/work/shared/idxetf/*csv /work/jzhu/input/yf/idxetf/
     scp -rp user1@8.142.157.170:/work/shared/global/*csv /work/jzhu/input/yf/global/
     scp -rp /work/jzhu/input/yf/*  123.57.60.6:/work/jzhu/input/yf/
@@ -139,6 +139,10 @@ elif [ $d_type == 'idxetf' ]; then
 
 
 elif [ $d_type == 'dplt' ]; then
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 0 -b 0.0001 -o > /tmp/bd_126_0.log 2>&1  
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 2 -b 0.0001 -o > /tmp/bd_126_2.log 2>&1  
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 0 -b 0.0001 -o > /tmp/bd_63_0.log 2>&1  
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 2 -b 0.0001 -o > /tmp/bd_63_2.log 2>&1  
 
     /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.iv.1m -o > /tmp/calixew_nhiv1m.log 2>&1  
     /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.iv.6m -o > /tmp/calixew_nhiv6m.log 2>&1 
@@ -208,6 +212,8 @@ elif [ $d_type == 'dplt' ]; then
     scp -rp /work/shared/output/b_*sa.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
 
     /work/jzhu/project/finger/misc/patten_plot.py -t dtaa -o -s 20200905  > /tmp/tp_dtaa.log 2>&1 
+    /work/jzhu/project/finger/misc/patten_plot.py -t dtaa -o -s 20200905  -b 50 -w 505  > /tmp/tp_dtaa_50_505.log 2>&1 
+    /work/jzhu/project/finger/misc/patten_plot.py -t dtaa -o -s 20200905  -b 25  > /tmp/tp_dtaa_25.log 2>&1 
 
 
 elif [ $d_type == 'gplt' ]; then
@@ -481,6 +487,7 @@ elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/slib/script/kdj.py -t slog -s 20180505 > /work/shared/daily/log/chaodi_slog.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t morb -s 20180505 > /work/shared/daily/log/chaodi_morb.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t idxetf -s 20180505 > /work/shared/daily/log/chaodi_idxetf.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -t qdii -s 20180505 > /work/shared/daily/log/chaodi_idxetf.log  2>&1 
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.idxetf >/work/shared/daily/log/chaodi_idxetf.clog  2>&1 &
 elif [ $d_type == 'zbw' ]; then
@@ -562,6 +569,15 @@ elif [ $d_type == 'macro' ]; then
     #/work/jzhu/project/ql/script/comacro.py -s 20160101 -e $edate >  /work/shared/daily/log/comacro.log 2>&1
     /work/jzhu/project/ql/script/comacro.py -s 20160101 -r w >  /work/shared/daily/log/comacro.log 2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  /ql/mac/macro.cfca > /tmp/macro.cfca.log 
+
+elif [ $d_type == 'usmacro' ]; then
+    scp -rp 123.57.60.6:/tmp/US_macro/*csv /work/jzhu/data/raw
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf > /tmp/idp.log 2>&1
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/global > /tmp/idp.log 2>&1
+    #cp /work/jzhu/data/raw/pmi2022-04-30.csv /work/jzhu/data/raw/pmi.csv
+    /work/jzhu/project/zlib/zsprd.py -m cal_usmacro -o > /tmp/cal_macro.log 2>&1 
+    cp /work/jzhu/output/macro/us_ODSCHG.csv /work/jzhu/project/ql/data/
+ 
 
 
 
