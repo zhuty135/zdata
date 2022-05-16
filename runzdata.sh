@@ -139,15 +139,22 @@ elif [ $d_type == 'idxetf' ]; then
 
 
 elif [ $d_type == 'dplt' ]; then
-    /work/jzhu/project/finger/misc/bd.py -l 126 -d 0 -b 0.0001 -o > /tmp/bd_126_0.log 2>&1  
-    /work/jzhu/project/finger/misc/bd.py -l 126 -d 2 -b 0.0001 -o > /tmp/bd_126_2.log 2>&1  
-    /work/jzhu/project/finger/misc/bd.py -l 63  -d 0 -b 0.0001 -o > /tmp/bd_63_0.log 2>&1  
-    /work/jzhu/project/finger/misc/bd.py -l 63  -d 2 -b 0.0001 -o > /tmp/bd_63_2.log 2>&1  
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 0 -b 0.0001 -o  yzpa > /tmp/bd_126_0.log 2>&1  
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 2 -b 0.0001 -o  yzpa > /tmp/bd_126_2.log 2>&1  
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 0 -b 0.0001 -o  yzpa > /tmp/bd_63_0.log 2>&1  
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 2 -b 0.0001 -o  yzpa > /tmp/bd_63_2.log 2>&1  
 
-    /work/jzhu/project/finger/misc/bd.py -l 63  -d 0 -b 0.0001 -o yzpa  -t nh > /tmp/bd_nh_63_2.log 2>&1
-    /work/jzhu/project/finger/misc/bd.py -l 63  -d 2 -b 0.0001 -o yzpa  -t nh > /tmp/bd_nh_63_2.log 2>&1
-    /work/jzhu/project/finger/misc/bd.py -l 126 -d 0 -b 0.0001 -o yzpa  -t nh > /tmp/bd_nh_126_0.log 2>&1
-    /work/jzhu/project/finger/misc/bd.py -l 126 -d 2 -b 0.0001 -o yzpa  -t nh > /tmp/bd_nh_126_2.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 0 -b 0.0001 -o yzpa  -t pxnh > /tmp/bd_pxnh_63_2.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 2 -b 0.0001 -o yzpa  -t pxnh > /tmp/bd_pxnh_63_2.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 0 -b 0.0001 -o yzpa  -t pxnh > /tmp/bd_pxnh_126_0.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 2 -b 0.0001 -o yzpa  -t pxnh > /tmp/bd_pxnh_126_2.log 2>&1
+
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 0 -b 0.0001 -o yzpa  -t ivnh > /tmp/bd_nhiv_63_2.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 2 -b 0.0001 -o yzpa  -t ivnh > /tmp/bd_nhiv_63_2.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 0 -b 0.0001 -o yzpa  -t ivnh > /tmp/bd_nhiv_126_0.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 2 -b 0.0001 -o yzpa  -t ivnh > /tmp/bd_nhiv_126_2.log 2>&1
+
+
 
 
     /work/jzhu/project/zlib/zsprd.py -m cal_ixew -t nh.iv.1m -o > /tmp/calixew_nhiv1m.log 2>&1  
