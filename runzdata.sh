@@ -486,6 +486,7 @@ elif [ $d_type == 'doch' ]; then
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.tflo > /work/shared/daily/log/chaodi_tflo.clog  2>&1 &
 
     scp -rp /work/shared/daily/slib/fsd/jw*2021* jzhu@106.14.226.83:/work/shared/daily//slib/fsd/
+
 elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t idxetf > /tmp/chaodi.log
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t spgs > /tmp/chaodi.log
@@ -500,7 +501,7 @@ elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/slib/script/kdj.py -t slog -s 20180505 > /work/shared/daily/log/chaodi_slog.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t morb -s 20180505 > /work/shared/daily/log/chaodi_morb.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t idxetf -s 20180505 > /work/shared/daily/log/chaodi_idxetf.log  2>&1 
-    /work/jzhu/project/slib/script/kdj.py -t qdii -s 20180505 > /work/shared/daily/log/chaodi_idxetf.log  2>&1 
+    /work/jzhu/project/slib/script/kdj.py -t qdii -s 20180505 > /work/shared/daily/log/chaodi_qdii.log  2>&1 
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.idxetf >/work/shared/daily/log/chaodi_idxetf.clog  2>&1 &
 elif [ $d_type == 'zbw' ]; then
@@ -614,6 +615,9 @@ elif [ $d_type == 'scp' ]; then
     scp -rp /work/jzhu/output/slib/bbx/mpa.ewvt.csv jzhu@106.14.226.83:/work/jzhu/input/se2018/daily/ > /tmp/mpa_scp.log 
 
     scp -rp /work/jzhu/input/idxetf user1@8.142.157.170:/work/shared/Index/
+
+elif [ $d_type == 'yfscp' ]; then
+    scp -rp jzhu@123.57.60.6:/work/shared/daily/slib/jw/*qdii* user1@8.142.157.170:/work/shared/daily/slib/mmw/
 
 
 
