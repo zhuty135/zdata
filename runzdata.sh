@@ -494,6 +494,8 @@ elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -t dig -d iv30 -o > /tmp/dig.iv30.log 2>&1
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -t dig -d gex -o > /tmp/dig.gex.log 2>&1
 
+    /work/jzhu/project/slib/script/kdj.py -t qdii -s 20180505 > /work/shared/daily/log/chaodi_qdii.log  2>&1 
+
     /work/jzhu/project/slib/script/kdj.py -t splo -s 20150505 > /work/shared/daily/log/chaodi_splo.log  2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.splo > /work/shared/daily/log/chaodi_splo.clog  2>&1 &
 
@@ -501,7 +503,6 @@ elif [ $d_type == 'glch' ]; then
     /work/jzhu/project/slib/script/kdj.py -t slog -s 20180505 > /work/shared/daily/log/chaodi_slog.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t morb -s 20180505 > /work/shared/daily/log/chaodi_morb.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t idxetf -s 20180505 > /work/shared/daily/log/chaodi_idxetf.log  2>&1 
-    /work/jzhu/project/slib/script/kdj.py -t qdii -s 20180505 > /work/shared/daily/log/chaodi_qdii.log  2>&1 
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.idxetf >/work/shared/daily/log/chaodi_idxetf.clog  2>&1 &
 elif [ $d_type == 'zbw' ]; then
