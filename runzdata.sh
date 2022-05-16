@@ -232,6 +232,9 @@ elif [ $d_type == 'dplt' ]; then
 elif [ $d_type == 'gplt' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf > /tmp/idp.log 2>&1
 
+    /work/jzhu/project/finger/misc/pm_cov.R > /tmp/pm_cov.log.$edate 2>&1 
+    cp -rp /work/shared/output/a_* /work/dwhang/project/sit/Shiny/yzpa/ 
+
     /work/jzhu/project/zlib/zsprd.py -m cal_crv -t gtaa.sect.cov  -o  > /tmp/calcrv_gtaa.sect.cov  2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_crv -t dm.sect.cov  -o  > /tmp/calcrv_dm.sect.cov  2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_crv -t em.sect.cov  -o  > /tmp/calcrv_em.sect.cov  2>&1
