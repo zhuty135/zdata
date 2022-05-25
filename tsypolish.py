@@ -16,7 +16,8 @@ def fill_data(df):
     sd = df.index[0].strftime(dt_fmt)
     ed = df.index[-1].strftime(dt_fmt)
     bd_list = get_business_date_list(fmt=dt_fmt,caltype='XSHG')
-    short_bd_list = pd.to_datetime(bd_list[(bd_list >= sd) & (bd_list <= ed)]).tz_localize('UTC')
+    #short_bd_list = pd.to_datetime(bd_list[(bd_list >= sd) & (bd_list <= ed)]).tz_localize('UTC')
+    short_bd_list = pd.to_datetime(bd_list).tz_localize('UTC')
 
     print('jzcheck',sd,ed,df.iloc[-10:,])
     print(short_bd_list)
