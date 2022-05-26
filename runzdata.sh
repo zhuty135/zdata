@@ -113,6 +113,9 @@ elif [ $d_type == 'user1' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/iv/ > /tmp/iv.pol.log 2>&1
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t iv > /tmp/chaodi_iv.log
 
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf/  > /tmp/idxetf.pol.log 
+    /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/global/  > /tmp/global.pol.log 
+
     /work/jzhu/project/slib/script/kdj.py -t iv6m   -s 20200905 > /work/shared/daily/log/chaodi_iv6m.log  2>&1 
     /work/jzhu/project/slib/script/kdj.py -t iv1m   -s 20200905 > /work/shared/daily/log/chaodi_iv1m.log  2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  slib/jw/lo.iv6m > /work/shared/daily/log/chaodi_iv6m.clog 2>&1
@@ -139,6 +142,7 @@ elif [ $d_type == 'idxetf' ]; then
 
 
 elif [ $d_type == 'dplt' ]; then
+
     /work/jzhu/project/finger/misc/bd.py -l 126 -d 0 -b 0.0001 -o  yzpa > /tmp/bd_126_0.log 2>&1  
     /work/jzhu/project/finger/misc/bd.py -l 126 -d 2 -b 0.0001 -o  yzpa > /tmp/bd_126_2.log 2>&1  
     /work/jzhu/project/finger/misc/bd.py -l 63  -d 0 -b 0.0001 -o  yzpa > /tmp/bd_63_0.log 2>&1  
@@ -153,6 +157,11 @@ elif [ $d_type == 'dplt' ]; then
     /work/jzhu/project/finger/misc/bd.py -l 63  -d 2 -b 0.0001 -o yzpa  -t ivnh > /tmp/bd_nhiv_63_2.log 2>&1
     /work/jzhu/project/finger/misc/bd.py -l 126 -d 0 -b 0.0001 -o yzpa  -t ivnh > /tmp/bd_nhiv_126_0.log 2>&1
     /work/jzhu/project/finger/misc/bd.py -l 126 -d 2 -b 0.0001 -o yzpa  -t ivnh > /tmp/bd_nhiv_126_2.log 2>&1
+
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 0 -b 0.0001 -o yzpa  -t macro > /tmp/bd_maco_63_2.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 63  -d 2 -b 0.0001 -o yzpa  -t macro > /tmp/bd_maco_63_2.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 0 -b 0.0001 -o yzpa  -t macro > /tmp/bd_maco_126_0.log 2>&1
+    /work/jzhu/project/finger/misc/bd.py -l 126 -d 2 -b 0.0001 -o yzpa  -t macro > /tmp/bd_maco_126_2.log 2>&1
 
 
 
@@ -197,6 +206,20 @@ elif [ $d_type == 'dplt' ]; then
 
     /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t iv_nh_hz -o  > /tmp/caliv_nh_hz.log 2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t iv_sp_hz -o  > /tmp/caliv_sp_hz.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_nh_hz -o  > /tmp/calpx_nh_hz.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_in_nh -o  > /tmp/calpx_in_nh.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_ag_nh -o  > /tmp/calpx_ag_nh.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_ec_nh -o  > /tmp/calpx_ec_nh.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_ag_ec -o  > /tmp/calpx_ag_ec.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_in_ec -o  > /tmp/calpx_in_ec.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_cyc_def -o  > /tmp/calpx_cyc_def.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_xle_sp -o  > /tmp/calpx_xle_sp.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_xlf_sp -o  > /tmp/calpx_xlf_sp.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_xlb_sp -o  > /tmp/calpx_xlb_sp.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_xlk_sp -o  > /tmp/calpx_xlk_sp.log  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_hr  -t px_gc_usd -o  > /tmp/calpx_gc_usd.log  2>&1
+
+
 
     /work/jzhu/project/zlib/zsprd.py -m cal_csab -t hz.csab  -o  > /tmp/caliv_hz.csab.log 2>&1
     /work/jzhu/project/zlib/zsprd.py -m cal_csab -t tf.csab  -o  > /tmp/caliv_tf.csab.log 2>&1
@@ -219,6 +242,7 @@ elif [ $d_type == 'dplt' ]; then
     scp -rp /work/shared/output/iv_*.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/tmp/  > /tmp/scp_iv.log 2>&1 &
 
 
+elif [ $d_type == 'dpm' ]; then
     /work/jzhu/project/finger/misc/pm.R > /tmp/pm.log.$edate 2>&1 
     scp -rp /work/shared/output/a_*pm.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/ > /tmp/scp_pm.log 2>&1 &
     /work/jzhu/project/finger/misc/sa.pm  > /tmp/sa.log.$edate 2>&1
@@ -579,13 +603,20 @@ elif [ $d_type == 'macro' ]; then
     cp /work/jzhu/output/macro/M1M2_CHG.csv /work/jzhu/project/ql/data/
     cp /work/jzhu/output/macro/CPI_PPI_CHG.csv /work/jzhu/project/ql/data/
     cp /work/jzhu/output/macro/M1ADVPPI.csv /work/jzhu/project/ql/data/
+    cp /work/jzhu/output/macro/PMI_NewOrder.csv /work/jzhu/project/ql/data/
+    cp /work/jzhu/output/macro/PMI_GoodsInventory.csv /work/jzhu/project/ql/data/
+    cp /work/jzhu/output/macro/PMI_MaterialInventory.csv /work/jzhu/project/ql/data/
+
 
     #/work/jzhu/project/ql/script/stockmacroih.py -e $edate  >  /work/shared/daily/log/stockmacroih.log 2>&1
     /work/jzhu/project/ql/script/hzmacro.py -s 20160101 -r w  >  /work/shared/daily/log/hzmacro.log 2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  /ql/mac/macro.hzpa > /tmp/macro.hzpa.log 
 
     #/work/jzhu/project/ql/script/comacro.py -s 20160101 -e $edate >  /work/shared/daily/log/comacro.log 2>&1
-    /work/jzhu/project/ql/script/comacro.py -s 20160101 -r w >  /work/shared/daily/log/comacro.log 2>&1
+    /work/jzhu/project/ql/script/comacro.py -s 20160101 -r w -c psmc >  /work/shared/daily/log/comacro.log 2>&1
+    /work/jzhu/project/ql/script/comacro.py -s 20160301 -r w -t TFTPA.PO -c reverse > /work/shared/daily/log/tmacro.log 2>&1 &
+    /work/jzhu/project/ql/script/comacro.py -s 20160301 -r w -t TFTFPA.PO -c reverse > /work/shared/daily/log/tfmacro.log 2>&1 &
+
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  /ql/mac/macro.cfca > /tmp/macro.cfca.log 
 
 elif [ $d_type == 'usmacro' ]; then
@@ -595,6 +626,14 @@ elif [ $d_type == 'usmacro' ]; then
     #cp /work/jzhu/data/raw/pmi2022-04-30.csv /work/jzhu/data/raw/pmi.csv
     /work/jzhu/project/zlib/zsprd.py -m cal_usmacro -o > /tmp/cal_macro.log 2>&1 
     cp /work/jzhu/output/macro/us_ODSCHG.csv /work/jzhu/project/ql/data/
+
+    /work/jzhu/project/ql/script/spymacro.py -r w -t qqq.o -c us_DGS2 > /tmp/macro_qqq.log 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  /ql/mac/macro.qqq.o.us_DGS2 > /tmp/qqq.dgs2.log 
+
+    /work/jzhu/project/ql/script/spymacro.py -r w -t XLF.P -c us_BAMLC0A4CBBB > /tmp/macro_xlf.log 
+    /work/jzhu/project/slib/script/pickle_to_csv.py -m  /ql/mac/macro.XLF.P.us_BAMLC0A4CBBB > /tmp/xlf.bbb.log 
+
+
  
 
 
