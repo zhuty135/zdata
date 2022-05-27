@@ -243,6 +243,10 @@ elif [ $d_type == 'dplt' ]; then
 
 
 elif [ $d_type == 'dpm' ]; then
+    /work/jzhu/project/zlib/zsprd.py -m cal_std -t cfpa -o  > /tmp/calstd_cfpa.sect  2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_std -t nhpa -o  > /tmp/calstd_nhpa 2>&1
+    /work/jzhu/project/zlib/zsprd.py -m cal_std -t shsz -o  > /tmp/calstd_shsz 2>&1
+
     /work/jzhu/project/finger/misc/pm.R > /tmp/pm.log.$edate 2>&1 
     scp -rp /work/shared/output/a_*pm.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/ > /tmp/scp_pm.log 2>&1 &
     /work/jzhu/project/finger/misc/sa.pm  > /tmp/sa.log.$edate 2>&1
@@ -614,8 +618,8 @@ elif [ $d_type == 'macro' ]; then
 
     #/work/jzhu/project/ql/script/comacro.py -s 20160101 -e $edate >  /work/shared/daily/log/comacro.log 2>&1
     /work/jzhu/project/ql/script/comacro.py -s 20160101 -r w -c psmc >  /work/shared/daily/log/comacro.log 2>&1
-    /work/jzhu/project/ql/script/comacro.py -s 20160301 -r w -t TFTPA.PO -c reverse > /work/shared/daily/log/tmacro.log 2>&1 &
-    /work/jzhu/project/ql/script/comacro.py -s 20160301 -r w -t TFTFPA.PO -c reverse > /work/shared/daily/log/tfmacro.log 2>&1 &
+    /work/jzhu/project/ql/script/comacro.py -s 20160301 -r w -t TFTPA.PO -c reverse  -l 0 > /work/shared/daily/log/tmacro.log 2>&1 &
+    /work/jzhu/project/ql/script/comacro.py -s 20160301 -r w -t TFTFPA.PO -c reverse -l 0 > /work/shared/daily/log/tfmacro.log 2>&1 &
 
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  /ql/mac/macro.cfca > /tmp/macro.cfca.log 
 
