@@ -93,7 +93,7 @@ elif [ $d_type == 'index' ]; then
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/index/sql/sse/daily/ > /tmp/index_sh.log 2>&1
 
 elif [ $d_type == 'ci' ]; then
-    /work/jzhu/project/finger/zlib/zutils.py > /tmp/generate_new _cal_file.ci.log
+    /work/jzhu/project/finger/zlib/zutils.py > /tmp/generate_new_cal_file.ci.log
     /work/jzhu/project/finger/index/co_index.py  > /tmp/ci.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i Index --index_col='time' > /tmp/cipol.log 2>&1
 
@@ -311,16 +311,16 @@ elif [ $d_type == 'mpa' ]; then
     #/work/jzhu/project/ql/script/stocktech500.py > /tmp/stocktechic.log 2>&1
     #scp -rp /work/shared/daily/ql/mpa/MPA.wsign.i*.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
 elif [ $d_type == 'zmpa' ]; then
-    /work/jzhu/project/ql/script/zmpa.py -t ifpa -s 20160512 > /work/shared/daily/log/zmpa.ifpa.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t tfpa -s 20160512 > /work/shared/daily/log/zmpa.tfpa.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t cfca > /work/shared/daily/log/zmpa.cfca.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t cfsa > /work/shared/daily/log/zmpa.cfsa.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t cfpa  -s 20160512 > /work/shared/daily/log/zmpa.cfpa.log 2>&1
+    /work/jzhu/project/ql/script/runql.sh -t ifpa -s 20160512 > /work/shared/daily/log/zmpa.ifpa.log 2>&1
+    /work/jzhu/project/ql/script/runql.sh -t tfpa -s 20160512 > /work/shared/daily/log/zmpa.tfpa.log 2>&1
+    /work/jzhu/project/ql/script/runql.sh -t cfca > /work/shared/daily/log/zmpa.cfca.log 2>&1
+    /work/jzhu/project/ql/script/runql.sh -t cfsa > /work/shared/daily/log/zmpa.cfsa.log 2>&1
+    /work/jzhu/project/ql/script/runql.sh -t cfpa  -s 20160512 > /work/shared/daily/log/zmpa.cfpa.log 2>&1
 
     #/work/jzhu/project/ql/script/zmpa.py -t cfo2 -m ql/zmpa/LOZMPA -r w -s 20151212 > /work/shared/daily/log/lozmpa.cfo2.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t cfz2 -m ql/zmpa/LOZMPA -r w -s 20151212 > /work/shared/daily/log/lozmpa.cfz2.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t hack -m ql/zmpa/LOZMPA -r w -s 20210130 > /work/shared/daily/log/lozmpa.hack.log 2>&1
-    /work/jzhu/project/ql/script/zmpa.py -t hzpa -m ql/zmpa/LOZMPA -r w > /work/shared/daily/log/lozmpa.hzpa.log 2>&1
+    /work/jzhu/project/ql/script/runql.sh -t cfz2 -m ql/zmpa/LOZMPA -b w -s 20151212 > /work/shared/daily/log/lozmpa.cfz2.log 2>&1
+    /work/jzhu/project/ql/script/runql.sh -t hack -m ql/zmpa/LOZMPA -b w -s 20210130 > /work/shared/daily/log/lozmpa.hack.log 2>&1
+    /work/jzhu/project/ql/script/runql.sh -t hzpa -m ql/zmpa/LOZMPA -b w > /work/shared/daily/log/lozmpa.hzpa.log 2>&1
 
     scp -rp /work/shared/daily/ql/zmpa/*2022* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 
     scp -rp /work/shared/daily/ql/zmpa/*2022* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
@@ -617,7 +617,7 @@ elif [ $d_type == 'macro' ]; then
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  /ql/mac/macro.hzpa > /tmp/macro.hzpa.log 
 
     #/work/jzhu/project/ql/script/comacro.py -s 20160101 -e $edate >  /work/shared/daily/log/comacro.log 2>&1
-    /work/jzhu/project/ql/script/comacro.py -s 20160101 -r w -c psmc >  /work/shared/daily/log/comacro.log 2>&1
+    /work/jzhu/project/ql/script/comacro.py -s 20160101 -r w -c cfca >  /work/shared/daily/log/comacro.log 2>&1
     /work/jzhu/project/ql/script/comacro.py -s 20160301 -r w -t TFTPA.PO -c reverse  -l 0 > /work/shared/daily/log/tmacro.log 2>&1 &
     /work/jzhu/project/ql/script/comacro.py -s 20160301 -r w -t TFTFPA.PO -c reverse -l 0 > /work/shared/daily/log/tfmacro.log 2>&1 &
 
