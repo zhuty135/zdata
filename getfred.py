@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import datetime
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,14 +14,54 @@ pd.set_option('display.max_rows',20)
 data_wdir = '/work/jzhu/output/'
 
 # 1、 fred数据
-a1=fred.get_series('TOTCI')
-a2=fred.get_series('CONSUMER')
-a3=fred.get_series('ICSA')
-a4=fred.get_series('CCSA')
-a5=fred.get_series('UMCSENT')
-a6=fred.get_series('HSN1F')
-a7=fred.get_series('USREC')
-a8=fred.get_series('TOTALSA')
+def fetch_fred(tickers,oflag=False):
+    rdict = {}
+    for t in tickers:
+        rdata = fred.get_series(t)
+        rdict[t] = rdata 
+        if oflag:
+            opath = '/work/jzhu/output/fred/' + t + '.csv'
+            rdata.to_csv(opath)
+            print('output to:', opath)
+    #print(rdict)
+    rdf = pd.DataFrame.from_dict(rdict,orient='columns')
+    return(rdf)
+
+tickers = ['BAMLH0A1HYBB','BAMLC0A4CBBB','T10Y2Y','DGS10','DGS2','CUSR0000SEEB','CPIMEDSL']
+ddf = fetch_fred(tickers,oflag=True)
+print(ddf)
+tickers = ['TOTCI','TOTCI','CONSUMER','ICSA','CCSA','UMCSENT','HSN1F','USREC','TOTALSA','PAYEMS','MRTSSM44X72USS','GACDFSA066MSFRBPHI','HOUST','DGORDER']
+
+st = datetime.date(2010, 1, 8)
+
+def  fetch_cboe(tickers,oflag=False):
+    rdict = {}
+    for t in tickers:
+        flink = 'https://cdn.cboe.com/api/global/us_indices/daily_prices/' + t + '_History.csv'
+        print(flink)
+        rdata = pd.read_csv(flink)
+        #print(rdata)
+        rdata.set_index('DATE',inplace=True)
+        if oflag:
+            opath = '/work/jzhu/output/cboe/' + t + '.csv'
+            rdata.to_csv(opath)
+            print('output to:', opath)
+ 
+    
+        if t in  ['VIX']:
+            rdict[t] = rdata['CLOSE'][-1000:]
+        else:
+            rdict[t] = rdata[t][-1000:]
+    print(rdict)
+    rdf = pd.DataFrame.from_dict(rdict,orient='columns')
+    return(rdf)
+tickers = ['VIX','SKEW','VVIX']
+cdf = fetch_cboe(tickers,oflag=True)
+print(cdf.iloc[-1,:])
+
+assert(0)
+
+    
 a99=fred.get_series('PAYEMS')
 a9=a99.copy()
 for i in range(0,len(a9)):

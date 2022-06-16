@@ -1,5 +1,5 @@
-#!/usr/bin/python3
-###!/usr/local/anaconda3/bin/python3.9
+#!/usr/local/anaconda3/bin/python3.9
+###!/usr/bin/python3
 import pandas as pd
 import numpy as np
 import sys
@@ -9,7 +9,8 @@ import re
 uname = pwd.getpwuid(os.getuid()).pw_name
 sys.path.append('/work/'+uname+ '/project/zlib/')
 
-from zutils_p35 import get_prev_business_date, get_business_date_list
+from zutils import get_prev_business_date, get_business_date_list
+
 
 def get_univ(iwf):
     df = pd.read_csv(iwf)
@@ -49,10 +50,10 @@ def fill_missing_data(fin,fout,index_col,zfix):
     sd = df.index[0].strftime(dt_fmt)
     ed = df.index[-1].strftime(dt_fmt)
     bd_list = get_business_date_list(fmt=dt_fmt,caltype=os.environ['CALTYPE'])
-    print(sd,ed,type(bd_list))
+    print(sd,ed,bd_list[0:100])
     short_bd_list = pd.to_datetime(bd_list[(bd_list >= sd) & (bd_list <= ed)])
-    print('jzcheck', df.iloc[-10:,])
     print(short_bd_list)
+    print('jzcheck', df.iloc[-10:,])
     df.sort_index(inplace=True)
     try: 
         #df.index.df.drop_duplicates(inplace=True)
@@ -79,6 +80,7 @@ def fill_missing_data(fin,fout,index_col,zfix):
         df = df.append(zseries)
         print('zfix: appended extra row',zfix_dt)
     df.index.names = ['date']
+    df['volume'] = df['volume'] /max(df['volume'] )*1e9
     df.sort_index().round(7).to_csv(fout, index=True,date_format=dt_fmt,na_rep='')
     return True
 
