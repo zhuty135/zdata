@@ -6,3 +6,10 @@
 回填模式，就是抓取过去5天的数据，写如数据库。 
 /work/jzhu/project/gitrepos/zdata/tutosql.py -d index -n -5 -o
 备注：-o 表示会写入数据库或硬盘，缺失不写入
+
+ /work/jzhu/project/zdata/getparam.py -i ql/ssl/grid -f sr 
+ /work/jzhu/project/zdata/getparam.py -i ql/ssl/grid -f dd 
+
+ /work/jzhu/project/zdata/getxxx.py -i ql/zmpa/grid -f sr  |grep = |grep HSI
+ /work/jzhu/project/zdata/getxxx.py -i ql/zmpa/grid -f dd -t HSI.HI |grep = |grep HSI
+

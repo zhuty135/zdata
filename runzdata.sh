@@ -150,8 +150,8 @@ elif [ $d_type == 'user1' ]; then
     /usr/local/anaconda3/bin/zipline ingest -b ivm > /tmp/b_ivm.log 2>&1
     #/work/jzhu/project/slib/script/kdj.py -t iv6m   -s 20200905 > /work/shared/daily/log/chaodi_iv6m.log  2>&1 
     #/work/jzhu/project/slib/script/kdj.py -t iv1m   -s 20200905 > /work/shared/daily/log/chaodi_iv1m.log  2>&1 
-    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t iv6m -f w -s 20200905 -b ivm /work/shared/daily/log/chaodi_iv6m.log  2>&1
-    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t iv1m -f w -s 20200905 -b ivm /work/shared/daily/log/chaodi_iv1m.log  2>&1
+    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t iv6m -f w -s 20200905 -b ivm > /work/shared/daily/log/chaodi_iv6m.log  2>&1
+    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t iv1m -f w -s 20200905 -b ivm > /work/shared/daily/log/chaodi_iv1m.log  2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  slib/jw/lo.iv6m > /work/shared/daily/log/chaodi_iv6m.clog 2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  slib/jw/lo.iv1m > /work/shared/daily/log/chaodi_iv1m.clog 2>&1
 
@@ -411,7 +411,7 @@ elif [ $d_type == 'dmw' ]; then
 
     #/work/jzhu/project/slib/script/mw.py -s 20210630 -t tffu -o all -f > /work/shared/daily/log/mw.tffu.all.log 2>&1 
     /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20210630 -t tffu -o all -p True -w ew > /work/shared/daily/log/mw.cofu.all.log 2>&1 
-    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  slib/mmw/ls.tffu.ew   > /work/shared/daily/log/lw.tflw.clog 2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  slib/mmw/ls.tffu.ew   > /work/shared/daily/log/lw.tffu.clog 2>&1 &
 
 
 elif [ $d_type == 'gmw' ]; then

@@ -27,7 +27,7 @@ def fetch_fred(tickers,oflag=False):
     rdf = pd.DataFrame.from_dict(rdict,orient='columns')
     return(rdf)
 
-tickers = ['BAMLH0A1HYBB','BAMLC0A4CBBB','T10Y2Y','DGS10','DGS2','CUSR0000SEEB','CPIMEDSL']
+tickers = ['BAMLH0A1HYBB','BAMLC0A4CBBB','T10Y2Y','DGS10','DGS2','CUSR0000SEEB','CPIMEDSL','INDPRO','PI','RETAILIRSA','MRTSIR452USS']
 ddf = fetch_fred(tickers,oflag=True)
 print(ddf)
 tickers = ['TOTCI','TOTCI','CONSUMER','ICSA','CCSA','UMCSENT','HSN1F','USREC','TOTALSA','PAYEMS','MRTSSM44X72USS','GACDFSA066MSFRBPHI','HOUST','DGORDER']
@@ -46,16 +46,16 @@ def  fetch_cboe(tickers,oflag=False):
             opath = '/work/jzhu/output/cboe/' + t + '.csv'
             rdata.to_csv(opath)
             print('output to:', opath)
- 
+        #print(rdata) 
     
-        if t in  ['VIX']:
+        if t in  ['COR3M','VIX','VXFXI','VXEWZ','VXEFA','VXEEM']:
             rdict[t] = rdata['CLOSE'][-1000:]
         else:
             rdict[t] = rdata[t][-1000:]
     print(rdict)
     rdf = pd.DataFrame.from_dict(rdict,orient='columns')
     return(rdf)
-tickers = ['VIX','SKEW','VVIX']
+tickers = ['COR3M','VIX','SKEW','VVIX','VXFXI','OVX','EVZ','GVZ','VXEWZ','VXEFA','VXEEM']
 cdf = fetch_cboe(tickers,oflag=True)
 print(cdf.iloc[-1,:])
 
@@ -77,7 +77,7 @@ now=time.strftime('%Y-%m',time.localtime(time.time()))+'-01'
 # a14=w.edb("G0002323", "2020-01-01", now,"Fill=Previous").Data[0]
 a15=fred.get_series('NCBCMDPMVCE')
 a16=fred.get_series('CP')
-a177=fred.get_series('GDP')
+a177=fred.get_series('GDPC1')
 minlen=min(len(a177),len(a16))
 a17=a16.copy()
 for i in range(0,minlen):
