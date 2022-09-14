@@ -344,8 +344,8 @@ elif [ $d_type == 'mpa' ]; then
     #/work/jzhu/project/ql/script/stocktech500.py > /tmp/stocktechic.log 2>&1
     #scp -rp /work/shared/daily/ql/mpa/MPA.wsign.i*.2020* jzhu@106.14.226.83:/work/shared/daily/ql/mpa/
 elif [ $d_type == 'zmpa' ]; then
-    #/work/jzhu/project/zdata/csvpolish.py39 -i Index --index_col='time' > /tmp/cipol2.log 2>&1
-    #/usr/local/anaconda3/bin/zipline ingest -b cit > /tmp/b_cit2.log 2>&1
+    /work/jzhu/project/zdata/csvpolish.py39 -i Index --index_col='time' > /tmp/cipol2.log 2>&1
+    /usr/local/anaconda3/bin/zipline ingest -b cit > /tmp/b_cit2.log 2>&1
 
     /work/jzhu/project/ql/script/runql.sh -t hzpa -s 20160512 -b md > /work/shared/daily/log/zmpa.hzpa.log 2>&1
     /work/jzhu/project/ql/script/runql.sh -t hzsa -s 20160512 -b md > /work/shared/daily/log/zmpa.hzsa.log 2>&1
