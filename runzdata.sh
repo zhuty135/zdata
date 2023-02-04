@@ -63,18 +63,24 @@ elif [ $d_type == 'dtaa' ]; then
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/taa/lo.glob.20 > /tmp/dtaa.pc.log 2>&1 
 
 
-    scp -rp /work/shared/daily/ql/taa/*glob*2022* user1@8.142.157.170:/work/shared/daily/slib/mmw/
-    scp -rp /work/shared/daily/ql/taa/*glob*2022* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
+    scp -rp /work/shared/daily/ql/taa/*glob*2023* user1@8.142.157.170:/work/shared/daily/slib/mmw/
+    scp -rp /work/shared/daily/ql/taa/*glob*2023* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
     /work/jzhu/project/slib/script/bby.py -t lo.glob.20 -w ewb2  -m ql/taa -s 20160512 > /tmp/zmpa_zbw_glob_ewb2.log 2>&1 
 
 
 elif [ $d_type == 'fox' ]; then
     /usr/local/anaconda3/bin/zipline ingest -b fox > /tmp/b_fox.log 2>&1 
-    /work/jzhu/project/ql/script/runql.sh -l fox -t glob -m ql/fox/lo -b fox -g 3 -s 20150512 -e 20220801 > /tmp/fox.log 2>&1 
+    /work/jzhu/project/ql/script/runql.sh -l fox -t glob -m ql/fox/lo -b fox -g 3 -s 20150512 -e 20230801 > /tmp/fox.log 2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/fox/lo.glob.30 > /tmp/fox.pc.log 2>&1 
 
     /work/jzhu/project/ql/script/runql.sh -l fox -t glob -m ql/fox/lo -b fox -g 4 -s 20150512  > /tmp/fox4.log 2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/fox/lo.glob.40 > /tmp/fox4.pc.log 2>&1 
+
+    /work/jzhu/project/ql/script/runql.sh -l fox -t glob -m ql/fox/lo -b fox -g 5 -s 20150512  > /tmp/fox5.log 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/fox/lo.glob.50 > /tmp/fox5.pc.log 2>&1 
+
+    /work/jzhu/project/ql/script/runql.sh -l fox -t glob -m ql/fox/lo -b fox -g 6 -s 20150512  > /tmp/fox5.log 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/fox/lo.glob.60 > /tmp/fox6.pc.log 2>&1 
 
     /work/jzhu/project/ql/script/rungolmar.sh > /tmp/golmar.log 2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/fox/rungolmar > /tmp/olmar.pc.log 2>&1 
@@ -155,27 +161,43 @@ elif [ $d_type == 'user1' ]; then
     /usr/local/anaconda3/bin/zipline ingest -b idxetf > /tmp/bun_idxetf.log 
     /usr/local/anaconda3/bin/zipline ingest -b global > /tmp/bun_global.log 
 
+    /work/jzhu/project/ql/script/runql.sh -t qdix -s 20190512 -b idxetf  -c NYSE  > /work/shared/daily/log/zmpa.qdix.log 2>&1
+    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.qdix > /work/shared/daily/log/zmpa.qdix.clog 2>&1 &
+
     /usr/local/anaconda3/bin/zipline ingest -b ivm > /tmp/b_ivm.log 2>&1
     #/work/jzhu/project/slib/script/kdj.py -t iv6m   -s 20200905 > /work/shared/daily/log/chaodi_iv6m.log  2>&1 
     #/work/jzhu/project/slib/script/kdj.py -t iv1m   -s 20200905 > /work/shared/daily/log/chaodi_iv1m.log  2>&1 
-    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t iv6m -f w -s 20200905 -b ivm > /work/shared/daily/log/chaodi_iv6m.log  2>&1
-    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t iv1m -f w -s 20200905 -b ivm > /work/shared/daily/log/chaodi_iv1m.log  2>&1
+    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t iv6m -f w -s 20220905 -b ivm > /work/shared/daily/log/chaodi_iv6m.log  2>&1
+    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t iv1m -f w -s 20220905 -b ivm > /work/shared/daily/log/chaodi_iv1m.log  2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  slib/jw/lo.iv6m > /work/shared/daily/log/chaodi_iv6m.clog 2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  slib/jw/lo.iv1m > /work/shared/daily/log/chaodi_iv1m.clog 2>&1
 
     /work/jzhu/project/ql/script/runql.sh -t hzhr -s 20160512 -b md > /work/shared/daily/log/zmpa.hzhr.log 2>&1
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.hzhr*2022* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.hzhr*2023* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.hzhr*2023* user1@8.142.157.170:/work/kuang/daily/slib/mmw/ 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.hzhr*2023* user1@8.142.157.170:/work/yfeng/daily/slib/mmw/ 
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.hzhr > /work/shared/daily/log/zmpa.hzhr.clog 2>&1 &
 
+    /usr/local/anaconda3/bin/zipline ingest -b nh > /tmp/bun_nh.log 
+    /work/jzhu/project/ql/script/runql.sh -t nhpa  -s 20160512 -b nh > /work/shared/daily/log/zmpa.nhpa.log 2>&1
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.nhpa*2023* user1@8.142.157.170:/work/kuang/daily/slib/mmw/ 
+    /work/jzhu/project/ql/script/runql.sh -t nhsa  -s 20160512 -b nh > /work/shared/daily/log/zmpa.nhsa.log 2>&1
+    /work/jzhu/project/ql/script/runql.sh -t nhca  -s 20160512 -b nh > /work/shared/daily/log/zmpa.nhca.log 2>&1
+
+    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.nhca > /work/shared/daily/log/zmpa.nhca.clog 2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.nhsa > /work/shared/daily/log/zmpa.nhsa.clog 2>&1 &
+    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.nhpa > /work/shared/daily/log/zmpa.nhpa.clog 2>&1 &
+
     /work/jzhu/project/ql/script/runql.sh -t fipa -s 20160512 -b dtaa > /work/shared/daily/log/zmpa.fipa.log 2>&1
-    #scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.fipa*2022* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.fipa > /work/shared/daily/log/zmpa.fipa.clog 2>&1 &
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.fipa*2022* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 
+    #scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.fipa*2023* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.fipa*2023* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.fipa*2023* user1@8.142.157.170:/work/kuang/daily/slib/mmw/ 
 
 
 
 elif [ $d_type == 'nh' ]; then
-    #20220325 scp -rp 123.57.60.6:/work/jzhu/input/nh/*.csv /work/jzhu/input/nh/ > /tmp/nh.log 2>&1
+    #20230325 scp -rp 123.57.60.6:/work/jzhu/input/nh/*.csv /work/jzhu/input/nh/ > /tmp/nh.log 2>&1
     scp -rp  /work/jzhu/input/nh/*.csv 123.57.60.6:/work/jzhu/input/nh/ > /tmp/nh.log 2>&1
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/nh/ > /tmp/nh.pol.log 2>&1
     /work/jzhu/project/zlib/zstats.py -m cal_kdj -o -t nh > /tmp/chaodi_nh.log
@@ -184,11 +206,15 @@ elif [ $d_type == 'idxetf' ]; then
     #scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*.csv /work/jzhu/input/idxetf/ > /tmp/idxetf.scp.log 
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf/  > /tmp/idxetf.pol.log 
 
-    /work/jzhu/project/ql/script/zmpa.py -t gloetf -s 20190512 > /work/shared/daily/log/zmpa.gloetf.log 2>&1 
-    /work/jzhu/project/ql/script/zmpa.py -t secetf -s 20190512 > /work/shared/daily/log/zmpa.secetf.log 2>&1 
-    /work/jzhu/project/ql/script/zmpa.py -t cashetf -s 20190512 > /work/shared/daily/log/zmpa.cashetf.log 2>&1  
+    #/work/jzhu/project/ql/script/zmpa.py -t gloetf -s 20190512 > /work/shared/daily/log/zmpa.gloetf.log 2>&1 
+    /work/jzhu/project/ql/script/runql.sh -t gloetf -s 20190512 -b idxetf  -c NYSE  > /work/shared/daily/log/zmpa.qdix.log 2>&1
+    #/work/jzhu/project/ql/script/zmpa.py -t secetf -s 20190512 > /work/shared/daily/log/zmpa.secetf.log 2>&1 
+    /work/jzhu/project/ql/script/runql.sh -t secetf -s 20190512 -b idxetf  -c NYSE  > /work/shared/daily/log/zmpa.secetf.log 2>&1
+    #/work/jzhu/project/ql/script/zmpa.py -t cashetf -s 20190512 > /work/shared/daily/log/zmpa.cashetf.log 2>&1  
+    /work/jzhu/project/ql/script/runql.sh -t cashetf -s 20190512 -b idxetf  -c NYSE  > /work/shared/daily/log/zmpa.cashetf.log 2>&1
 
-    /work/jzhu/project/ql/script/zmpa.py -t idxetf -s 20150512 -m ql/zmpa/ZMPA -r w -l lo > /work/shared/daily/log/zmpa.idxetf.log 2>&1 
+    #/work/jzhu/project/ql/script/zmpa.py -t idxetf -s 20150512 -m ql/zmpa/ZMPA -r w -l lo > /work/shared/daily/log/zmpa.idx.log 2>&1 
+    /work/jzhu/project/ql/script/runql.sh -t idxetf -s 20190512 -b idxetf  -c NYSE  > /work/shared/daily/log/zmpa.idx.log 2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py -m  ql/zmpa/ZMPA.idxetf > /work/shared/daily/log/zmpa.idxetf.clog
 
 
@@ -353,7 +379,7 @@ elif [ $d_type == 'calm' ]; then
     #/work/jzhu/project/ql/script/calm.py > /work/shared/daily/log/calm.log 2>&1
     /work/jzhu/project/ql/script/runql.sh -l calm -t cfpa -m ql/calm/CALM -s 20160512 > /work/shared/daily/log/zmpa.ifpa.log 2>&1
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/calm/CALM.cfpa > /work/shared/daily/log/calm.clog 2>&1
-    #scp -rp /work/shared/daily/ql/calm/CALM.wsign.cfpa.2022* jzhu@106.14.226.83:/work/shared/daily/ql/calm/ > /tmp/calm_scp.log
+    #scp -rp /work/shared/daily/ql/calm/CALM.wsign.cfpa.2023* jzhu@106.14.226.83:/work/shared/daily/ql/calm/ > /tmp/calm_scp.log
 
 
 elif [ $d_type == 'mpa' ]; then
@@ -372,10 +398,10 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/zdata/csvpolish.py39 -i Index --index_col='time' > /tmp/cipol2.log 2>&1
     /usr/local/anaconda3/bin/zipline ingest -b cit > /tmp/b_cit2.log 2>&1
 
+    /usr/local/anaconda3/bin/zipline ingest -b dtaa > /tmp/b_dtaa.log 2>&1 
     /work/jzhu/project/ql/script/runql.sh -t hzpa -s 20160512 -b dtaa > /work/shared/daily/log/zmpa.hzpa.log 2>&1
     #/work/jzhu/project/ql/script/runql.sh -t hzsa -s 20160512 -b md > /work/shared/daily/log/zmpa.hzsa.log 2>&1
     /work/jzhu/project/ql/script/runql.sh -t qdii -s 20190512 -b md > /work/shared/daily/log/zmpa.qdii.log 2>&1
-    /work/jzhu/project/ql/script/runql.sh -t qdix -s 20190512 -b idxetf  -c NYSE  > /work/shared/daily/log/zmpa.qdix.log 2>&1
     /work/jzhu/project/ql/script/runql.sh -t ifpa -s 20160512 > /work/shared/daily/log/zmpa.ifpa.log 2>&1
     /work/jzhu/project/ql/script/runql.sh -t tfpa -s 20160512 > /work/shared/daily/log/zmpa.tfpa.log 2>&1
     /work/jzhu/project/ql/script/runql.sh -t fipa -s 20160512 -b md > /work/shared/daily/log/zmpa.fipa.log 2>&1
@@ -388,8 +414,8 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/ql/script/runql.sh -t hack -m ql/zmpa/LOZMPA -b nh -f w -s 20210130 > /work/shared/daily/log/lozmpa.hack.log 2>&1
     /work/jzhu/project/ql/script/runql.sh -t hzpa -m ql/zmpa/LOZMPA -b md -f w > /work/shared/daily/log/lozmpa.hzpa.log 2>&1
 
-    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.cfpa*2022* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 
-    scp -rp /work/shared/daily/ql/zmpa/*2022* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
+    scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.cfpa*2023* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 
+    scp -rp /work/shared/daily/ql/zmpa/*2023* jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/
 
     
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.cfpa > /work/shared/daily/log/zmpa.cfpa.clog 2>&1 &
@@ -398,7 +424,6 @@ elif [ $d_type == 'zmpa' ]; then
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.hzpa > /work/shared/daily/log/zmpa.hzpa.clog 2>&1 &
     #/work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.hzsa > /work/shared/daily/log/zmpa.hzsa.clog 2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.qdii > /work/shared/daily/log/zmpa.qdii.clog 2>&1 &
-    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.qdix > /work/shared/daily/log/zmpa.qdix.clog 2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.ifpa > /work/shared/daily/log/zmpa.ifpa.clog 2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.tfpa > /work/shared/daily/log/zmpa.tfpa.clog 2>&1 &
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/zmpa/ZMPA.fipa > /work/shared/daily/log/zmpa.fipa.clog 2>&1 &
@@ -422,17 +447,22 @@ elif [ $d_type == 'dmw' ]; then
 
     /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20220502 -t copc -o diff -p False > /work/shared/daily/log/mw.co.diff.log 2>&1 
     /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20220502 -t cofu -o net  -p False > /work/shared/daily/log/mw.cofu.net.log 2>&1 
+    /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20220502 -t copm -o net  -p False > /work/shared/daily/log/mw.copm.net.log 2>&1 
     /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20220502 -t hzpc -o diff -p False > /work/shared/daily/log/mw.hz.diff.log 2>&1 
     /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20220502 -t hzfu -o net  -p False > /work/shared/daily/log/mw.hzfu.net.log 2>&1 
     /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20220502 -t tfpc -o net  -p False > /work/shared/daily/log/mw.tfpc.net.log 2>&1 
 
-    scp -rp /work/shared/daily/slib/mmw/*2022* jzhu@106.14.226.83:/work/shared/daily/slib/mmw/ 2>&1  
-    scp -rp /work/shared/daily/slib/mmw/*cofu*2022* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 2>&1  
+    scp -rp /work/shared/daily/slib/mmw/*2023* jzhu@106.14.226.83:/work/shared/daily/slib/mmw/ 2>&1  
+    scp -rp /work/shared/daily/slib/mmw/*cofu*2023* user1@8.142.157.170:/work/shared/daily/slib/mmw/ 2>&1  
+    scp -rp /work/shared/daily/slib/mmw/*cofu*2023* user1@8.142.157.170:/work/kuang/daily/slib/mmw/ 2>&1  
     scp -rp /work/jzhu/output/slib/mmw/ls.cofu.ew.csv user1@8.142.157.170:/work/shared/daily/slib/mmw/ 2>&1  
 
     #/work/jzhu/project/slib/script/mw.py -s 20210630 -t cofu -o all -f > /work/shared/daily/log/mw.cofu.all.log 2>&1 
     /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20210630 -t cofu -o all -p True -w ew > /work/shared/daily/log/mw.cofu.all.log 2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  slib/mmw/ls.cofu.ew   > /work/shared/daily/log/lw.cffu.clog 2>&1 &
+
+    /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20210630 -t copm -o all -p True -w ew > /work/shared/daily/log/mw.copm.all.log 2>&1 
+    /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  slib/mmw/ls.copm.ew   > /work/shared/daily/log/lw.cfpm.clog 2>&1 &
 
     /work/jzhu/project/slib/script/runslib.sh -l mw -m slib/mmw/ls -f w -b dmw -s 20180630 -t cols -o all -p True -w ew > /work/shared/daily/log/mw.cols.all.log 2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  slib/mmw/ls.cols.ew   > /work/shared/daily/log/lw.cols.clog 2>&1 &
@@ -470,6 +500,7 @@ elif [ $d_type == 'dlw' ]; then
     /work/jzhu/project/ql/script/runql.sh -l lw -m ql/ssl/lo -t qdlw -f w -b md -s 20190512 > /work/shared/daily/log/lw.lo.qdlw.log 2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/ssl/lo.qdlw  > /work/shared/daily/log/lo.qdlw.clog 2>&1 &
 
+    /usr/local/anaconda3/bin/zipline ingest -b dtaa > /tmp/b_dtaa.log 2>&1 
     /work/jzhu/project/ql/script/runql.sh -l lw -m ql/ssl/ls -t dtlw -f w -b dtaa -s 20190512 > /work/shared/daily/log/lw.ls.dtlw.log 2>&1 
     /work/jzhu/project/slib/script/pickle_to_csv.py39 -m  ql/ssl/ls.dtlw  > /work/shared/daily/log/ls.dtlw.clog 2>&1 &
 
@@ -495,6 +526,7 @@ elif [ $d_type == 'ddma' ]; then
     #/work/jzhu/project/ql/script/dma.py -t cfca -r w -s 20151212  > /work/shared/daily/log/dma.cfca.log 2>&1 
     #/work/jzhu/project/ql/script/dma.py -t cfsa -r w -s 20151212  > /work/shared/daily/log/dma.cfsa.log 2>&1 
     #/work/jzhu/project/ql/script/dma.py -t hzpa -r w -s 20151212  > /work/shared/daily/log/dma.cfsa.log 2>&1 
+    /usr/local/anaconda3/bin/zipline ingest -b dtaa > /tmp/b_dtaa.log 2>&1 
     /work/jzhu/project/ql/script/runql.sh -l dma -m ql/dma/DMA -t mtaa -f w -s 20150512 -b dtaa > /work/shared/daily/log/dma.dtaa.log 2>&1 
     /work/jzhu/project/ql/script/runql.sh -l dma -m ql/dma/DMA -t cfpa -f w -s 20150512 > /work/shared/daily/log/dma.cfpa.log 2>&1 
     /work/jzhu/project/ql/script/runql.sh -l dma -m ql/dma/DMA -t tfpa -f w -s 20150512 > /work/shared/daily/log/dma.tfpa.log 2>&1 
@@ -568,14 +600,6 @@ elif [ $d_type == 'grw' ]; then
 
 
 elif [ $d_type == 'iv' ]; then
-    scp -rp   user1@8.142.157.170:/work/shared/tradedata/SH/*22* /work/jzhu/input/tradedata/SH/
-    scp -rp   user1@8.142.157.170:/work/shared/tradedata/SZ/*22* /work/jzhu/input/tradedata/SZ/
-    scp -rp  user1@8.142.157.170:/work/shared/tradedata/CFE/*22* /work/jzhu/input/tradedata/CFE/
-    scp -rp  user1@8.142.157.170:/work/shared/tradedata/CZC/*22* /work/jzhu/input/tradedata/CZC/
-    scp -rp  user1@8.142.157.170:/work/shared/tradedata/DCE/*22* /work/jzhu/input/tradedata/DCE/
-    scp -rp  user1@8.142.157.170:/work/shared/tradedata/INE/*22* /work/jzhu/input/tradedata/INE/
-    scp -rp  user1@8.142.157.170:/work/shared/tradedata/SHF/*22* /work/jzhu/input/tradedata/SHF/
-
     scp -rp   user1@8.142.157.170:/work/shared/tradedata/SH/*23* /work/jzhu/input/tradedata/SH/
     scp -rp   user1@8.142.157.170:/work/shared/tradedata/SZ/*23* /work/jzhu/input/tradedata/SZ/
     scp -rp  user1@8.142.157.170:/work/shared/tradedata/CFE/*23* /work/jzhu/input/tradedata/CFE/
@@ -584,11 +608,19 @@ elif [ $d_type == 'iv' ]; then
     scp -rp  user1@8.142.157.170:/work/shared/tradedata/INE/*23* /work/jzhu/input/tradedata/INE/
     scp -rp  user1@8.142.157.170:/work/shared/tradedata/SHF/*23* /work/jzhu/input/tradedata/SHF/
 
+    scp -rp   user1@8.142.157.170:/work/shared/tradedata/SH/*24* /work/jzhu/input/tradedata/SH/
+    scp -rp   user1@8.142.157.170:/work/shared/tradedata/SZ/*24* /work/jzhu/input/tradedata/SZ/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/CFE/*24* /work/jzhu/input/tradedata/CFE/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/CZC/*24* /work/jzhu/input/tradedata/CZC/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/DCE/*24* /work/jzhu/input/tradedata/DCE/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/INE/*24* /work/jzhu/input/tradedata/INE/
+    scp -rp  user1@8.142.157.170:/work/shared/tradedata/SHF/*24* /work/jzhu/input/tradedata/SHF/
+
     scp -rp  user1@8.142.157.170:/work/shared/tradedata/ticker.csv /work/jzhu/input/tradedata/
 
     scp -rp  /work/jzhu/input/tradedata/*  jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/tradedata
 
-    #20220325 scp -rp 123.57.60.6:/work/jzhu/input/iv/*.csv /work/jzhu/input/iv/ > /tmp/iv.log 2>&1
+    #20230325 scp -rp 123.57.60.6:/work/jzhu/input/iv/*.csv /work/jzhu/input/iv/ > /tmp/iv.log 2>&1
     scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.gloetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
     scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.secetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1  
     scp -rp /work/shared/daily/ql/zmpa/ZMPA.wsign.cashetf.* jzhu@106.14.226.83:/work/shared/daily/ql/zmpa/ 2>&1 
@@ -718,8 +750,9 @@ elif [ $d_type == 'lns' ]; then
     #scp -rp /work/shared/daily/slib/lns/single.w.cf* jzhu@106.14.226.83:/work/shared/daily/slib/lns/
 
 elif [ $d_type == 'cnmacro' ]; then
-    scp -rp 123.57.60.6:/work/yfchen/macro/*csv /work/jzhu/data/raw
-    #20220325 scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*csv /work/jzhu/input/idxetf/ 
+    #scp -rp 123.57.60.6:/work/yfchen/macro/*csv /work/jzhu/data/raw
+    scp -rp   user1@8.142.157.170:/work/shared/macrofactor/*csv /work/jzhu/data/raw
+    #20230325 scp -rp 123.57.60.6:/work/jzhu/input/idxetf/*csv /work/jzhu/input/idxetf/ 
     #scp -rp /work/jzhu/input/idxetf/*.csv 123.57.60.6:/work/jzhu/input/idxetf/
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/idxetf > /tmp/idp.log 2>&1
 
