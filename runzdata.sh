@@ -296,9 +296,6 @@ elif [ $d_type == 'dplt' ]; then
 
     /work/jzhu/project/zlib/zsprd.py -m cal_csab -t nh_csab  -o  > /tmp/caliv_nh.csab.log 2>&1
  
-
-
-
     /work/jzhu/project/zdata/csvpolish.py -i /work/jzhu/input/yf > /tmp/yf.log 2>&1
     /work/jzhu/project/finger/misc/futures_plot.py > /tmp/futures_plot.log 2>&1 
     /work/jzhu/project/finger/misc/futures_plot_bkdata.py > /tmp/bk_plot.log 2>&1 
@@ -323,6 +320,7 @@ elif [ $d_type == 'dpm' ]; then
     /work/jzhu/project/zlib/zsprd.py -m cal_std -t shsz -o  > /tmp/calstd_shsz 2>&1
 
     /work/jzhu/project/finger/misc/pm.R > /tmp/pm.log.$edate 2>&1 
+    /work/jzhu/project/finger/misc/zsprd.R > /tmp/zsprd.log.$edate 2>&1 
     /work/jzhu/project/finger/misc/risk.R > /tmp/risk.log.$edate 2>&1 
     scp -rp /work/shared/output/a_pm*.pdf jzhu@123.57.60.6:/work/dwhang/project/sit/Shiny/yzpa/ > /tmp/scp_pm.log 2>&1 &
     scp -rp /work/shared/output/a_yf_stra.pdf  user1@8.142.157.170:/work/shared/daily/slib/mmw/ > /tmp/scp_pm_yf.log 2>&1 &
