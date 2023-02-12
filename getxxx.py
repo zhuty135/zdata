@@ -13,49 +13,23 @@ from zutils import get_prev_business_date, get_business_date_list
 
 from os.path import isfile,join
 def file_filter(f):
-    if f[-4:] in ['.csv'] and not re.match(r'tmp/.*', f):
+    if f[-4:] in ['.xxx'] and not re.match(r'tmp/.*', f):
         return True
     else:
         return False
 
-def specialstr(maxkey,spp):
-    slist = spp.split('.')
-    if True: 
-        plist02 = maxkey.split(spp)
-        p0 =  plist02[0].split('.')
-        p1 =  plist02[1].split('.')
-        
-        p0list = [x for x in p0 if x != '']
-        p1list = [x for x in p1 if x != '']
-        flat_list = [item for sublist in [p0list[2:], [spp], p1list] for item in sublist]
-        paramstr = ','.join(flat_list)
-
-    return(paramstr)
-
 def generate_key(t,maxkey,totaldf,srdict):
-    #print(maxkey)
-    if re.match(r'.*\.0\.2.*$',maxkey):
-        paramstr = specialstr(maxkey,'0.2')
-    elif re.match(r'.*\.1\.2.*$',maxkey):
-        paramstr = specialstr(maxkey,'1.2')
-    elif re.match(r'.*\.2\.4.*$',maxkey):
-        paramstr = specialstr(maxkey,'2.4')
-    elif re.match(r'.*\.\..*',maxkey):
-        plist = maxkey.split('.')
-        plist.remove('')
-        
-        params = [ str(round(int(i)/10,1)) if i in ['5'] else i for i in plist]
-        
-        plist =[ x for x in params if x != '' ] 
-        paramstr = ','.join(plist[2:])
-        
-    else:
-        plist =[ x for x in maxkey.split('.') if x != '' ] 
-        paramstr = ','.join(plist[2:])
+    #print('maxkey',maxkey)
+    if True: 
+        #plist =[ x for x in maxkey.split('-') if x != '' ] 
+        plist =[ x for x in maxkey.split('-') ] 
+        #print('plist',plist)
+        paramstr = ','.join(plist[1:])
 
-    isstr = ','.join([str(round(z,2)) for z in totaldf.loc[maxkey+'.is',] ] )
-    osstr = ','.join([str(round(z,2)) for z in totaldf.loc[maxkey+'.os',] ] )
-    finalstr = t + '=[' + paramstr +  ']' + '#' + maxkey + ' ' + str(round(srdict[maxkey]/2,2)) + ' is ' + isstr + ';os ' +  osstr 
+    #print('paramstr',paramstr)
+    isstr = ','.join([str(round(z,2)) for z in totaldf.loc[maxkey + '-is',] ] )
+    osstr = ','.join([str(round(z,2)) for z in totaldf.loc[maxkey + '-os',] ] )
+    finalstr = t + '=[' + paramstr +  ']' + '#' + maxkey + ' ' + os.environ['FILTERTYPE'] + '=' + str(round(srdict[maxkey]/2,2)) + ' is ' + isstr + ';os ' +  osstr 
     return(finalstr)
 
 def start_analysis(input_dir,output_dir,index_col,zfix):
@@ -70,7 +44,7 @@ def start_analysis(input_dir,output_dir,index_col,zfix):
     totaldf = pd.DataFrame()
     
     for f in csvfiles:
-        t = f.split('.csv')[0]
+        t = f.split('.xxx')[0]
         fin = input_dir + f
         print(fin)
         fsize = os.path.getsize(fin)
@@ -80,10 +54,12 @@ def start_analysis(input_dir,output_dir,index_col,zfix):
 
         else:
             print('File Szie is Zero:',fin)
+    totaldf.dropna(inplace=True,axis=0)
     print('total',totaldf)
 
     tickerlist = []
-    [ tickerlist.append('.'.join(f.split('.')[0:2])) for f in csvfiles if not '.'.join(f.split('.')[0:2]) in tickerlist] 
+    #[ tickerlist.append('.'.join(f.split('.')[0:3])) if re.match(r'*csab*',f) else tickerlist.append('.'.join(f.split('.')[0:2])) for f in csvfiles if not '.'.join(f.split('.')[0:2]) in tickerlist] 
+    [tickerlist.append('.'.join(f.split('.')[0:2])) for f in csvfiles if not '.'.join(f.split('.')[0:2]) in tickerlist] 
     print(tickerlist)
     for t in tickerlist:
         if not os.environ['TICKER'] == '' and not t == os.environ['TICKER']:
@@ -91,9 +67,10 @@ def start_analysis(input_dir,output_dir,index_col,zfix):
         srdict = {}
         tmpdf = totaldf[totaldf.index.str.contains(t)].sort_index()
         for i in tmpdf.index:
-            mi = i.split('.')[:-1]
-            mistr = '.'.join(mi)
-            
+            mi = i.split('-')[0:-1]
+            #print(mi)
+            mistr = '-'.join(mi)
+            #print(mistr)
             if mistr in srdict:
                 if os.environ['FILTERTYPE'] == 'sr':
                     srdict[mistr] += tmpdf.loc[i,'sr']
@@ -112,6 +89,7 @@ def start_analysis(input_dir,output_dir,index_col,zfix):
                     assert(0)
 
         print(t)
+        #print(srdict)
         maxkey = max(srdict,key=lambda key: srdict[key])
         fs = generate_key(t,maxkey,totaldf,srdict)
         del srdict[maxkey]
@@ -121,33 +99,6 @@ def start_analysis(input_dir,output_dir,index_col,zfix):
         fs1 = generate_key(t,maxkey1,totaldf,srdict)
         del srdict[maxkey1]
         print(fs1)
-
-        maxkey2 = max(srdict,key=lambda key: srdict[key])
-        fs2 = generate_key(t,maxkey2,totaldf,srdict)
-        del srdict[maxkey2]
-        print(fs2)
-
-
-        maxkey3 = max(srdict,key=lambda key: srdict[key])
-        fs3 = generate_key(t,maxkey3,totaldf,srdict)
-        del srdict[maxkey3]
-        print(fs3)
-
-        maxkey4 = max(srdict,key=lambda key: srdict[key])
-        fs4 = generate_key(t,maxkey4,totaldf,srdict)
-        del srdict[maxkey4]
-        print(fs4)
-
-    if False:
-        fout = output_dir + f
-        if re.match(r'^.*\..*\.csv',f):
-            fout = output_dir + f
-        else:
-            f_split = f.split('.')
-            fout = output_dir + f_split[0]  + '.PO.' + f_split[-1] 
-        print('fin',fin)
-        print('fout',fout)
-
 
 def main():
     import getopt, sys
