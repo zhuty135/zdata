@@ -22,7 +22,9 @@ def generate_key(t,maxkey,totaldf,srdict):
     #print('maxkey',maxkey)
     if True: 
         #plist =[ x for x in maxkey.split('-') if x != '' ] 
+        #plist =[ x for x in maxkey.split('_') ] 
         plist =[ x for x in maxkey.split('-') ] 
+        
         #print('plist',plist)
         paramstr = ','.join(plist[1:])
 
