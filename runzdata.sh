@@ -659,11 +659,12 @@ elif [ $d_type == 'doch' ]; then
     #/work/jzhu/project/slib/script/kdj.py -t hzlo -s 20060505 > /work/shared/daily/log/chaodi_hzlo.log  2>&1 
     #/work/jzhu/project/slib/script/kdj.py -t tflo -s 20160505 > /work/shared/daily/log/chaodi_tflo.log  2>&1 
 
-    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t cflo -f w -s 20180505 -b cit > /work/shared/daily/log/cd_cflo.log  2>&1
+    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t cflo -f w -s 20210505 -b cit > /work/shared/daily/log/cd_cflo.log  2>&1
     /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t colo -f w -s 20180505 -b cit > /work/shared/daily/log/cd_colo.log  2>&1
     /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/sw/so -t coso -f w -s 20180505 -b cit > /work/shared/daily/log/cd_coso.log  2>&1
     /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/sw/so -t hzso -f w -s 20180505 -b md  > /work/shared/daily/log/cd_hzso.log  2>&1
     /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t hzlo -f w -s 20060505 -b md  >/work/shared/daily/log/cd_hzlo.log  2>&1
+    /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t hzsectlo -f w -s 20120505 -b md  >/work/shared/daily/log/cd_hzsectlo.log  2>&1
     /work/jzhu/project/slib/script/runslib.sh -l kdj -m slib/jw/lo -t tflo -f w -s 20160505 -b cit > /work/shared/daily/log/cd_tflo.log  2>&1
 
 
