@@ -6,7 +6,7 @@ import pwd
 uname = pwd.getpwuid(os.getuid()).pw_name
 sys.path.append('/work/'+uname+ '/project/zlib/')
 
-from zutils import get_prev_business_date,get_business_date_list,get_config
+from zutils_p35 import get_prev_business_date,get_business_date_list,get_config
 
 import tushare as ts
 import configparser
@@ -14,6 +14,7 @@ import configparser
 mytoken = get_config(cfg = 'token')
 ts.set_token(mytoken)
 pro = ts.pro_api(mytoken)
+
 ix_symb_list = get_config(cfg = 'ix_symb')
 
 import pandas as pd 
@@ -173,6 +174,8 @@ def fetch_daily_data(i,s,e,dk,ex):
         fcallbasic =  a + "',start_date='" + s + "',end_date='" + e + "')"
         fcall =  fcallbasic #+ "',adj='hfq')" if dk =='stock' else  fcallbasic + "')"
         df = eval(fcall) 
+    #print(fcall)
+    #print(df)
     if df is None or df.empty:
         return None 
     time.sleep(0.12)
@@ -259,7 +262,7 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
         if True:
             for i in  bdf.index:
                 print ('testjz',i)
-                if i == 'not 000002.SZ':
+                if False and not i in ('000016.SH','000905.SH'):
                     print('skipping0:',i)
                     continue 
                 if dk == 'index' and d_type in ix_list and (not i in ix_symb_list):   
@@ -311,6 +314,8 @@ def bar_to_db(dk,ex,d_type,sd,ed,aflag,dlflag,fflag,oflag,verbose=True):
                 wf = write_to_db(i,df, ded, aflag, fflag, oflag,cdict,keystr=ks)
                 if wf:
                     print('writing ',i,' to', dailystr)
+                else:
+                    print('fail to writing',i,'to',dailystr)
         ded.dispose()    
         deb.dispose()    
     

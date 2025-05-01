@@ -14,7 +14,7 @@ import pwd
 
 uname = pwd.getpwuid(os.getuid()).pw_name
 sys.path.append('/work/'+uname+ '/project/zlib/')
-from zutils import get_config
+from zutils_p35 import get_config, get_prev_business_date, get_business_date_list
 ix_symb_list = get_config(cfg = 'ix_symb')
 
 from sqlalchemy import create_engine #pymongo
@@ -101,14 +101,14 @@ def get_db_data(d_path,sd,ed,uname,bdt_list=None,dk = 'opt',d_type='daily',oflag
         if os.path.exists(hist_path) and (not os.path.exists(back_path)):
             shutil.copytree(hist_path, back_path)
         for i in symbols:
-            if i == 'not 000068.SZ':
+            if False and not i in ('000016.SH','000905.SH'):
                 print('skipping0:',i)
                 continue
+            print('working on',i)
 
-            if (dk == 'fut' and filter_fut_symb(i)) or (dk == 'index' and (not i in ix_symb_list)):
-                print('skipping ', i,dk)
+            if (dk == 'fut' and filter_fut_symb(i)) or (dk == 'index' and d_type in ix_list and (not i in ix_symb_list)):
+                print('skipping1', i,dk,d_type)
                 continue
-
             stmp =  i.lower() if dk in ('fut',) else i
             fout = hist_path + stmp + '.csv' 
             print(fout)
@@ -162,7 +162,6 @@ def main():
         sys.exit(2)
     uname = pwd.getpwuid(os.getuid()).pw_name
     sys.path.append('/work/'+uname+'/project/zlib/')
-    from zutils import get_prev_business_date, get_business_date_list
     bdl = get_business_date_list(fmt='%Y%m%d')
     output_flag = False
     conv_flag = False 
@@ -197,6 +196,8 @@ def main():
 
 
     if dkey in ('opt','fut','fund','fund_nav','index','stock'):
+        get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type='daily',oflag=output_flag,lflag=link_flag)
+        assert(0)
         if dkey in ('stock'):
             for k in fs_list:
                 get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
@@ -205,7 +206,6 @@ def main():
                 get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type=k,oflag=output_flag,lflag=link_flag)
             
         get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type='basic',oflag=output_flag,lflag=link_flag)
-        get_db_data(input_path,sdate,edate,uname,bdt_list=bdl,dk=dkey, d_type='daily',oflag=output_flag,lflag=link_flag)
             
 if __name__ == '__main__':
     main()

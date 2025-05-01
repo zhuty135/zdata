@@ -10,6 +10,7 @@ sys.path.append('/work/'+uname+ '/project/zlib/')
 
 from zutils import get_prev_business_date, get_business_date_list
 
+mysplit='_'
 
 from os.path import isfile,join
 def file_filter(f):
@@ -23,14 +24,17 @@ def generate_key(t,maxkey,totaldf,srdict):
     if True: 
         #plist =[ x for x in maxkey.split('-') if x != '' ] 
         #plist =[ x for x in maxkey.split('_') ] 
-        plist =[ x for x in maxkey.split('-') ] 
+        plist =[ x for x in maxkey.split(mysplit) ] 
         
         #print('plist',plist)
         paramstr = ','.join(plist[1:])
 
     #print('paramstr',paramstr)
-    isstr = ','.join([str(round(z,2)) for z in totaldf.loc[maxkey + '-is',] ] )
-    osstr = ','.join([str(round(z,2)) for z in totaldf.loc[maxkey + '-os',] ] )
+    #print('maxkey',maxkey)
+    #print(totaldf.index)
+    #print(maxkey + mysplit + 'is')
+    isstr = ','.join([str(round(z,2)) for z in totaldf.loc[maxkey + mysplit + 'is',] ] )
+    osstr = ','.join([str(round(z,2)) for z in totaldf.loc[maxkey + mysplit + 'os',] ] )
     finalstr = t + '=[' + paramstr +  ']' + '#' + maxkey + ' ' + os.environ['FILTERTYPE'] + '=' + str(round(srdict[maxkey]/2,2)) + ' is ' + isstr + ';os ' +  osstr 
     return(finalstr)
 
@@ -50,11 +54,16 @@ def start_analysis(input_dir,output_dir,index_col,zfix):
         fin = input_dir + f
         print(fin)
         fsize = os.path.getsize(fin)
-        if not fsize == 0:
+        fzero = os.stat(fin).st_size 
+        if not fsize == 0 or not fzero == 0:
             df = pd.read_csv(fin,sep = '\s+',names=['sr','ret','vol','dd','txns'])
             totaldf = pd.concat([totaldf, df])
+            totaldf.fillna(0,inplace=True)
 
         else:
+            #print(csvfiles)
+            csvfiles.remove(f)
+            #print(csvfiles)
             print('File Szie is Zero:',fin)
     totaldf.dropna(inplace=True,axis=0)
     print('total',totaldf)
@@ -69,9 +78,9 @@ def start_analysis(input_dir,output_dir,index_col,zfix):
         srdict = {}
         tmpdf = totaldf[totaldf.index.str.contains(t)].sort_index()
         for i in tmpdf.index:
-            mi = i.split('-')[0:-1]
+            mi = i.split(mysplit)[0:-1]
             #print(mi)
-            mistr = '-'.join(mi)
+            mistr = mysplit.join(mi)
             #print(mistr)
             if mistr in srdict:
                 if os.environ['FILTERTYPE'] == 'sr':
